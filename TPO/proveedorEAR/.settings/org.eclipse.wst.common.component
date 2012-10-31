@@ -9,5 +9,9 @@
         <dependent-module archiveName="proveedorClient.jar" deploy-path="/" handle="module:/resource/proveedorClient/proveedorClient">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="proveedorFrontEnd.war" deploy-path="/" handle="module:/resource/proveedorFrontEnd/proveedorFrontEnd">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>
