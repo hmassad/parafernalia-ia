@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>proveedorEAR</name>
+	<name>materiaPrimaEAR</name>
 	<comment></comment>
 	<projects>
-		<project>proveedorEJB</project>
-		<project>proveedorEJBClient</project>
-		<project>proveedorWeb</project>
+		<project>materiaPrimaEJB</project>
+		<project>materiaPrimaEJBClient</project>
+		<project>materiaPrimaWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
