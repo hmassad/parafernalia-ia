@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence>
+	<persistence-unit name="xxxx">
+		<jta-data-source>java:/xxxx-ds</jta-data-source>
+		<properties>
+            <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<!-- 
+            <property name="hibernate.show_sql" value="true"/>
+	        <property name="hibernate.format_sql" value="true"/>
+	        <property name="use_sql_comments" value="true"/>
+	           -->
+       </properties>
+	</persistence-unit>
+</persistence>

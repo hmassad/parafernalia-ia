@@ -6,11 +6,14 @@
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="proveedorWeb.war" deploy-path="/" handle="module:/resource/proveedorWeb/proveedorWeb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="proveedorEJBClient.jar" deploy-path="/" handle="module:/resource/proveedorEJBClient/proveedorEJBClient">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="proveedorWeb.war" deploy-path="/" handle="module:/resource/proveedorWeb/proveedorWeb">
-            <dependent-object/>
+        <dependent-module archiveName="proveedorComun.jar" deploy-path="/lib" handle="module:/resource/proveedorComun/proveedorComun">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>
