@@ -102,4 +102,9 @@ public class ProductoVO implements Serializable {
 			return false;
 		return true;
 	}
+
+	public String toString() {
+		return String.format("codigo: %s; caracteristica: %s; marca: %s; origen: %s; precioUnitario: %f", getCodigo(), getCaracteristica(), getMarca(),
+				getOrigen(), getPrecioUnitario());
+	}
 }
