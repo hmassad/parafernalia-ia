@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>materiaPrimaEJB</project>
-		<project>materiaPrimaEJBClient</project>
 		<project>materiaPrimaWeb</project>
 	</projects>
 	<buildSpec>

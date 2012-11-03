@@ -6,9 +6,6 @@
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="materiaPrimaEJBClient.jar" deploy-path="/" handle="module:/resource/materiaPrimaEJBClient/materiaPrimaEJBClient">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="materiaPrimaWeb.war" deploy-path="/" handle="module:/resource/materiaPrimaWeb/materiaPrimaWeb">
             <dependent-object/>
             <dependency-type>uses</dependency-type>

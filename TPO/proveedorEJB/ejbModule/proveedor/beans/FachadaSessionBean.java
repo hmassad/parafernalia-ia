@@ -15,10 +15,12 @@ import proveedor.vo.ProductoVO;
  * Session Bean implementation class FachadaSessionBean
  */
 @Stateless
-@Local({ ListaPreciosSessionBeanLocal.class, MateriaPrimaSessionBeanLocal.class })
-public class FachadaSessionBean implements FachadaSessionBeanRemote, ListaPreciosSessionBeanLocal, MateriaPrimaSessionBeanLocal {
+@Local({ ListaPreciosSessionBeanLocal.class, MateriaPrimaSessionBeanLocal.class, ProductosSessionBeanLocal.class })
+public class FachadaSessionBean implements FachadaSessionBeanRemote, ListaPreciosSessionBeanLocal, MateriaPrimaSessionBeanLocal, ProductosSessionBeanLocal {
 
 	InitialContext initialContext;
+	ProductosSessionBeanLocal productosSessionBeanLocal;
+	MateriaPrimaSessionBeanLocal materiaPrimaSessionBeanLocal;
 
 	/**
 	 * Default constructor.
@@ -32,52 +34,45 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote, ListaPrecio
 		props.put(InitialContext.PROVIDER_URL, "jnp://127.0.0.1:1099");
 		// Objeto del tipo InitialContext
 		initialContext = new InitialContext(props);
-	}
 
-	/**
-	 * @see ListaPreciosSessionBeanLocal#getProducto(String)
-	 */
-	public ProductoVO getProducto(String codigo) {
-		// TODO Auto-generated method stub
-		return null;
+		materiaPrimaSessionBeanLocal = (MateriaPrimaSessionBeanLocal) initialContext.lookup("proveedorEAR/MateriaPrimaSessionBean/local");
+		productosSessionBeanLocal = (ProductosSessionBeanLocal) initialContext.lookup("proveedorEAR/ProductosSessionBean/local");
 	}
 
 	/**
 	 * @see MateriaPrimaSessionBeanLocal#getDate()
 	 */
 	public Date getDate() {
-		try {
-			MateriaPrimaSessionBeanLocal materiaPrimaSessionBeanLocal = (MateriaPrimaSessionBeanLocal) initialContext
-					.lookup("proveedorEAR/MateriaPrimaSessionBean/local");
-			return materiaPrimaSessionBeanLocal.getDate();
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+		return materiaPrimaSessionBeanLocal.getDate();
 	}
 
 	/**
-	 * @see ListaPreciosSessionBeanLocal#deleteProducto(String)
+	 * @see ProductosSessionBeanLocal#getProducto(String)
+	 */
+	public ProductoVO getProducto(String codigo) {
+		return productosSessionBeanLocal.getProducto(codigo);
+	}
+
+	/**
+	 * @see ProductosSessionBeanLocal#deleteProducto(String)
 	 */
 	public void deleteProducto(String codigo) {
-		// TODO Auto-generated method stub
+		productosSessionBeanLocal.deleteProducto(codigo);
 	}
 
 	/**
-	 * @see ListaPreciosSessionBeanLocal#createProducto(String, String, String,
+	 * @see ProductosSessionBeanLocal#createProducto(String, String, String,
 	 *      String, String, float)
 	 */
 	public void createProducto(String codigo, String descripcion, String caracteristica, String marca, String origen, float precioUnitario) {
-		// TODO Auto-generated method stub
+		productosSessionBeanLocal.createProducto(codigo, descripcion, caracteristica, marca, origen, precioUnitario);
 	}
 
 	/**
-	 * @see ListaPreciosSessionBeanLocal#getProductos()
+	 * @see ProductosSessionBeanLocal#getProductos()
 	 */
 	public Collection<ProductoVO> getProductos() {
-		// TODO Auto-generated method stub
-		return null;
+		return productosSessionBeanLocal.getProductos();
 	}
 
 }
