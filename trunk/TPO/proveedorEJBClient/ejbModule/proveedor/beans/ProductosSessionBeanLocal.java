@@ -9,7 +9,7 @@ import proveedor.vo.ProductoVO;
 @Local
 public interface ProductosSessionBeanLocal {
 
-	void createProducto(String codigo, String descripcion, String caracteristica, String marca, String origen, float precioUnitario);
+	void createProducto(ProductoVO producto);
 
 	void deleteProducto(String codigo);
 
