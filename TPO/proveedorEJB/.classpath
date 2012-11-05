@@ -18,5 +18,10 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/xstream-1.4.3.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

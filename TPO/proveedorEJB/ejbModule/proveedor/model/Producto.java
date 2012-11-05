@@ -1,10 +1,15 @@
 package proveedor.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity(name = "Producto")
 public class Producto implements Serializable {
@@ -12,36 +17,36 @@ public class Producto implements Serializable {
 	private static final long serialVersionUID = -487364569551425362L;
 
 	@Id
-	@Column(name = "codigo")
+	@Column
 	private String codigo;
 
-	@Column(name = "descripcion")
+	@Column
 	private String descripcion;
 
-	@Column(name = "caracteristica")
+	@Column
 	private String caracteristica;
 
-	@Column(name = "marca")
+	@Column
 	private String marca;
 
-	@Column(name = "origen")
+	@Column
 	private String origen;
 
-	@Column(name = "precioUnitario")
-	private float precioUnitario;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.materiaPrima", cascade = { CascadeType.ALL })
+	private Collection<MateriaPrimaProducto> materiasPrimasProducto;
 
 	public Producto() {
-		super();
+		this.materiasPrimasProducto = new ArrayList<MateriaPrimaProducto>();
 	}
 
-	public Producto(String codigo, String descripcion, String caracteristica, String marca, String origen, float precioUnitario) {
-		super();
+	public Producto(String codigo, String descripcion, String caracteristica, String marca, String origen,
+			Collection<MateriaPrimaProducto> materiasPrimasProductos) {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.caracteristica = caracteristica;
 		this.marca = marca;
 		this.origen = origen;
-		this.precioUnitario = precioUnitario;
+		this.materiasPrimasProducto = materiasPrimasProductos;
 	}
 
 	public String getCodigo() {
@@ -52,7 +57,6 @@ public class Producto implements Serializable {
 		this.codigo = codigo;
 	}
 
-	@Column(name = "descripcion", length = 500)
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -85,21 +89,28 @@ public class Producto implements Serializable {
 		this.origen = origen;
 	}
 
-	public float getPrecioUnitario() {
-		return precioUnitario;
+	public Collection<MateriaPrimaProducto> getMateriasPrimasProducto() {
+		return materiasPrimasProducto;
 	}
 
-	public void setPrecioUnitario(float precioUnitario) {
-		this.precioUnitario = precioUnitario;
+	public void setMateriasPrimasProducto(Collection<MateriaPrimaProducto> materiasPrimasProducto) {
+		this.materiasPrimasProducto = materiasPrimasProducto;
 	}
 
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (codigo == null ? 0 : codigo.hashCode());
+		result = prime * result + ((caracteristica == null) ? 0 : caracteristica.hashCode());
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
+		result = prime * result + ((materiasPrimasProducto == null) ? 0 : materiasPrimasProducto.hashCode());
+		result = prime * result + ((origen == null) ? 0 : origen.hashCode());
 		return result;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -107,12 +118,41 @@ public class Producto implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Producto other = (Producto) obj;
+		Producto other = (Producto) obj;
+		if (caracteristica == null) {
+			if (other.caracteristica != null)
+				return false;
+		} else if (!caracteristica.equals(other.caracteristica))
+			return false;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
+		if (descripcion == null) {
+			if (other.descripcion != null)
+				return false;
+		} else if (!descripcion.equals(other.descripcion))
+			return false;
+		if (marca == null) {
+			if (other.marca != null)
+				return false;
+		} else if (!marca.equals(other.marca))
+			return false;
+		if (materiasPrimasProducto == null) {
+			if (other.materiasPrimasProducto != null)
+				return false;
+		} else if (!materiasPrimasProducto.equals(other.materiasPrimasProducto))
+			return false;
+		if (origen == null) {
+			if (other.origen != null)
+				return false;
+		} else if (!origen.equals(other.origen))
+			return false;
 		return true;
+	}
+
+	public String toString() {
+		return getCodigo();
 	}
 }

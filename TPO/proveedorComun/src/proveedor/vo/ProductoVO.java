@@ -1,6 +1,8 @@
 package proveedor.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ProductoVO implements Serializable {
 
@@ -16,20 +18,19 @@ public class ProductoVO implements Serializable {
 
 	private String origen;
 
-	private float precioUnitario;
+	private Collection<MateriaPrimaProductoVO> materiasPrimasProducto;
 
 	public ProductoVO() {
-		super();
+		this.materiasPrimasProducto = new ArrayList<MateriaPrimaProductoVO>();
 	}
 
-	public ProductoVO(String codigo, String descripcion, String caracteristica, String marca, String origen, float precioUnitario) {
-		super();
+	public ProductoVO(String codigo, String descripcion, String caracteristica, String marca, String origen, Collection<MateriaPrimaProductoVO> materiasPrimasProducto) {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.caracteristica = caracteristica;
 		this.marca = marca;
 		this.origen = origen;
-		this.precioUnitario = precioUnitario;
+		this.materiasPrimasProducto = materiasPrimasProducto;
 	}
 
 	public String getCodigo() {
@@ -72,39 +73,15 @@ public class ProductoVO implements Serializable {
 		this.origen = origen;
 	}
 
-	public float getPrecioUnitario() {
-		return precioUnitario;
+	public Collection<MateriaPrimaProductoVO> getMateriasPrimasProducto() {
+		return materiasPrimasProducto;
 	}
 
-	public void setPrecioUnitario(float precioUnitario) {
-		this.precioUnitario = precioUnitario;
-	}
-
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (codigo == null ? 0 : codigo.hashCode());
-		return result;
-	}
-
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final ProductoVO other = (ProductoVO) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
-				return false;
-		} else if (!codigo.equals(other.codigo))
-			return false;
-		return true;
+	public void setMateriasPrimas(Collection<MateriaPrimaProductoVO> materiasPrimasProducto) {
+		this.materiasPrimasProducto = materiasPrimasProducto;
 	}
 
 	public String toString() {
-		return String.format("codigo: %s; caracteristica: %s; marca: %s; origen: %s; precioUnitario: %f", getCodigo(), getCaracteristica(), getMarca(),
-				getOrigen(), getPrecioUnitario());
+		return getCodigo();
 	}
 }

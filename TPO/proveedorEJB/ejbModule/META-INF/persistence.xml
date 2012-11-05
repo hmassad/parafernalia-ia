@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence>
-	<persistence-unit name="proveedor" transaction-type="JTA">
+	<persistence-unit name="proveedor">
+		<class>proveedor.model.ListaPrecios</class>
+		<class>proveedor.model.ListaPreciosItem</class>
+		<class>proveedor.model.MateriaPrima</class>
+		<class>proveedor.model.MateriaPrimaProducto</class>
+		<class>proveedor.model.Producto</class>
+		<class>proveedor.model.Proveedor</class>
+		<class>proveedor.model.Unidad</class>
 		<jta-data-source>java:/jdbc/proveedor-ds</jta-data-source>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
-			<!-- <property name="hibernate.show_sql" value="true"/> <property name="hibernate.format_sql" 
-				value="true"/> <property name="use_sql_comments" value="true"/> -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="use_sql_comments" value="true" />
 		</properties>
 	</persistence-unit>
 </persistence>

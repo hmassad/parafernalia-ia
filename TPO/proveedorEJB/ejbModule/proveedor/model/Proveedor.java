@@ -1,31 +1,42 @@
 package proveedor.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
-public class Proveedor {
+@Entity(name="Proveedor")
+public class Proveedor implements Serializable {
+
+	private static final long serialVersionUID = -8248825991712716192L;
 
 	@Id
+	@Column(name="cuit")
 	private String cuit;
 
+	@Column(name="razonSocial")
 	private String razonSocial;
 	
+	@Column(name="telefono")
 	private String telefono;
 	
+	@Column(name="direccion")
 	private String direccion;
 	
+	@Column(name="ciudad")
 	private String ciudad;
 	
+	@Column(name="provincia")
 	private String provincia;
 	
+	@Column(name="codigoPostal")
 	private String codigoPostal;
 
 	public Proveedor(){
 	}
 	
 	public Proveedor(String cuit, String razonSocial, String telefono, String direccion, String ciudad, String provincia, String codigoPostal) {
-		super();
 		this.cuit = cuit;
 		this.razonSocial = razonSocial;
 		this.telefono = telefono;
@@ -91,4 +102,68 @@ public class Proveedor {
 		this.codigoPostal = codigoPostal;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ciudad == null) ? 0 : ciudad.hashCode());
+		result = prime * result + ((codigoPostal == null) ? 0 : codigoPostal.hashCode());
+		result = prime * result + ((cuit == null) ? 0 : cuit.hashCode());
+		result = prime * result + ((direccion == null) ? 0 : direccion.hashCode());
+		result = prime * result + ((provincia == null) ? 0 : provincia.hashCode());
+		result = prime * result + ((razonSocial == null) ? 0 : razonSocial.hashCode());
+		result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Proveedor other = (Proveedor) obj;
+		if (ciudad == null) {
+			if (other.ciudad != null)
+				return false;
+		} else if (!ciudad.equals(other.ciudad))
+			return false;
+		if (codigoPostal == null) {
+			if (other.codigoPostal != null)
+				return false;
+		} else if (!codigoPostal.equals(other.codigoPostal))
+			return false;
+		if (cuit == null) {
+			if (other.cuit != null)
+				return false;
+		} else if (!cuit.equals(other.cuit))
+			return false;
+		if (direccion == null) {
+			if (other.direccion != null)
+				return false;
+		} else if (!direccion.equals(other.direccion))
+			return false;
+		if (provincia == null) {
+			if (other.provincia != null)
+				return false;
+		} else if (!provincia.equals(other.provincia))
+			return false;
+		if (razonSocial == null) {
+			if (other.razonSocial != null)
+				return false;
+		} else if (!razonSocial.equals(other.razonSocial))
+			return false;
+		if (telefono == null) {
+			if (other.telefono != null)
+				return false;
+		} else if (!telefono.equals(other.telefono))
+			return false;
+		return true;
+	}
+
+	public String toString() {
+		return getRazonSocial();
+	}
 }
