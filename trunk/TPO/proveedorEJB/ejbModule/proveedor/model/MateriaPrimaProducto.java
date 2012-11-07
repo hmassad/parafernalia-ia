@@ -8,23 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+
+import proveedor.vo.MateriaPrimaProductoVO;
 
 @Entity
-@AssociationOverrides( {
-	@AssociationOverride(name = "pk.producto", joinColumns = { @JoinColumn(name = "producto", nullable = false) }),
-	@AssociationOverride(name = "pk.materiaPrima", joinColumns = { @JoinColumn(name = "materiaPrima", nullable = false) }) 
-})
+@AssociationOverrides({ @AssociationOverride(name = "pk.producto", joinColumns = { @JoinColumn(name = "producto", nullable = false) }),
+		@AssociationOverride(name = "pk.materiaPrima", joinColumns = { @JoinColumn(name = "materiaPrima", nullable = false) }) })
 public class MateriaPrimaProducto {
 
 	@EmbeddedId
 	private MateriaPrimaProductoPk pk;
-
-	@Transient
-	private Producto producto;
-
-	@Transient
-	private MateriaPrima materiaPrima;
 
 	@Column
 	private int cantidad;
@@ -33,11 +26,11 @@ public class MateriaPrimaProducto {
 	private Unidad unidad;
 
 	public MateriaPrimaProducto() {
+		pk = new MateriaPrimaProductoPk();
 	}
 
 	public MateriaPrimaProducto(Producto producto, MateriaPrima materiaPrima, int cantidad, Unidad unidad) {
-		this.producto = producto;
-		this.materiaPrima = materiaPrima;
+		pk = new MateriaPrimaProductoPk(producto, materiaPrima);
 		this.cantidad = cantidad;
 		this.unidad = unidad;
 	}
@@ -51,19 +44,19 @@ public class MateriaPrimaProducto {
 	}
 
 	public Producto getProducto() {
-		return producto;
+		return pk.getProducto();
 	}
 
 	public void setProducto(Producto producto) {
-		this.producto = producto;
+		pk.setProducto(producto);
 	}
 
 	public MateriaPrima getMateriaPrima() {
-		return materiaPrima;
+		return pk.getMateriaPrima();
 	}
 
 	public void setMateriaPrima(MateriaPrima materiaPrima) {
-		this.materiaPrima = materiaPrima;
+		pk.setMateriaPrima(materiaPrima);
 	}
 
 	public int getCantidad() {
@@ -87,9 +80,7 @@ public class MateriaPrimaProducto {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + cantidad;
-		result = prime * result + ((materiaPrima == null) ? 0 : materiaPrima.hashCode());
 		result = prime * result + ((pk == null) ? 0 : pk.hashCode());
-		result = prime * result + ((producto == null) ? 0 : producto.hashCode());
 		result = prime * result + ((unidad == null) ? 0 : unidad.hashCode());
 		return result;
 	}
@@ -105,20 +96,10 @@ public class MateriaPrimaProducto {
 		MateriaPrimaProducto other = (MateriaPrimaProducto) obj;
 		if (cantidad != other.cantidad)
 			return false;
-		if (materiaPrima == null) {
-			if (other.materiaPrima != null)
-				return false;
-		} else if (!materiaPrima.equals(other.materiaPrima))
-			return false;
 		if (pk == null) {
 			if (other.pk != null)
 				return false;
 		} else if (!pk.equals(other.pk))
-			return false;
-		if (producto == null) {
-			if (other.producto != null)
-				return false;
-		} else if (!producto.equals(other.producto))
 			return false;
 		if (unidad == null) {
 			if (other.unidad != null)
@@ -128,7 +109,17 @@ public class MateriaPrimaProducto {
 		return true;
 	}
 
-	public String toString(){
-		return String.format("%s (%d %s)", getMateriaPrima().toString(), getCantidad(), getUnidad().toString());
+	public String toString() {
+		return String.format("%s (%d %s)", getMateriaPrima(), getCantidad(), getUnidad().getCodigo());
+	}
+
+	public static MateriaPrimaProductoVO toMateriaPrimaProductoVO(MateriaPrimaProducto materiaPrimaProducto) {
+		return new MateriaPrimaProductoVO(MateriaPrima.toMateriaPrimaVO(materiaPrimaProducto.getMateriaPrima()), materiaPrimaProducto.getCantidad(),
+				Unidad.toUnidadVO(materiaPrimaProducto.getUnidad()));
+	}
+
+	public static MateriaPrimaProducto toMateriaPrimaProducto(Producto producto, MateriaPrimaProductoVO materiaPrimaProductoVO) {
+		return new MateriaPrimaProducto(producto, MateriaPrima.toMateriaPrima(materiaPrimaProductoVO.getMateriaPrima()), materiaPrimaProductoVO.getCantidad(),
+				Unidad.toUnidad(materiaPrimaProductoVO.getUnidad()));
 	}
 }

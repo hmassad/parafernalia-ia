@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import proveedor.vo.MateriaPrimaVO;
+
 @Entity
 public class MateriaPrima {
 
@@ -83,5 +85,13 @@ public class MateriaPrima {
 
 	public String toString() {
 		return getDescripcion();
+	}
+
+	public static MateriaPrimaVO toMateriaPrimaVO(MateriaPrima materiaPrima) {
+		return new MateriaPrimaVO(materiaPrima.getCodigo(), materiaPrima.getDescripcion(), materiaPrima.getStock());
+	}
+
+	public static MateriaPrima toMateriaPrima(MateriaPrimaVO materiaPrimaVO) {
+		return new MateriaPrima(materiaPrimaVO.getCodigo(), materiaPrimaVO.getDescripcion(), materiaPrimaVO.getStock());
 	}
 }

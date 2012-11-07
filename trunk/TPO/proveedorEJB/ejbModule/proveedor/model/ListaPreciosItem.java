@@ -8,13 +8,13 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.Transient;
+
+import proveedor.vo.ListaPreciosItemVO;
+import proveedor.vo.ProductoVO;
 
 @Entity
-@AssociationOverrides({
-	@AssociationOverride(name = "pk.listaPrecios", joinColumns = { @JoinColumn(name = "listaPrecios", nullable = false) }),
-	@AssociationOverride(name = "pk.producto", joinColumns = { @JoinColumn(name = "produco",nullable = false) })
-})
+@AssociationOverrides({ @AssociationOverride(name = "pk.listaPrecios", joinColumns = { @JoinColumn(name = "listaPrecios", nullable = false) }),
+		@AssociationOverride(name = "pk.producto", joinColumns = { @JoinColumn(name = "produco", nullable = false) }) })
 public class ListaPreciosItem implements Serializable {
 
 	private static final long serialVersionUID = 6783081308724466103L;
@@ -22,20 +22,15 @@ public class ListaPreciosItem implements Serializable {
 	@EmbeddedId
 	private ListaPreciosItemPk pk;
 
-	@Transient
-	private ListaPrecios listaPrecios;
-
-	@Transient
-	private Producto producto;
-
 	@Column(name = "PrecioUnitario")
 	private float precioUnitario;
 
 	public ListaPreciosItem() {
+		pk = new ListaPreciosItemPk();
 	}
 
-	public ListaPreciosItem(Producto producto, float precioUntario) {
-		this.producto = producto;
+	public ListaPreciosItem(ListaPrecios listaPrecios, Producto producto, float precioUntario) {
+		pk = new ListaPreciosItemPk(listaPrecios, producto);
 		this.precioUnitario = precioUntario;
 	}
 
@@ -48,19 +43,19 @@ public class ListaPreciosItem implements Serializable {
 	}
 
 	public ListaPrecios getListaPrecios() {
-		return listaPrecios;
+		return pk.getListaPrecios();
 	}
 
 	public void setListaPrecios(ListaPrecios listaPrecios) {
-		this.listaPrecios = listaPrecios;
+		pk.setListaPrecios(listaPrecios);
 	}
 
 	public Producto getProducto() {
-		return producto;
+		return pk.getProducto();
 	}
 
 	public void setProducto(Producto producto) {
-		this.producto = producto;
+		pk.setProducto(producto);
 	}
 
 	public float getPrecioUnitario() {
@@ -75,10 +70,10 @@ public class ListaPreciosItem implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((listaPrecios == null) ? 0 : listaPrecios.hashCode());
+		result = prime * result + ((pk.getListaPrecios() == null) ? 0 : pk.getListaPrecios().hashCode());
 		result = prime * result + ((pk == null) ? 0 : pk.hashCode());
 		result = prime * result + Float.floatToIntBits(precioUnitario);
-		result = prime * result + ((producto == null) ? 0 : producto.hashCode());
+		result = prime * result + ((pk.getProducto() == null) ? 0 : pk.getProducto().hashCode());
 		return result;
 	}
 
@@ -91,10 +86,10 @@ public class ListaPreciosItem implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ListaPreciosItem other = (ListaPreciosItem) obj;
-		if (listaPrecios == null) {
-			if (other.listaPrecios != null)
+		if (pk.getListaPrecios() == null) {
+			if (other.pk.getListaPrecios() != null)
 				return false;
-		} else if (!listaPrecios.equals(other.listaPrecios))
+		} else if (!pk.getListaPrecios().equals(other.pk.getListaPrecios()))
 			return false;
 		if (pk == null) {
 			if (other.pk != null)
@@ -103,10 +98,10 @@ public class ListaPreciosItem implements Serializable {
 			return false;
 		if (Float.floatToIntBits(precioUnitario) != Float.floatToIntBits(other.precioUnitario))
 			return false;
-		if (producto == null) {
-			if (other.producto != null)
+		if (pk.getProducto() == null) {
+			if (other.pk.getProducto() != null)
 				return false;
-		} else if (!producto.equals(other.producto))
+		} else if (!pk.getProducto().equals(other.pk.getProducto()))
 			return false;
 		return true;
 	}
@@ -115,6 +110,17 @@ public class ListaPreciosItem implements Serializable {
 	public String toString() {
 		return String.format("%s: $%.02f", getProducto(), getPrecioUnitario());
 	}
-	
-	
+
+	public static ListaPreciosItemVO toListaPreciosItemVO(ListaPreciosItem listaPreciosItem) {
+		ProductoVO productoVO = Producto.toProductoVO(listaPreciosItem.getProducto());
+		return new ListaPreciosItemVO(productoVO, listaPreciosItem.getPrecioUnitario());
+	}
+
+	public static ListaPreciosItem toListaPreciosItem(ListaPrecios listaPrecios, ListaPreciosItemVO listaPreciosItemVO) {
+		ListaPreciosItem lpi = new ListaPreciosItem();
+		lpi.setListaPrecios(listaPrecios);
+		lpi.setProducto(Producto.toProducto(listaPreciosItemVO.getProducto()));
+		lpi.setPrecioUnitario(listaPreciosItemVO.getPrecioUnitario());
+		return lpi;
+	}
 }

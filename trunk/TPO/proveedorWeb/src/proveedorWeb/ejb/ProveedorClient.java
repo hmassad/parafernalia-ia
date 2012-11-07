@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import proveedor.beans.FachadaSessionBeanRemote;
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 
 public class ProveedorClient {
 

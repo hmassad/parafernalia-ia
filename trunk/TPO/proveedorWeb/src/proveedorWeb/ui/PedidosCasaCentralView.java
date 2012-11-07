@@ -42,7 +42,7 @@ public class PedidosCasaCentralView extends VerticalLayout implements View {
 		try {
 			Collection<PedidoCasaCentralVO> pedidos = ProveedorClient.get().getPedidosCasaCentral();
 			pedidosTable.setContainerDataSource(new BeanItemContainer<PedidoCasaCentralVO>(PedidoCasaCentralVO.class, pedidos));
-			pedidosTable.setVisibleColumns(new String[] { "ID" });
+			pedidosTable.setVisibleColumns(new String[] { "id" });
 		} catch (NamingException e) {
 			e.printStackTrace();
 			new Notification("No se pueden obtener los Pedidos", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());

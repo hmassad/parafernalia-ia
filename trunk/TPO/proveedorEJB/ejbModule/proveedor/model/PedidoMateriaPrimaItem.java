@@ -4,8 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import proveedor.vo.PedidoMateriaPrimaItemVO;
 
 @Entity
 public class PedidoMateriaPrimaItem implements Serializable {
@@ -13,6 +17,8 @@ public class PedidoMateriaPrimaItem implements Serializable {
 	private static final long serialVersionUID = -8241932010498640786L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	private int id;
 
 	@Column
@@ -27,10 +33,11 @@ public class PedidoMateriaPrimaItem implements Serializable {
 	public PedidoMateriaPrimaItem() {
 	}
 
-	public PedidoMateriaPrimaItem(int id, String codigo, int cantidad) {
+	public PedidoMateriaPrimaItem(int id, String codigo, int cantidad, PedidoMateriaPrima pedidoMateriaPrima) {
 		this.id = id;
 		this.codigo = codigo;
 		this.cantidad = cantidad;
+		this.pedidoMateriaPrima = pedidoMateriaPrima;
 	}
 
 	public int getId() {
@@ -85,5 +92,14 @@ public class PedidoMateriaPrimaItem implements Serializable {
 
 	public String toString() {
 		return String.format("%s: %d", getCodigo(), getCantidad());
+	}
+
+	public static PedidoMateriaPrimaItemVO toPedidoMateriaPrimaItemVO(PedidoMateriaPrimaItem pedidoMateriaPrimaItem) {
+		return new PedidoMateriaPrimaItemVO(pedidoMateriaPrimaItem.getId(), pedidoMateriaPrimaItem.getCodigo(), pedidoMateriaPrimaItem.getCantidad());
+	}
+
+	public static PedidoMateriaPrimaItem toPedidoMateriaPrimaItem(PedidoMateriaPrima pedidoMateriaPrima, PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO) {
+		return new PedidoMateriaPrimaItem(pedidoMateriaPrimaItemVO.getId(), pedidoMateriaPrimaItemVO.getCodigo(), pedidoMateriaPrimaItemVO.getCantidad(),
+				pedidoMateriaPrima);
 	}
 }

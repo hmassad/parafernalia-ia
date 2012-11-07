@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import proveedor.vo.UnidadVO;
+
 @Entity(name = "Unidad")
 public class Unidad {
 
@@ -71,5 +73,13 @@ public class Unidad {
 
 	public String toString() {
 		return getDescripcion();
+	}
+
+	public static UnidadVO toUnidadVO(Unidad unidad) {
+		return new UnidadVO(unidad.getCodigo(), unidad.getDescripcion());
+	}
+
+	public static Unidad toUnidad(UnidadVO unidadVO) {
+		return new Unidad(unidadVO.getCodigo(), unidadVO.getDescripcion());
 	}
 }
