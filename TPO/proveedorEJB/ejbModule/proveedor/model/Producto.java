@@ -11,6 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import proveedor.vo.MateriaPrimaProductoVO;
+import proveedor.vo.ProductoVO;
+
 @Entity(name = "Producto")
 public class Producto implements Serializable {
 
@@ -32,6 +35,12 @@ public class Producto implements Serializable {
 	@Column
 	private String origen;
 
+	@Column
+	private String tipo;
+
+	@Column
+	private String medida;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.materiaPrima", cascade = { CascadeType.ALL })
 	private Collection<MateriaPrimaProducto> materiasPrimasProducto;
 
@@ -39,13 +48,15 @@ public class Producto implements Serializable {
 		this.materiasPrimasProducto = new ArrayList<MateriaPrimaProducto>();
 	}
 
-	public Producto(String codigo, String descripcion, String caracteristica, String marca, String origen,
+	public Producto(String codigo, String descripcion, String caracteristica, String marca, String origen, String tipo, String medida,
 			Collection<MateriaPrimaProducto> materiasPrimasProductos) {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.caracteristica = caracteristica;
 		this.marca = marca;
 		this.origen = origen;
+		this.tipo = tipo;
+		this.medida = medida;
 		this.materiasPrimasProducto = materiasPrimasProductos;
 	}
 
@@ -89,6 +100,22 @@ public class Producto implements Serializable {
 		this.origen = origen;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getMedida() {
+		return medida;
+	}
+
+	public void setMedida(String medida) {
+		this.medida = medida;
+	}
+
 	public Collection<MateriaPrimaProducto> getMateriasPrimasProducto() {
 		return materiasPrimasProducto;
 	}
@@ -97,62 +124,34 @@ public class Producto implements Serializable {
 		this.materiasPrimasProducto = materiasPrimasProducto;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((caracteristica == null) ? 0 : caracteristica.hashCode());
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
-		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
-		result = prime * result + ((materiasPrimasProducto == null) ? 0 : materiasPrimasProducto.hashCode());
-		result = prime * result + ((origen == null) ? 0 : origen.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Producto other = (Producto) obj;
-		if (caracteristica == null) {
-			if (other.caracteristica != null)
-				return false;
-		} else if (!caracteristica.equals(other.caracteristica))
-			return false;
-		if (codigo == null) {
-			if (other.codigo != null)
-				return false;
-		} else if (!codigo.equals(other.codigo))
-			return false;
-		if (descripcion == null) {
-			if (other.descripcion != null)
-				return false;
-		} else if (!descripcion.equals(other.descripcion))
-			return false;
-		if (marca == null) {
-			if (other.marca != null)
-				return false;
-		} else if (!marca.equals(other.marca))
-			return false;
-		if (materiasPrimasProducto == null) {
-			if (other.materiasPrimasProducto != null)
-				return false;
-		} else if (!materiasPrimasProducto.equals(other.materiasPrimasProducto))
-			return false;
-		if (origen == null) {
-			if (other.origen != null)
-				return false;
-		} else if (!origen.equals(other.origen))
-			return false;
-		return true;
-	}
-
 	public String toString() {
 		return getCodigo();
+	}
+
+	public static ProductoVO toProductoVO(Producto producto) {
+		Collection<MateriaPrimaProductoVO> mppVOs = new ArrayList<MateriaPrimaProductoVO>();
+		for (MateriaPrimaProducto mpp : producto.getMateriasPrimasProducto()) {
+			mppVOs.add(MateriaPrimaProducto.toMateriaPrimaProductoVO(mpp));
+		}
+		return new ProductoVO(producto.getCodigo(), producto.getDescripcion(), producto.getCaracteristica(), producto.getMarca(), producto.getOrigen(),
+				producto.getTipo(), producto.getMedida(), mppVOs);
+	}
+
+	public static Producto toProducto(ProductoVO productoVO) {
+		Producto producto = new Producto();
+		producto.setCodigo(productoVO.getCodigo());
+		producto.setDescripcion(productoVO.getDescripcion());
+		producto.setCaracteristica(productoVO.getCaracteristica());
+		producto.setMarca(productoVO.getMarca());
+		producto.setOrigen(productoVO.getOrigen());
+		producto.setTipo(productoVO.getTipo());
+		producto.setMedida(productoVO.getMedida());
+		for (MateriaPrimaProductoVO mppVO : productoVO.getMateriasPrimasProducto()) {
+			MateriaPrima mp = MateriaPrima.toMateriaPrima(mppVO.getMateriaPrima());
+			Unidad u = new Unidad(mppVO.getUnidad().getCodigo(), mppVO.getUnidad().getDescripcion());
+			MateriaPrimaProducto mpp = new MateriaPrimaProducto(producto, mp, mppVO.getCantidad(), u);
+			producto.getMateriasPrimasProducto().add(mpp);
+		}
+		return producto;
 	}
 }

@@ -2,10 +2,13 @@ package proveedor.vo;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class PedidoMateriaPrimaVO {
 
 	private int id;
+
+	private Date fecha;
 
 	private Collection<PedidoMateriaPrimaItemVO> items;
 
@@ -13,8 +16,9 @@ public class PedidoMateriaPrimaVO {
 		items = new ArrayList<PedidoMateriaPrimaItemVO>();
 	}
 
-	public PedidoMateriaPrimaVO(int id, Collection<PedidoMateriaPrimaItemVO> items) {
+	public PedidoMateriaPrimaVO(int id, Date fecha, Collection<PedidoMateriaPrimaItemVO> items) {
 		this.id = id;
+		this.fecha=fecha;
 		this.items = items;
 	}
 
@@ -24,6 +28,14 @@ public class PedidoMateriaPrimaVO {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 
 	public Collection<PedidoMateriaPrimaItemVO> getItems() {

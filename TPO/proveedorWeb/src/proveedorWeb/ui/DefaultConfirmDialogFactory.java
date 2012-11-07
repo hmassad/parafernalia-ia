@@ -25,10 +25,6 @@ import com.vaadin.ui.themes.Reindeer;
  * 
  * This supports text only content and tries to approximate the the dialog size.
  * 
- * TODO: Allow configuration of min and max sizes.
- * 
- * @author Sami Ekblad
- * 
  */
 public class DefaultConfirmDialogFactory implements Factory {
 

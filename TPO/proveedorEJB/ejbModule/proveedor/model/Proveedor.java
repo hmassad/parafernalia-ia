@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import proveedor.vo.ProveedorVO;
+
 @Entity(name="Proveedor")
 public class Proveedor implements Serializable {
 
@@ -165,5 +167,15 @@ public class Proveedor implements Serializable {
 
 	public String toString() {
 		return getRazonSocial();
+	}
+
+	public static ProveedorVO toProveedorVO(Proveedor proveedor) {
+		return new ProveedorVO(proveedor.getCuit(), proveedor.getRazonSocial(), proveedor.getTelefono(), proveedor.getDireccion(), proveedor.getCiudad(),
+				proveedor.getProvincia(), proveedor.getCodigoPostal());
+	}
+
+	public static Proveedor toProveedor(ProveedorVO proveedorVO) {
+		return new Proveedor(proveedorVO.getCuit(), proveedorVO.getRazonSocial(), proveedorVO.getTelefono(), proveedorVO.getDireccion(),
+				proveedorVO.getCiudad(), proveedorVO.getProvincia(), proveedorVO.getCodigoPostal());
 	}
 }
