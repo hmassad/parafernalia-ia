@@ -3,6 +3,7 @@
 	<name>proveedorEJB</name>
 	<comment></comment>
 	<projects>
+		<project>proveedorComun</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

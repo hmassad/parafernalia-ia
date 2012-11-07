@@ -20,15 +20,19 @@ import javax.persistence.Query;
 
 import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.documentos.SolMatPri;
+import proveedor.model.MateriaPrima;
 import proveedor.model.PedidoMateriaPrima;
+import proveedor.model.PedidoMateriaPrimaItem;
 import proveedor.vo.PedidoCasaCentralVO;
+import proveedor.vo.PedidoMateriaPrimaItemVO;
 import proveedor.vo.PedidoMateriaPrimaVO;
 
 /**
  * Session Bean implementation class PedidoPendienteSessionBean
  */
 @Stateless
-public class PedidoMateriaPrimaSessionBean implements PedidoMateriaPrimaSessionBeanLocal {
+public class PedidoMateriaPrimaSessionBean implements
+		PedidoMateriaPrimaSessionBeanLocal {
 
 	@PersistenceContext(unitName = "proveedor")
 	private EntityManager entityManager;
@@ -39,51 +43,86 @@ public class PedidoMateriaPrimaSessionBean implements PedidoMateriaPrimaSessionB
 	public PedidoMateriaPrimaSessionBean() {
 	}
 
-	public void createPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
-		entityManager.persist(PedidoMateriaPrima.toPedidoMateriaPrima(pedidoMateriaPrimaVO));
+	public void createPedidoMateriaPrima(
+			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
+		entityManager.persist(PedidoMateriaPrima
+				.toPedidoMateriaPrima(pedidoMateriaPrimaVO));
 	}
 
 	public void deletePedidoMateriaPrima(int id) {
-		PedidoMateriaPrima pedidoMateriaPrima = entityManager.find(PedidoMateriaPrima.class, id);
+		PedidoMateriaPrima pedidoMateriaPrima = entityManager.find(
+				PedidoMateriaPrima.class, id);
 		entityManager.remove(pedidoMateriaPrima);
 	}
 
 	public PedidoMateriaPrimaVO getPedidoMateriaPrima(int id) {
-		PedidoMateriaPrima pedidoMateriaPrima = entityManager.find(PedidoMateriaPrima.class, id);
+		PedidoMateriaPrima pedidoMateriaPrima = entityManager.find(
+				PedidoMateriaPrima.class, id);
 		return PedidoMateriaPrima.toPedidoMateriaPrimaVO(pedidoMateriaPrima);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Collection<PedidoMateriaPrimaVO> getPedidosMateriaPrima() {
-		Query query = entityManager.createQuery("SELECT P FROM PedidoMateriaPrima P");
+		Query query = entityManager
+				.createQuery("SELECT PMP FROM PedidoMateriaPrima PMP");
 		Collection<PedidoMateriaPrimaVO> pedidosMateriaPrimaVO = new ArrayList<PedidoMateriaPrimaVO>();
-		for (PedidoMateriaPrima pedidoMateriaPrima : (Collection<PedidoMateriaPrima>) query.getResultList()) {
-			pedidosMateriaPrimaVO.add(PedidoMateriaPrima.toPedidoMateriaPrimaVO(pedidoMateriaPrima));
+		for (PedidoMateriaPrima pedidoMateriaPrima : (Collection<PedidoMateriaPrima>) query
+				.getResultList()) {
+			pedidosMateriaPrimaVO.add(PedidoMateriaPrima
+					.toPedidoMateriaPrimaVO(pedidoMateriaPrima));
 		}
 		return pedidosMateriaPrimaVO;
 	}
 
-	public void enviarPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
+	@SuppressWarnings("unchecked")
+	public Collection<PedidoMateriaPrimaVO> getPedidosMateriaPrimaByEntregado(
+			boolean entregado) {
+		Query query = entityManager.createQuery(
+				"SELECT PMP FROM PedidoMateriaPrima PMP WHERE entregado = 1?")
+				.setParameter(1, entregado);
+		Collection<PedidoMateriaPrimaVO> pedidosMateriaPrimaVO = new ArrayList<PedidoMateriaPrimaVO>();
+		for (PedidoMateriaPrima pedidoMateriaPrima : (Collection<PedidoMateriaPrima>) query
+				.getResultList()) {
+			pedidosMateriaPrimaVO.add(PedidoMateriaPrima
+					.toPedidoMateriaPrimaVO(pedidoMateriaPrima));
+		}
+		return pedidosMateriaPrimaVO;
+	}
+
+	public void enviarPedidoMateriaPrima(
+			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
 
 		// insertar pedidoMateriaPrima
-		entityManager.persist(PedidoMateriaPrima.toPedidoMateriaPrima(pedidoMateriaPrimaVO));
+		entityManager.persist(PedidoMateriaPrima
+				.toPedidoMateriaPrima(pedidoMateriaPrimaVO));
 
-		// TODO transformar PedidoMateriaPrimaVO en SolMatPri
+		// transformar PedidoMateriaPrimaVO en SolMatPri
 		SolMatPri solMatPri = new SolMatPri();
-
+		solMatPri.setId(pedidoMateriaPrimaVO.getId());
+		solMatPri.setFecha(pedidoMateriaPrimaVO.getFecha());
+		for (PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO : pedidoMateriaPrimaVO
+				.getItems()) {
+			solMatPri.getItems().add(
+					new SolMatPri.Item(pedidoMateriaPrimaItemVO.getId(),
+							pedidoMateriaPrimaItemVO.getCodigo(),
+							pedidoMateriaPrimaItemVO.getCantidad(),
+							pedidoMateriaPrimaItemVO.getUnidad().getCodigo()));
+		}
 		String contenido = solMatPri.serialize();
 
 		// mandar mensaje a cola
 		try {
 			Hashtable<String, String> props = new Hashtable<String, String>();
-			props.put(InitialContext.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+			props.put(InitialContext.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
 			props.put(InitialContext.PROVIDER_URL, "jnp://localhost:1099");
 			InitialContext ctx = new InitialContext(props);
 
-			Queue queue = (Queue) ctx.lookup("queue/pedidoMateriaPrimaQueue");
+			Queue queue = (Queue) ctx.lookup("queue/pedidoMateriaPrima");
 
 			// buscar la Connection Factory en JNDI
-			QueueConnectionFactory qfactory = (QueueConnectionFactory) ctx.lookup("ConnectionFactory");
+			QueueConnectionFactory qfactory = (QueueConnectionFactory) ctx
+					.lookup("ConnectionFactory");
 
 			QueueConnection queueConnection = null;
 			try {
@@ -91,7 +130,8 @@ public class PedidoMateriaPrimaSessionBean implements PedidoMateriaPrimaSessionB
 
 				QueueSession qSession = null;
 				try {
-					qSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+					qSession = queueConnection.createQueueSession(false,
+							Session.AUTO_ACKNOWLEDGE);
 
 					QueueSender queueSender = null;
 					try {
@@ -115,16 +155,32 @@ public class PedidoMateriaPrimaSessionBean implements PedidoMateriaPrimaSessionB
 		}
 	}
 
-	public void recibirPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
-		// TODO borrar PedidoMateriaPrima / marcar como entregado
-		// TODO actualizar stock de MateriaPrima
+	public void recibirPedidoMateriaPrima(int id) {
+		// buscar PedidoMateriaPrima y marcar como entregado
+		PedidoMateriaPrima pedidoMateriaPrima = entityManager.find(
+				PedidoMateriaPrima.class, id);
+		pedidoMateriaPrima.setEntregado(true);
+		entityManager.persist(pedidoMateriaPrima);
+
+		// actualizar stock de MateriaPrima
+		for (PedidoMateriaPrimaItem pedidoMateriaPrimaItem : pedidoMateriaPrima
+				.getItems()) {
+			MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
+					pedidoMateriaPrimaItem.getCodigo());
+			materiaPrima.setStock(materiaPrima.getStock()
+					+ pedidoMateriaPrimaItem.getCantidad());
+			entityManager.persist(materiaPrima);
+		}
 
 		// TODO buscar PedidoCasaCentral que se puedan completar con lo pedido y
 		// enviar a Casa Central
+
 		Collection<PedidoCasaCentralVO> pedidoCasaCentralVOs = new ArrayList<PedidoCasaCentralVO>();
 
 		for (PedidoCasaCentralVO pedidoCasaCentralVO : pedidoCasaCentralVOs) {
-			fachadaSessionBeanRemote.enviarPedidoCasaCentral(pedidoCasaCentralVO);
+			fachadaSessionBeanRemote
+					.enviarPedidoCasaCentral(pedidoCasaCentralVO);
 		}
 	}
+
 }

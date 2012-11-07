@@ -22,18 +22,18 @@ public class NvoProd implements Serializable {
 
 	private String tipo;
 
-	private String cod__propietario;
+	private String cod_propietario;
 
 	public NvoProd() {
 	}
 
-	public NvoProd(String codigoRodamiento, String caracteristica, String marca, String origen, String tipo, String cod__propietario) {
+	public NvoProd(String codigoRodamiento, String caracteristica, String marca, String origen, String tipo, String cod_propietario) {
 		this.codigoRodamiento = codigoRodamiento;
 		this.caracteristica = caracteristica;
 		this.marca = marca;
 		this.origen = origen;
 		this.tipo = tipo;
-		this.cod__propietario = cod__propietario;
+		this.cod_propietario = cod_propietario;
 	}
 
 	public String getCodigoRodamiento() {
@@ -76,12 +76,12 @@ public class NvoProd implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public String getCod__propietario() {
-		return cod__propietario;
+	public String getCod_propietario() {
+		return cod_propietario;
 	}
 
-	public void setCod__propietario(String cod__propietario) {
-		this.cod__propietario = cod__propietario;
+	public void setCod_propietario(String cod_propietario) {
+		this.cod_propietario = cod_propietario;
 	}
 
 	public synchronized static NvoProd deserialize(String s) {

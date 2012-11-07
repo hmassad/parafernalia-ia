@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
+
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.vo.MateriaPrimaProductoVO;
 import proveedor.vo.MateriaPrimaVO;
 import proveedor.vo.ProductoVO;
 import proveedor.vo.UnidadVO;
-import proveedorWeb.ejb.ProveedorClient;
 
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
@@ -25,6 +27,9 @@ import com.vaadin.ui.themes.BaseTheme;
 
 @SuppressWarnings("serial")
 public class ProductoEditor extends Panel {
+
+	@EJB
+	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	public interface SaveListener extends Serializable {
 		public void save(SaveEvent event);
@@ -205,7 +210,9 @@ public class ProductoEditor extends Panel {
 			public void buttonClick(ClickEvent event) {
 				addMateriaPrimaProducto(null);
 				try {
-					((Focusable) materiasPrimasProductoLayout.getComponent(0, materiasPrimasProductoLayout.getRows() - 1)).focus();
+					((Focusable) materiasPrimasProductoLayout.getComponent(0,
+							materiasPrimasProductoLayout.getRows() - 1))
+							.focus();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -213,7 +220,8 @@ public class ProductoEditor extends Panel {
 		});
 	}
 
-	private void addMateriaPrimaProducto(MateriaPrimaProductoVO materiaPrimaProductoVO) {
+	private void addMateriaPrimaProducto(
+			MateriaPrimaProductoVO materiaPrimaProductoVO) {
 		int row = materiasPrimasProductoLayout.getRows();
 		if (row == 1) {
 			if (materiasPrimasProductoLayout.getComponent(0, 0) == null)
@@ -229,7 +237,8 @@ public class ProductoEditor extends Panel {
 		materiaPrimaComboBox.setWidth("100px");
 
 		try {
-			for (MateriaPrimaVO mpVO : ProveedorClient.get().getMateriasPrimas()) {
+			for (MateriaPrimaVO mpVO : fachadaSessionBeanRemote
+					.getMateriasPrimas()) {
 				materiaPrimaComboBox.addItem(mpVO);
 			}
 		} catch (Exception e) {
@@ -237,7 +246,8 @@ public class ProductoEditor extends Panel {
 		}
 
 		if (materiaPrimaProductoVO != null) {
-			MateriaPrimaVO materiaPrimaVO = materiaPrimaProductoVO.getMateriaPrima();
+			MateriaPrimaVO materiaPrimaVO = materiaPrimaProductoVO
+					.getMateriaPrima();
 			if (materiaPrimaVO != null) {
 				if (materiaPrimaComboBox.getItem(materiaPrimaVO) == null)
 					materiaPrimaComboBox.addItem(materiaPrimaVO);
@@ -259,7 +269,7 @@ public class ProductoEditor extends Panel {
 		unidadComboBox.setWidth("100px");
 
 		try {
-			for (UnidadVO uVO : ProveedorClient.get().getUnidades()) {
+			for (UnidadVO uVO : fachadaSessionBeanRemote.getUnidades()) {
 				unidadComboBox.addItem(uVO);
 			}
 		} catch (Exception e) {
@@ -277,7 +287,8 @@ public class ProductoEditor extends Panel {
 
 		Button deleteButton = new Button();
 		materiasPrimasProductoLayout.addComponent(deleteButton, 3, row);
-		materiasPrimasProductoLayout.setComponentAlignment(deleteButton, Alignment.MIDDLE_LEFT);
+		materiasPrimasProductoLayout.setComponentAlignment(deleteButton,
+				Alignment.MIDDLE_LEFT);
 		deleteButton.setDescription("Borrar materia prima");
 		deleteButton.setIcon(new ThemeResource("images/trash-16x16.png"));
 		deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
@@ -287,13 +298,16 @@ public class ProductoEditor extends Panel {
 					materiasPrimasProductoLayout.removeRow(0);
 					addMateriaPrimaProducto(null);
 					try {
-						((Focusable) materiasPrimasProductoLayout.getComponent(0, materiasPrimasProductoLayout.getRows() - 1)).focus();
+						((Focusable) materiasPrimasProductoLayout.getComponent(
+								0, materiasPrimasProductoLayout.getRows() - 1))
+								.focus();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else {
 					for (int i = 0; i < materiasPrimasProductoLayout.getRows(); i++) {
-						if (materiasPrimasProductoLayout.getComponent(3, i) == event.getButton()) {
+						if (materiasPrimasProductoLayout.getComponent(3, i) == event
+								.getButton()) {
 							materiasPrimasProductoLayout.removeRow(i);
 							break;
 						}
@@ -312,16 +326,23 @@ public class ProductoEditor extends Panel {
 		producto.setOrigen(origenTextField.getValue());
 		for (int i = 0; i < materiasPrimasProductoLayout.getRows(); i++) {
 			try {
-				MateriaPrimaVO materiaPrimaVO = (MateriaPrimaVO) ((ComboBox) materiasPrimasProductoLayout.getComponent(0, i)).getValue();
+				MateriaPrimaVO materiaPrimaVO = (MateriaPrimaVO) ((ComboBox) materiasPrimasProductoLayout
+						.getComponent(0, i)).getValue();
 				Integer cantidad = null;
 				try {
-					cantidad = new Integer(Integer.parseInt(((TextField) materiasPrimasProductoLayout.getComponent(1, i)).getValue()));
+					cantidad = new Integer(
+							Integer.parseInt(((TextField) materiasPrimasProductoLayout
+									.getComponent(1, i)).getValue()));
 				} catch (NumberFormatException ex) {
 					// leave cantidad null, the string is invalid
 				}
-				UnidadVO unidadVO = (UnidadVO) ((ComboBox) materiasPrimasProductoLayout.getComponent(2, i)).getValue();
-				if (materiaPrimaVO != null && cantidad != null && unidadVO != null) {
-					producto.getMateriasPrimasProducto().add(new MateriaPrimaProductoVO(materiaPrimaVO, cantidad, unidadVO));
+				UnidadVO unidadVO = (UnidadVO) ((ComboBox) materiasPrimasProductoLayout
+						.getComponent(2, i)).getValue();
+				if (materiaPrimaVO != null && cantidad != null
+						&& unidadVO != null) {
+					producto.getMateriasPrimasProducto().add(
+							new MateriaPrimaProductoVO(materiaPrimaVO,
+									cantidad, unidadVO));
 				}
 			} catch (NullPointerException e) {
 				// HACK GridLayout no tiene filas.
@@ -352,7 +373,8 @@ public class ProductoEditor extends Panel {
 			if (producto.getMateriasPrimasProducto().size() == 0) {
 				addMateriaPrimaProducto(null);
 			} else {
-				for (MateriaPrimaProductoVO mppVO : producto.getMateriasPrimasProducto()) {
+				for (MateriaPrimaProductoVO mppVO : producto
+						.getMateriasPrimasProducto()) {
 					addMateriaPrimaProducto(mppVO);
 				}
 			}

@@ -3,10 +3,10 @@
 	<name>proveedorEAR</name>
 	<comment></comment>
 	<projects>
-		<project>proveedorEJB</project>
-		<project>proveedorWeb</project>
-		<project>proveedorEJBClient</project>
 		<project>proveedorComun</project>
+		<project>proveedorEJB</project>
+		<project>proveedorEJBClient</project>
+		<project>proveedorWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

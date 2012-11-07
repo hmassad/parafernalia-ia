@@ -1,8 +1,9 @@
 package proveedor.documentos;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -34,7 +35,7 @@ public class OrCompCC implements Serializable {
 
 	}
 
-	public static class ItemOrdenCompraCC implements Serializable {
+	public static class Item implements Serializable {
 
 		public static class Rodamiento implements Serializable {
 
@@ -67,7 +68,13 @@ public class OrCompCC implements Serializable {
 
 		private int cantidad;
 
-		public ItemOrdenCompraCC() {
+		public Item() {
+		}
+
+		public Item(String nroItem, Rodamiento rodamiento, int cantidad) {
+			this.nroItem = nroItem;
+			this.rodamiento = rodamiento;
+			this.cantidad = cantidad;
 		}
 
 		public String getNroItem() {
@@ -101,9 +108,18 @@ public class OrCompCC implements Serializable {
 
 	private Cliente cliente;
 
-	private Collection<ItemOrdenCompraCC> itemsOCCC;
+	private List<Item> itemsOCCC;
 
 	public OrCompCC() {
+		itemsOCCC = new ArrayList<OrCompCC.Item>();
+	}
+
+	public OrCompCC(Date fecha, String nroOrdenCompra, Cliente cliente,
+			List<Item> itemsOCCC) {
+		this.fecha = fecha;
+		this.nroOrdenCompra = nroOrdenCompra;
+		this.cliente = cliente;
+		this.itemsOCCC = itemsOCCC;
 	}
 
 	public Date getFecha() {
@@ -126,27 +142,29 @@ public class OrCompCC implements Serializable {
 		return cliente;
 	}
 
-	public void setProveedor(Cliente cliente) {
+	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 
-	public Collection<ItemOrdenCompraCC> getItemsOCCC() {
+	public List<Item> getItemsOCCC() {
 		return itemsOCCC;
 	}
 
-	public void setItemsOCCC(Collection<ItemOrdenCompraCC> itemsOCCC) {
+	public void setItemsOCCC(List<Item> itemsOCCC) {
 		this.itemsOCCC = itemsOCCC;
 	}
 
 	public synchronized static OrCompCC deserialize(String s) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("OrdenCompraCC", OrCompCC.class);
+		xs.alias("ItemOrdenCompraCC", Item.class);
 		return (OrCompCC) xs.fromXML(s);
 	}
 
 	public synchronized String serialize() {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("OrdenCompraCC", OrCompCC.class);
+		xs.alias("ItemOrdenCompraCC", Item.class);
 		return xs.toXML(this);
 	}
 }

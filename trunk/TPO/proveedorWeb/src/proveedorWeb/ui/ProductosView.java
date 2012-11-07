@@ -1,7 +1,9 @@
 package proveedorWeb.ui;
 
+import javax.ejb.EJB;
+
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.vo.ProductoVO;
-import proveedorWeb.ejb.ProveedorClient;
 import proveedorWeb.ui.ProductoEditor.DiscardEvent;
 import proveedorWeb.ui.ProductoEditor.SaveEvent;
 import proveedorWeb.ui.ProductoEditor.SaveListener;
@@ -18,6 +20,9 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class ProductosView extends HorizontalLayout implements View {
+
+	@EJB
+	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	ProductosBrowser productosBrowser;
 	ProductoEditor productoEditor;
@@ -55,19 +60,30 @@ public class ProductosView extends HorizontalLayout implements View {
 		deleteButton.addListener(new ClickListener() {
 			public void buttonClick(ClickEvent event) {
 
-				ConfirmDialog.show(getRoot(), "¿Borrar Produucto?", "Una vez borrado, no se puede volver atrás.", "Borrar", "Cancelar",
-						new ConfirmDialog.Listener() {
+				ConfirmDialog.show(getRoot(), "¿Borrar Produucto?",
+						"Una vez borrado, no se puede volver atrás.", "Borrar",
+						"Cancelar", new ConfirmDialog.Listener() {
 							public void onClose(ConfirmDialog dialog) {
 								if (dialog.isConfirmed())
 									try {
-										ProductoVO producto = productosBrowser.getProducto();
-										ProveedorClient.get().deleteProducto(producto.getCodigo());
+										ProductoVO producto = productosBrowser
+												.getProducto();
+										fachadaSessionBeanRemote
+												.deleteProducto(producto
+														.getCodigo());
 										resetView();
-										new Notification("Producto borrado", producto.getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot()
-												.getPage());
+										new Notification(
+												"Producto borrado",
+												producto.getCodigo(),
+												Notification.TYPE_HUMANIZED_MESSAGE)
+												.show(getRoot().getPage());
 									} catch (Exception e) {
 										e.printStackTrace();
-										new Notification("No se borró el producto", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+										new Notification(
+												"No se borró el producto", e
+														.getMessage(),
+												Notification.TYPE_ERROR_MESSAGE)
+												.show(getRoot().getPage());
 									}
 								dialog.close();
 							}
@@ -97,10 +113,14 @@ public class ProductosView extends HorizontalLayout implements View {
 		productoEditor.addListener(new SaveListener() {
 			public void save(SaveEvent event) {
 				try {
-					ProveedorClient.get().createProducto(event.getProducto());
-					new Notification("Se creó el producto", event.getProducto().getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot().getPage());
+					fachadaSessionBeanRemote.createProducto(event.getProducto());
+					new Notification("Se creó el producto", event.getProducto()
+							.getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE)
+							.show(getRoot().getPage());
 				} catch (Exception e) {
-					new Notification("No se creó el producto", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+					new Notification("No se creó el producto", e.getMessage(),
+							Notification.TYPE_ERROR_MESSAGE).show(getRoot()
+							.getPage());
 				}
 				resetView();
 			}

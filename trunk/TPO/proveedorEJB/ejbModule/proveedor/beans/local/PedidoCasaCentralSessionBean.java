@@ -27,7 +27,8 @@ import proveedor.vo.PedidoCasaCentralVO;
  * Session Bean implementation class PedidoPendienteSessionBean
  */
 @Stateless
-public class PedidoCasaCentralSessionBean implements PedidoCasaCentralSessionBeanLocal {
+public class PedidoCasaCentralSessionBean implements
+		PedidoCasaCentralSessionBeanLocal {
 
 	@PersistenceContext(unitName = "proveedor")
 	private EntityManager entityManager;
@@ -40,21 +41,40 @@ public class PedidoCasaCentralSessionBean implements PedidoCasaCentralSessionBea
 	}
 
 	public void deletePedidoCasaCentral(int id) {
-		PedidoCasaCentral pedidoCasaCentral = entityManager.find(PedidoCasaCentral.class, id);
+		PedidoCasaCentral pedidoCasaCentral = entityManager.find(
+				PedidoCasaCentral.class, id);
 		entityManager.remove(pedidoCasaCentral);
 	}
 
 	public PedidoCasaCentralVO getPedidoCasaCentral(int id) {
-		PedidoCasaCentral pedidoCasaCentral = entityManager.find(PedidoCasaCentral.class, id);
+		PedidoCasaCentral pedidoCasaCentral = entityManager.find(
+				PedidoCasaCentral.class, id);
 		return toPedidoCasaCentralVO(pedidoCasaCentral);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Collection<PedidoCasaCentralVO> getPedidosCasaCentral() {
-		Query query = entityManager.createQuery("SELECT P FROM PedidoCasaCentral P");
+		Query query = entityManager
+				.createQuery("SELECT P FROM PedidoCasaCentral P");
 		Collection<PedidoCasaCentralVO> pedidosCasaCentralVO = new ArrayList<PedidoCasaCentralVO>();
-		for (PedidoCasaCentral pedidoCasaCentral : (Collection<PedidoCasaCentral>) query.getResultList()) {
+		for (PedidoCasaCentral pedidoCasaCentral : (Collection<PedidoCasaCentral>) query
+				.getResultList()) {
 			pedidosCasaCentralVO.add(toPedidoCasaCentralVO(pedidoCasaCentral));
+		}
+		return pedidosCasaCentralVO;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<PedidoCasaCentralVO> getPedidosCasaCentralByEntregado(
+			boolean entregado) {
+		Query query = entityManager.createQuery(
+				"SELECT PCC FROM PedidoCasaCentral PCC WHERE entregado = 1?")
+				.setParameter(1, entregado);
+		Collection<PedidoCasaCentralVO> pedidosCasaCentralVO = new ArrayList<PedidoCasaCentralVO>();
+		for (PedidoCasaCentral pedidoCasaCentral : (Collection<PedidoCasaCentral>) query
+				.getResultList()) {
+			pedidosCasaCentralVO.add(PedidoCasaCentral
+					.toPedidoCasaCentralVO(pedidoCasaCentral));
 		}
 		return pedidosCasaCentralVO;
 	}
@@ -67,19 +87,22 @@ public class PedidoCasaCentralSessionBean implements PedidoCasaCentralSessionBea
 
 	public void enviarPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
 
-		OrCompCCAceptada orCompCCAceptada = new OrCompCCAceptada(pedidoCasaCentralVO.getNroOrdenCompra());
+		OrCompCCAceptada orCompCCAceptada = new OrCompCCAceptada(
+				pedidoCasaCentralVO.getNroOrdenCompra());
 		String contenido = orCompCCAceptada.serialize();
 
 		try {
 			Hashtable<String, String> props = new Hashtable<String, String>();
-			props.put(InitialContext.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+			props.put(InitialContext.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
 			props.put(InitialContext.PROVIDER_URL, "jnp://localhost:1099");
 			InitialContext ctx = new InitialContext(props);
 
 			Queue queue = (Queue) ctx.lookup("queue/ordenCompraAcepQueue");
 
 			// buscar la Connection Factory en JNDI
-			QueueConnectionFactory qfactory = (QueueConnectionFactory) ctx.lookup("ConnectionFactory");
+			QueueConnectionFactory qfactory = (QueueConnectionFactory) ctx
+					.lookup("ConnectionFactory");
 
 			QueueConnection queueConnection = null;
 			try {
@@ -87,7 +110,8 @@ public class PedidoCasaCentralSessionBean implements PedidoCasaCentralSessionBea
 
 				QueueSession qSession = null;
 				try {
-					qSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+					qSession = queueConnection.createQueueSession(false,
+							Session.AUTO_ACKNOWLEDGE);
 
 					QueueSender queueSender = null;
 					try {
@@ -111,20 +135,31 @@ public class PedidoCasaCentralSessionBean implements PedidoCasaCentralSessionBea
 		}
 	}
 
-	public static PedidoCasaCentralVO toPedidoCasaCentralVO(PedidoCasaCentral pedidoCasaCentral) {
+	public static PedidoCasaCentralVO toPedidoCasaCentralVO(
+			PedidoCasaCentral pedidoCasaCentral) {
 		Collection<PedidoCasaCentralItemVO> items = new ArrayList<PedidoCasaCentralItemVO>();
-		for (PedidoCasaCentralItem pedidoCasaCentralItem : pedidoCasaCentral.getItems())
-			items.add(PedidoCasaCentralItem.toPedidoCasaCentralItemVO(pedidoCasaCentralItem));
-		return new PedidoCasaCentralVO(pedidoCasaCentral.getId(), pedidoCasaCentral.getFecha(), pedidoCasaCentral.getNroOrdenCompra(), items);
+		for (PedidoCasaCentralItem pedidoCasaCentralItem : pedidoCasaCentral
+				.getItems())
+			items.add(PedidoCasaCentralItem
+					.toPedidoCasaCentralItemVO(pedidoCasaCentralItem));
+		return new PedidoCasaCentralVO(pedidoCasaCentral.getId(),
+				pedidoCasaCentral.getEntregado(), pedidoCasaCentral.getFecha(),
+				pedidoCasaCentral.getNroOrdenCompra(), items);
 	}
 
-	public static PedidoCasaCentral toPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
+	public static PedidoCasaCentral toPedidoCasaCentral(
+			PedidoCasaCentralVO pedidoCasaCentralVO) {
 		PedidoCasaCentral pedidoCasaCentral = new PedidoCasaCentral();
 		pedidoCasaCentral.setId(pedidoCasaCentralVO.getId());
+		pedidoCasaCentral.setEntregado(pedidoCasaCentralVO.getEntregado());
 		pedidoCasaCentral.setFecha(pedidoCasaCentralVO.getFecha());
-		pedidoCasaCentral.setNroOrdenCompra(pedidoCasaCentralVO.getNroOrdenCompra());
-		for (PedidoCasaCentralItemVO pedidoCasaCentralItem : pedidoCasaCentralVO.getItems())
-			pedidoCasaCentral.getItems().add(PedidoCasaCentralItem.toPedidoCasaCentralItem(pedidoCasaCentral, pedidoCasaCentralItem));
+		pedidoCasaCentral.setNroOrdenCompra(pedidoCasaCentralVO
+				.getNroOrdenCompra());
+		for (PedidoCasaCentralItemVO pedidoCasaCentralItem : pedidoCasaCentralVO
+				.getItems())
+			pedidoCasaCentral.getItems().add(
+					PedidoCasaCentralItem.toPedidoCasaCentralItem(
+							pedidoCasaCentral, pedidoCasaCentralItem));
 		return pedidoCasaCentral;
 	}
 

@@ -267,9 +267,6 @@ public class LiPre implements Serializable {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("ListaDePrecios", LiPre.class);
 		xs.alias("Rodamiento", Rodamiento.class);
-		xs.addDefaultImplementation(java.sql.Date.class, java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Timestamp.class, java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Time.class, java.util.Date.class);
 		xs.registerConverter(new DateConverter("yyyyMMdd", new String[12]));
 		return (LiPre) xs.fromXML(s);
 	}
@@ -278,9 +275,6 @@ public class LiPre implements Serializable {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("ListaDePrecios", LiPre.class);
 		xs.alias("Rodamiento", Rodamiento.class);
-		xs.addDefaultImplementation(java.sql.Date.class, java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Timestamp.class, java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Time.class, java.util.Date.class);
 		xs.registerConverter(new DateConverter("yyyyMMdd", new String[12]));
 		return xs.toXML(this);
 	}

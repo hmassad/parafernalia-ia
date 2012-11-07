@@ -2,10 +2,10 @@ package proveedorWeb.ui;
 
 import java.util.Collection;
 
-import javax.naming.NamingException;
+import javax.ejb.EJB;
 
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.vo.UnidadVO;
-import proveedorWeb.ejb.ProveedorClient;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -23,6 +23,9 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class UnidadesView extends VerticalLayout implements View {
+
+	@EJB
+	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	private HorizontalLayout fieldsLayout;
 	private TextField codigoTextField;
@@ -59,13 +62,19 @@ public class UnidadesView extends VerticalLayout implements View {
 				if (codigo != null && descripcion != null) {
 					UnidadVO unidadVO = new UnidadVO(codigo, descripcion);
 					try {
-						ProveedorClient.get().createUnidad(unidadVO);
-						new Notification("Se creó el producto", String.format("código: %s, descripción: %s", unidadVO.getCodigo(), unidadVO.getDescripcion()),
-								Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot().getPage());
+						fachadaSessionBeanRemote.createUnidad(unidadVO);
+						new Notification("Se creó el producto",
+								String.format("código: %s, descripción: %s",
+										unidadVO.getCodigo(),
+										unidadVO.getDescripcion()),
+								Notification.TYPE_HUMANIZED_MESSAGE)
+								.show(getRoot().getPage());
 						codigoTextField.setValue("");
 						descripcionTextField.setValue("");
 					} catch (Exception e) {
-						new Notification("No se creó el producto", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+						new Notification("No se creó el producto", e
+								.getMessage(), Notification.TYPE_ERROR_MESSAGE)
+								.show(getRoot().getPage());
 					}
 					resetView();
 				}
@@ -74,23 +83,36 @@ public class UnidadesView extends VerticalLayout implements View {
 
 		deleteButton = new Button("Borrar");
 		fieldsLayout.addComponent(deleteButton);
-		fieldsLayout.setComponentAlignment(deleteButton, Alignment.MIDDLE_RIGHT);
+		fieldsLayout
+				.setComponentAlignment(deleteButton, Alignment.MIDDLE_RIGHT);
 		deleteButton.setEnabled(false);
 		deleteButton.addListener(new ClickListener() {
 			public void buttonClick(ClickEvent event) {
 
-				ConfirmDialog.show(getRoot(), "¿Borrar Unidad?", "Una vez borrada, no se puede volver atrás.", "Borrar", "Cancelar",
-						new ConfirmDialog.Listener() {
+				ConfirmDialog.show(getRoot(), "¿Borrar Unidad?",
+						"Una vez borrada, no se puede volver atrás.", "Borrar",
+						"Cancelar", new ConfirmDialog.Listener() {
 							public void onClose(ConfirmDialog dialog) {
 								if (dialog.isConfirmed())
 									try {
-										UnidadVO unidad = (UnidadVO) resultadosTable.getValue();
-										ProveedorClient.get().deleteUnidad(unidad.getCodigo());
+										UnidadVO unidad = (UnidadVO) resultadosTable
+												.getValue();
+										fachadaSessionBeanRemote
+												.deleteUnidad(unidad
+														.getCodigo());
 										resetView();
-										new Notification("Unidad borrada", unidad.getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot().getPage());
+										new Notification(
+												"Unidad borrada",
+												unidad.getCodigo(),
+												Notification.TYPE_HUMANIZED_MESSAGE)
+												.show(getRoot().getPage());
 									} catch (Exception e) {
 										e.printStackTrace();
-										new Notification("No se borró la unidad", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+										new Notification(
+												"No se borró la unidad", e
+														.getMessage(),
+												Notification.TYPE_ERROR_MESSAGE)
+												.show(getRoot().getPage());
 									}
 								dialog.close();
 							}
@@ -105,9 +127,12 @@ public class UnidadesView extends VerticalLayout implements View {
 		resultadosTable.setSelectable(true);
 		resultadosTable.setMultiSelect(false);
 		resultadosTable.setImmediate(true);
-		resultadosTable.setContainerDataSource(new BeanItemContainer<UnidadVO>(UnidadVO.class, null));
-		resultadosTable.setVisibleColumns(new String[] { "codigo", "descripcion" });
-		resultadosTable.setColumnHeaders(new String[] { "Código", "Descripción" });
+		resultadosTable.setContainerDataSource(new BeanItemContainer<UnidadVO>(
+				UnidadVO.class, null));
+		resultadosTable.setVisibleColumns(new String[] { "codigo",
+				"descripcion" });
+		resultadosTable
+				.setColumnHeaders(new String[] { "Código", "Descripción" });
 		resultadosTable.addListener(new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				deleteButton.setEnabled(resultadosTable.getValue() != null);
@@ -122,12 +147,18 @@ public class UnidadesView extends VerticalLayout implements View {
 
 	private void resetView() {
 		try {
-			Collection<UnidadVO> unidades = ProveedorClient.get().getUnidades();
-			resultadosTable.setContainerDataSource(new BeanItemContainer<UnidadVO>(UnidadVO.class, unidades));
-			resultadosTable.setVisibleColumns(new String[] { "codigo", "descripcion" });
-		} catch (NamingException e) {
+			Collection<UnidadVO> unidades = fachadaSessionBeanRemote
+					.getUnidades();
+			resultadosTable
+					.setContainerDataSource(new BeanItemContainer<UnidadVO>(
+							UnidadVO.class, unidades));
+			resultadosTable.setVisibleColumns(new String[] { "codigo",
+					"descripcion" });
+		} catch (Exception e) {
 			e.printStackTrace();
-			new Notification("No se pueden obtener las unidades", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+			new Notification("No se pueden obtener las unidades",
+					e.getMessage(), Notification.TYPE_ERROR_MESSAGE)
+					.show(getRoot().getPage());
 		}
 	}
 }

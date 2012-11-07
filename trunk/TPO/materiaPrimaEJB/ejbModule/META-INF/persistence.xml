@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence>
 	<persistence-unit name="materiaPrima">
-		<class>materiaPrima.model.MateriaPrima</class>
+		<class>materiaPrima.model.PedidoMateriaPrima</class>
+		<class>materiaPrima.model.PedidoMateriaPrimaItem</class>
 		<jta-data-source>java:/jdbc/materiaPrima-ds</jta-data-source>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />

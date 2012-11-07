@@ -11,7 +11,9 @@ import proveedor.beans.local.ProveedorSessionBeanLocal;
 import proveedor.beans.local.UnidadesSessionBeanLocal;
 
 @Remote
-public interface FachadaSessionBeanRemote extends ListaPreciosSessionBeanLocal, MateriaPrimaSessionBeanLocal, ProductosSessionBeanLocal,
-		ProveedorSessionBeanLocal, UnidadesSessionBeanLocal, PedidoMateriaPrimaSessionBeanLocal, PedidoCasaCentralSessionBeanLocal {
+public interface FachadaSessionBeanRemote extends ListaPreciosSessionBeanLocal,
+		MateriaPrimaSessionBeanLocal, ProductosSessionBeanLocal,
+		ProveedorSessionBeanLocal, UnidadesSessionBeanLocal,
+		PedidoMateriaPrimaSessionBeanLocal, PedidoCasaCentralSessionBeanLocal {
 
 }

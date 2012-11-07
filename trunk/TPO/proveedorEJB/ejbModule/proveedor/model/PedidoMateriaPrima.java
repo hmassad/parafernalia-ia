@@ -23,9 +23,12 @@ public class PedidoMateriaPrima implements Serializable {
 	private static final long serialVersionUID = -2765474910705830418L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
+
+	@Column
+	private boolean entregado;
 
 	@Column
 	private Date fecha;
@@ -37,8 +40,10 @@ public class PedidoMateriaPrima implements Serializable {
 		items = new ArrayList<PedidoMateriaPrimaItem>();
 	}
 
-	public PedidoMateriaPrima(int id, Date fecha, Collection<PedidoMateriaPrimaItem> items) {
+	public PedidoMateriaPrima(int id, boolean entregado, Date fecha,
+			Collection<PedidoMateriaPrimaItem> items) {
 		this.id = id;
+		this.entregado = entregado;
 		this.fecha = fecha;
 		this.items = items;
 	}
@@ -49,6 +54,14 @@ public class PedidoMateriaPrima implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean getEntregado() {
+		return entregado;
+	}
+
+	public void setEntregado(boolean entregado) {
+		this.entregado = entregado;
 	}
 
 	public Date getFecha() {
@@ -105,20 +118,30 @@ public class PedidoMateriaPrima implements Serializable {
 		return Integer.toString(getId());
 	}
 
-	public static PedidoMateriaPrimaVO toPedidoMateriaPrimaVO(PedidoMateriaPrima pedidoMateriaPrima) {
+	public static PedidoMateriaPrimaVO toPedidoMateriaPrimaVO(
+			PedidoMateriaPrima pedidoMateriaPrima) {
 		Collection<PedidoMateriaPrimaItemVO> items = new ArrayList<PedidoMateriaPrimaItemVO>();
-		for (PedidoMateriaPrimaItem pedidoMateriaPrimaItem : pedidoMateriaPrima.getItems()) {
-			items.add(PedidoMateriaPrimaItem.toPedidoMateriaPrimaItemVO(pedidoMateriaPrimaItem));
+		for (PedidoMateriaPrimaItem pedidoMateriaPrimaItem : pedidoMateriaPrima
+				.getItems()) {
+			items.add(PedidoMateriaPrimaItem
+					.toPedidoMateriaPrimaItemVO(pedidoMateriaPrimaItem));
 		}
-		return new PedidoMateriaPrimaVO(pedidoMateriaPrima.getId(), pedidoMateriaPrima.getFecha(), items);
+		return new PedidoMateriaPrimaVO(pedidoMateriaPrima.getId(),
+				pedidoMateriaPrima.getEntregado(),
+				pedidoMateriaPrima.getFecha(), items);
 	}
 
-	public static PedidoMateriaPrima toPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
+	public static PedidoMateriaPrima toPedidoMateriaPrima(
+			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
 		PedidoMateriaPrima pedidoMateriaPrima = new PedidoMateriaPrima();
 		pedidoMateriaPrima.setId(pedidoMateriaPrimaVO.getId());
+		pedidoMateriaPrima.setEntregado(pedidoMateriaPrimaVO.getEntregado());
 		pedidoMateriaPrima.setFecha(pedidoMateriaPrimaVO.getFecha());
-		for (PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO : pedidoMateriaPrimaVO.getItems()) {
-			pedidoMateriaPrima.getItems().add(PedidoMateriaPrimaItem.toPedidoMateriaPrimaItem(pedidoMateriaPrima, pedidoMateriaPrimaItemVO));
+		for (PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO : pedidoMateriaPrimaVO
+				.getItems()) {
+			pedidoMateriaPrima.getItems().add(
+					PedidoMateriaPrimaItem.toPedidoMateriaPrimaItem(
+							pedidoMateriaPrima, pedidoMateriaPrimaItemVO));
 		}
 		return pedidoMateriaPrima;
 	}

@@ -1,8 +1,8 @@
 package proveedorWeb.ui;
 
-import javax.naming.NamingException;
+import javax.ejb.EJB;
 
-import proveedorWeb.ejb.ProveedorClient;
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedorWeb.ui.ProveedorEditor.DiscardEvent;
 import proveedorWeb.ui.ProveedorEditor.DiscardListener;
 import proveedorWeb.ui.ProveedorEditor.SaveEvent;
@@ -14,6 +14,9 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class ProveedorView extends VerticalLayout implements View {
+
+	@EJB
+	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	ProveedorEditor proveedorEditor;
 
@@ -27,11 +30,16 @@ public class ProveedorView extends VerticalLayout implements View {
 		proveedorEditor.addListener(new SaveListener() {
 			public void save(SaveEvent event) {
 				try {
-					ProveedorClient.get().updateProveedor(event.getProveedor());
-					new Notification("Se guardaron los cambios", event.getProveedor().getRazonSocial(), Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot()
+					fachadaSessionBeanRemote.updateProveedor(event
+							.getProveedor());
+					new Notification("Se guardaron los cambios", event
+							.getProveedor().getRazonSocial(),
+							Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot()
 							.getPage());
 				} catch (Exception e) {
-					new Notification("No se guardaron los cambios", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+					new Notification("No se guardaron los cambios", e
+							.getMessage(), Notification.TYPE_ERROR_MESSAGE)
+							.show(getRoot().getPage());
 				}
 				resetView();
 			}
@@ -49,10 +57,12 @@ public class ProveedorView extends VerticalLayout implements View {
 
 	private void resetView() {
 		try {
-			proveedorEditor.setProveedor(ProveedorClient.get().getProveedor());
-		} catch (NamingException e) {
+			proveedorEditor.setProveedor(fachadaSessionBeanRemote
+					.getProveedor());
+		} catch (Exception e) {
 			e.printStackTrace();
-			new Notification("Ocurrión un error", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+			new Notification("Ocurrión un error", e.getMessage(),
+					Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
 		}
 	}
 }

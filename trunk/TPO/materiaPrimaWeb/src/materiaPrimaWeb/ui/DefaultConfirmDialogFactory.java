@@ -20,16 +20,6 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.Reindeer;
 
-/**
- * This is the default implementation for confirmation dialog factory.
- * 
- * This supports text only content and tries to approximate the the dialog size.
- * 
- * TODO: Allow configuration of min and max sizes.
- * 
- * @author Sami Ekblad
- * 
- */
 public class DefaultConfirmDialogFactory implements Factory {
 
 	/** Generated serial UID. */

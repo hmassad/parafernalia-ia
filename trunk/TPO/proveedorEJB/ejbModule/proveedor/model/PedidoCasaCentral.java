@@ -31,6 +31,9 @@ public class PedidoCasaCentral implements Serializable {
 	private Date fecha;
 
 	@Column
+	private boolean entregado;
+
+	@Column
 	private String nroOrdenCompra;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pedidoCasaCentral", cascade = { CascadeType.ALL })
@@ -40,8 +43,10 @@ public class PedidoCasaCentral implements Serializable {
 		items = new ArrayList<PedidoCasaCentralItem>();
 	}
 
-	public PedidoCasaCentral(int id, Date fecha, String nroOrdenCompra, Collection<PedidoCasaCentralItem> items) {
+	public PedidoCasaCentral(int id, boolean entregado, Date fecha,
+			String nroOrdenCompra, Collection<PedidoCasaCentralItem> items) {
 		this.id = id;
+		this.entregado = entregado;
 		this.fecha = fecha;
 		this.nroOrdenCompra = nroOrdenCompra;
 		this.items = items;
@@ -53,6 +58,14 @@ public class PedidoCasaCentral implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean getEntregado() {
+		return entregado;
+	}
+
+	public void setEntregado(boolean entregado) {
+		this.entregado = entregado;
 	}
 
 	public Date getFecha() {
@@ -117,21 +130,32 @@ public class PedidoCasaCentral implements Serializable {
 		return Integer.toString(getId());
 	}
 
-	public static PedidoCasaCentralVO toPedidoCasaCentralVO(PedidoCasaCentral pedidoCasaCentral) {
+	public static PedidoCasaCentralVO toPedidoCasaCentralVO(
+			PedidoCasaCentral pedidoCasaCentral) {
 		Collection<PedidoCasaCentralItemVO> items = new ArrayList<PedidoCasaCentralItemVO>();
-		for (PedidoCasaCentralItem pedidoCasaCentralItem : pedidoCasaCentral.getItems()) {
-			items.add(PedidoCasaCentralItem.toPedidoCasaCentralItemVO(pedidoCasaCentralItem));
+		for (PedidoCasaCentralItem pedidoCasaCentralItem : pedidoCasaCentral
+				.getItems()) {
+			items.add(PedidoCasaCentralItem
+					.toPedidoCasaCentralItemVO(pedidoCasaCentralItem));
 		}
-		return new PedidoCasaCentralVO(pedidoCasaCentral.getId(), pedidoCasaCentral.getFecha(), pedidoCasaCentral.getNroOrdenCompra(), items);
+		return new PedidoCasaCentralVO(pedidoCasaCentral.getId(),
+				pedidoCasaCentral.getEntregado(), pedidoCasaCentral.getFecha(),
+				pedidoCasaCentral.getNroOrdenCompra(), items);
 	}
 
-	public static PedidoCasaCentral toPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
+	public static PedidoCasaCentral toPedidoCasaCentral(
+			PedidoCasaCentralVO pedidoCasaCentralVO) {
 		PedidoCasaCentral pedidoCasaCentral = new PedidoCasaCentral();
 		pedidoCasaCentral.setId(pedidoCasaCentralVO.getId());
+		pedidoCasaCentral.setEntregado(pedidoCasaCentralVO.getEntregado());
 		pedidoCasaCentral.setFecha(pedidoCasaCentralVO.getFecha());
-		pedidoCasaCentral.setNroOrdenCompra(pedidoCasaCentralVO.getNroOrdenCompra());
-		for (PedidoCasaCentralItemVO pedidoCasaCentralItemVO : pedidoCasaCentralVO.getItems()) {
-			pedidoCasaCentral.getItems().add(PedidoCasaCentralItem.toPedidoCasaCentralItem(pedidoCasaCentral, pedidoCasaCentralItemVO));
+		pedidoCasaCentral.setNroOrdenCompra(pedidoCasaCentralVO
+				.getNroOrdenCompra());
+		for (PedidoCasaCentralItemVO pedidoCasaCentralItemVO : pedidoCasaCentralVO
+				.getItems()) {
+			pedidoCasaCentral.getItems().add(
+					PedidoCasaCentralItem.toPedidoCasaCentralItem(
+							pedidoCasaCentral, pedidoCasaCentralItemVO));
 		}
 		return pedidoCasaCentral;
 	}
