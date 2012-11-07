@@ -3,14 +3,17 @@ package materiaPrima.vo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class PedidoMateriaPrimaVO implements Serializable {
 
-	private static final long serialVersionUID = -767324130101613042L;
+	private static final long serialVersionUID = -910051535794836734L;
 
 	private int id;
 
 	private boolean entregado;
+
+	private Date fecha;
 
 	private Collection<PedidoMateriaPrimaItemVO> items;
 
@@ -18,9 +21,11 @@ public class PedidoMateriaPrimaVO implements Serializable {
 		items = new ArrayList<PedidoMateriaPrimaItemVO>();
 	}
 
-	public PedidoMateriaPrimaVO(int id, boolean entregado, Collection<PedidoMateriaPrimaItemVO> items) {
+	public PedidoMateriaPrimaVO(int id, boolean entregado,
+			Date fecha, Collection<PedidoMateriaPrimaItemVO> items) {
 		this.id = id;
 		this.entregado = entregado;
+		this.fecha = fecha;
 		this.items = items;
 	}
 
@@ -36,8 +41,16 @@ public class PedidoMateriaPrimaVO implements Serializable {
 		return entregado;
 	}
 
-	public void setEntregado(boolean entregado) {
+	public void setEntregado(Boolean entregado) {
 		this.entregado = entregado;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 
 	public Collection<PedidoMateriaPrimaItemVO> getItems() {
@@ -51,4 +64,5 @@ public class PedidoMateriaPrimaVO implements Serializable {
 	public String toString() {
 		return Integer.toString(getId());
 	}
+
 }

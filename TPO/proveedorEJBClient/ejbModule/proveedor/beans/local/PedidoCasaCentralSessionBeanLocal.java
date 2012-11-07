@@ -15,8 +15,11 @@ public interface PedidoCasaCentralSessionBeanLocal {
 
 	Collection<PedidoCasaCentralVO> getPedidosCasaCentral();
 
+	Collection<PedidoCasaCentralVO> getPedidosCasaCentralByEntregado(
+			boolean entregado);
+
 	PedidoCasaCentralVO getPedidoCasaCentral(int id);
-	
+
 	void recibirPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);
 
 	void enviarPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);

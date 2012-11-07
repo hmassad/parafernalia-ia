@@ -42,5 +42,7 @@ public class LiPreTest {
 		LiPre liPre2 = LiPre.deserialize(xml);
 
 		assert (liPre1 == liPre2);
+
+		System.out.println(liPre2.serialize());
 	}
 }

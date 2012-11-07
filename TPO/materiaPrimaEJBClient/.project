@@ -3,6 +3,7 @@
 	<name>materiaPrimaEJBClient</name>
 	<comment></comment>
 	<projects>
+		<project>materiaPrimaComun</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

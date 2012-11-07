@@ -2,10 +2,10 @@ package proveedorWeb.ui;
 
 import java.util.Collection;
 
-import javax.naming.NamingException;
+import javax.ejb.EJB;
 
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.vo.PedidoCasaCentralVO;
-import proveedorWeb.ejb.ProveedorClient;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
@@ -16,6 +16,9 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public class PedidosCasaCentralView extends VerticalLayout implements View {
 
+	@EJB
+	FachadaSessionBeanRemote fachadaSessionBeanRemote;
+	
 	private Table pedidosTable;
 
 	public PedidosCasaCentralView() {
@@ -40,10 +43,10 @@ public class PedidosCasaCentralView extends VerticalLayout implements View {
 
 	private void resetView() {
 		try {
-			Collection<PedidoCasaCentralVO> pedidos = ProveedorClient.get().getPedidosCasaCentral();
+			Collection<PedidoCasaCentralVO> pedidos = fachadaSessionBeanRemote.getPedidosCasaCentral();
 			pedidosTable.setContainerDataSource(new BeanItemContainer<PedidoCasaCentralVO>(PedidoCasaCentralVO.class, pedidos));
 			pedidosTable.setVisibleColumns(new String[] { "id" });
-		} catch (NamingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			new Notification("No se pueden obtener los Pedidos", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
 		}

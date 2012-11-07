@@ -13,6 +13,8 @@ public class PedidoCasaCentralVO implements Serializable {
 
 	private Date fecha;
 
+	private boolean entregado;
+
 	private String nroOrdenCompra;
 
 	private Collection<PedidoCasaCentralItemVO> items;
@@ -21,8 +23,9 @@ public class PedidoCasaCentralVO implements Serializable {
 		items = new ArrayList<PedidoCasaCentralItemVO>();
 	}
 
-	public PedidoCasaCentralVO(int id, Date fecha, String nroOrdenCompra, Collection<PedidoCasaCentralItemVO> items) {
+	public PedidoCasaCentralVO(int id, boolean entregado, Date fecha, String nroOrdenCompra, Collection<PedidoCasaCentralItemVO> items) {
 		this.id = id;
+		this.entregado = entregado;
 		this.fecha = fecha;
 		this.nroOrdenCompra = nroOrdenCompra;
 		this.items = items;
@@ -34,6 +37,14 @@ public class PedidoCasaCentralVO implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean getEntregado() {
+		return entregado;
+	}
+
+	public void setEstado(boolean entregado) {
+		this.entregado = entregado;
 	}
 
 	public Date getFecha() {

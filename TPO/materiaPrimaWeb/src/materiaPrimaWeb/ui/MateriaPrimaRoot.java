@@ -2,10 +2,10 @@ package materiaPrimaWeb.ui;
 
 import java.util.Collection;
 
-import javax.naming.NamingException;
+import javax.ejb.EJB;
 
+import materiaPrima.beans.FachadaSessionBeanRemote;
 import materiaPrima.vo.PedidoMateriaPrimaVO;
-import materiaPrimaWeb.ejb.MateriaPrimaClient;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.util.BeanItemContainer;
@@ -19,6 +19,9 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("materiaPrima")
 @SuppressWarnings("serial")
 public class MateriaPrimaRoot extends Root {
+
+	@EJB
+	private FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	VerticalLayout mainLayout;
 	Table materiasPrimasTable;
@@ -51,12 +54,18 @@ public class MateriaPrimaRoot extends Root {
 	// TODO agregar botón de entregar a los no entregados
 	private void fillTable() {
 		try {
-			Collection<PedidoMateriaPrimaVO> unidades = MateriaPrimaClient.get().getPedidos();
-			materiasPrimasTable.setContainerDataSource(new BeanItemContainer<PedidoMateriaPrimaVO>(PedidoMateriaPrimaVO.class, unidades));
-			materiasPrimasTable.setVisibleColumns(new String[] { "codigo", "descripcion" });
-		} catch (NamingException e) {
+			Collection<PedidoMateriaPrimaVO> unidades = fachadaSessionBeanRemote
+					.getPedidosMateriaPrima();
+			materiasPrimasTable
+					.setContainerDataSource(new BeanItemContainer<PedidoMateriaPrimaVO>(
+							PedidoMateriaPrimaVO.class, unidades));
+			materiasPrimasTable.setVisibleColumns(new String[] { "codigo",
+					"descripcion" });
+		} catch (Exception e) {
 			e.printStackTrace();
-			new Notification("No se pueden obtener las materias primas", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+			new Notification("No se pueden obtener los pedidos de materia prima",
+					e.getMessage(), Notification.TYPE_ERROR_MESSAGE)
+					.show(getRoot().getPage());
 		}
 	}
 }

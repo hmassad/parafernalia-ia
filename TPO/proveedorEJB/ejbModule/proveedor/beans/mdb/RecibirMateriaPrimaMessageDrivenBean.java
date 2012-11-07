@@ -8,20 +8,20 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import proveedor.beans.remote.FachadaSessionBeanRemote;
+import proveedor.beans.local.PedidoMateriaPrimaSessionBeanLocal;
 import proveedor.documentos.MatPri;
-import proveedor.vo.PedidoMateriaPrimaVO;
 
 /**
  * Message-Driven Bean implementation class for:
  * RecibirMateriaPrimaMessageDrivenBean
  */
-@MessageDriven(activationConfig = { @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/entregaMateriaPrimaQueue") })
+@MessageDriven(activationConfig = {
+		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/entregaMateriaPrima") })
 public class RecibirMateriaPrimaMessageDrivenBean implements MessageListener {
 
 	@EJB
-	FachadaSessionBeanRemote fachadaSessionBeanRemote;
+	PedidoMateriaPrimaSessionBeanLocal pedidoMateriaPrimaSessionBeanLocal;
 
 	public RecibirMateriaPrimaMessageDrivenBean() {
 	}
@@ -30,13 +30,10 @@ public class RecibirMateriaPrimaMessageDrivenBean implements MessageListener {
 		try {
 			TextMessage textMessage = (TextMessage) message;
 
-			// transformar texto en MatPri
 			MatPri matPri = MatPri.deserialize(textMessage.getText());
 
-			// TODO transformar MatPri en PedidoMateriaPrimaVO
-			PedidoMateriaPrimaVO pedidoMateriaPrimaVO = null;
-
-			fachadaSessionBeanRemote.recibirPedidoMateriaPrima(pedidoMateriaPrimaVO);
+			pedidoMateriaPrimaSessionBeanLocal.recibirPedidoMateriaPrima(matPri
+					.getId());
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}

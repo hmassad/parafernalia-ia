@@ -138,20 +138,30 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 		return pedidoMateriaPrimaSessionBeanLocal.getPedidosMateriaPrima();
 	}
 
+	@Override
+	public Collection<PedidoMateriaPrimaVO> getPedidosMateriaPrimaByEntregado(
+			boolean entregado) {
+		return pedidoMateriaPrimaSessionBeanLocal
+				.getPedidosMateriaPrimaByEntregado(entregado);
+	}
+
 	public PedidoMateriaPrimaVO getPedidoMateriaPrima(int id) {
 		return pedidoMateriaPrimaSessionBeanLocal.getPedidoMateriaPrima(id);
 	}
 
-	public void enviarPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
-		pedidoMateriaPrimaSessionBeanLocal.enviarPedidoMateriaPrima(pedidoMateriaPrimaVO);
+	public void enviarPedidoMateriaPrima(
+			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
+		pedidoMateriaPrimaSessionBeanLocal
+				.enviarPedidoMateriaPrima(pedidoMateriaPrimaVO);
 	}
 
-	public void recibirPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
-		pedidoMateriaPrimaSessionBeanLocal.recibirPedidoMateriaPrima(pedidoMateriaPrimaVO);
+	public void recibirPedidoMateriaPrima(int id) {
+		pedidoMateriaPrimaSessionBeanLocal.recibirPedidoMateriaPrima(id);
 	}
 
 	public void createPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
-		pedidoCasaCentralSessionBeanLocal.createPedidoCasaCentral(pedidoCasaCentralVO);
+		pedidoCasaCentralSessionBeanLocal
+				.createPedidoCasaCentral(pedidoCasaCentralVO);
 	}
 
 	public void deletePedidoCasaCentral(int id) {
@@ -162,16 +172,24 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 		return pedidoCasaCentralSessionBeanLocal.getPedidosCasaCentral();
 	}
 
+	public Collection<PedidoCasaCentralVO> getPedidosCasaCentralByEntregado(
+			boolean entregado) {
+		return pedidoCasaCentralSessionBeanLocal
+				.getPedidosCasaCentralByEntregado(entregado);
+	}
+
 	public PedidoCasaCentralVO getPedidoCasaCentral(int id) {
 		return pedidoCasaCentralSessionBeanLocal.getPedidoCasaCentral(id);
 	}
 
 	public void recibirPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
-		pedidoCasaCentralSessionBeanLocal.recibirPedidoCasaCentral(pedidoCasaCentralVO);
+		pedidoCasaCentralSessionBeanLocal
+				.recibirPedidoCasaCentral(pedidoCasaCentralVO);
 	}
 
 	public void enviarPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
-		pedidoCasaCentralSessionBeanLocal.enviarPedidoCasaCentral(pedidoCasaCentralVO);
+		pedidoCasaCentralSessionBeanLocal
+				.enviarPedidoCasaCentral(pedidoCasaCentralVO);
 	}
 
 }

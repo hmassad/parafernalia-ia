@@ -2,10 +2,10 @@ package proveedorWeb.ui;
 
 import java.util.Collection;
 
-import javax.naming.NamingException;
+import javax.ejb.EJB;
 
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.vo.MateriaPrimaVO;
-import proveedorWeb.ejb.ProveedorClient;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -23,6 +23,9 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class MateriaPrimaView extends VerticalLayout implements View {
+
+	@EJB
+	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	private HorizontalLayout fieldsLayout;
 	private TextField codigoTextField;
@@ -57,15 +60,26 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 				String codigo = codigoTextField.getValue();
 				String descripcion = descripcionTextField.getValue();
 				if (codigo != null && descripcion != null) {
-					MateriaPrimaVO materiaPrimaVO = new MateriaPrimaVO(codigo, descripcion, 0);
+					MateriaPrimaVO materiaPrimaVO = new MateriaPrimaVO(codigo,
+							descripcion, 0);
 					try {
-						ProveedorClient.get().createMateriaPrima(materiaPrimaVO);
-						new Notification("Se creó la Materia Prima", String.format("código: %s, descripción: %s; stock: %d", materiaPrimaVO.getCodigo(),
-								materiaPrimaVO.getDescripcion(), materiaPrimaVO.getStock()), Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot().getPage());
+						fachadaSessionBeanRemote
+								.createMateriaPrima(materiaPrimaVO);
+						new Notification(
+								"Se creó la Materia Prima",
+								String.format(
+										"código: %s, descripción: %s; stock: %d",
+										materiaPrimaVO.getCodigo(),
+										materiaPrimaVO.getDescripcion(),
+										materiaPrimaVO.getStock()),
+								Notification.TYPE_HUMANIZED_MESSAGE)
+								.show(getRoot().getPage());
 						codigoTextField.setValue("");
 						descripcionTextField.setValue("");
 					} catch (Exception e) {
-						new Notification("No se creó la Materia Prima", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+						new Notification("No se creó la Materia Prima", e
+								.getMessage(), Notification.TYPE_ERROR_MESSAGE)
+								.show(getRoot().getPage());
 					}
 					resetView();
 				}
@@ -74,25 +88,36 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 
 		deleteButton = new Button("Borrar");
 		fieldsLayout.addComponent(deleteButton);
-		fieldsLayout.setComponentAlignment(deleteButton, Alignment.MIDDLE_RIGHT);
+		fieldsLayout
+				.setComponentAlignment(deleteButton, Alignment.MIDDLE_RIGHT);
 		deleteButton.setEnabled(false);
 		deleteButton.addListener(new ClickListener() {
 			public void buttonClick(ClickEvent event) {
 
-				ConfirmDialog.show(getRoot(), "¿Borrar Materia Prima?", "Una vez borrada, no se puede volver atrás.", "Borrar", "Cancelar",
-						new ConfirmDialog.Listener() {
+				ConfirmDialog.show(getRoot(), "¿Borrar Materia Prima?",
+						"Una vez borrada, no se puede volver atrás.", "Borrar",
+						"Cancelar", new ConfirmDialog.Listener() {
 							public void onClose(ConfirmDialog dialog) {
 								if (dialog.isConfirmed())
 									try {
-										MateriaPrimaVO materiaPrima = (MateriaPrimaVO) resultadosTable.getValue();
-										ProveedorClient.get().deleteMateriaPrima(materiaPrima.getCodigo());
+										MateriaPrimaVO materiaPrima = (MateriaPrimaVO) resultadosTable
+												.getValue();
+										fachadaSessionBeanRemote
+												.deleteMateriaPrima(materiaPrima
+														.getCodigo());
 										resetView();
-										new Notification("Unidad borrada", materiaPrima.getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot()
-												.getPage());
+										new Notification(
+												"Unidad borrada",
+												materiaPrima.getCodigo(),
+												Notification.TYPE_HUMANIZED_MESSAGE)
+												.show(getRoot().getPage());
 									} catch (Exception e) {
 										e.printStackTrace();
-										new Notification("No se borró la Materia Prima", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot()
-												.getPage());
+										new Notification(
+												"No se borró la Materia Prima",
+												e.getMessage(),
+												Notification.TYPE_ERROR_MESSAGE)
+												.show(getRoot().getPage());
 									}
 								dialog.close();
 							}
@@ -107,9 +132,13 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 		resultadosTable.setSelectable(true);
 		resultadosTable.setMultiSelect(false);
 		resultadosTable.setImmediate(true);
-		resultadosTable.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(MateriaPrimaVO.class, null));
-		resultadosTable.setVisibleColumns(new String[] { "codigo", "descripcion" });
-		resultadosTable.setColumnHeaders(new String[] { "Código", "Descripción" });
+		resultadosTable
+				.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
+						MateriaPrimaVO.class, null));
+		resultadosTable.setVisibleColumns(new String[] { "codigo",
+				"descripcion" });
+		resultadosTable
+				.setColumnHeaders(new String[] { "Código", "Descripción" });
 		resultadosTable.addListener(new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				deleteButton.setEnabled(resultadosTable.getValue() != null);
@@ -124,12 +153,18 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 
 	private void resetView() {
 		try {
-			Collection<MateriaPrimaVO> unidades = ProveedorClient.get().getMateriasPrimas();
-			resultadosTable.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(MateriaPrimaVO.class, unidades));
-			resultadosTable.setVisibleColumns(new String[] { "codigo", "descripcion" });
-		} catch (NamingException e) {
+			Collection<MateriaPrimaVO> unidades = fachadaSessionBeanRemote
+					.getMateriasPrimas();
+			resultadosTable
+					.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
+							MateriaPrimaVO.class, unidades));
+			resultadosTable.setVisibleColumns(new String[] { "codigo",
+					"descripcion" });
+		} catch (Exception e) {
 			e.printStackTrace();
-			new Notification("No se pueden obtener las unidades", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+			new Notification("No se pueden obtener las unidades",
+					e.getMessage(), Notification.TYPE_ERROR_MESSAGE)
+					.show(getRoot().getPage());
 		}
 	}
 }

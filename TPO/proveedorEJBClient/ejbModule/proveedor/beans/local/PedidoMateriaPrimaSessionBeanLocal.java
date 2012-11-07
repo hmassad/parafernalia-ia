@@ -15,9 +15,11 @@ public interface PedidoMateriaPrimaSessionBeanLocal {
 
 	Collection<PedidoMateriaPrimaVO> getPedidosMateriaPrima();
 
+	Collection<PedidoMateriaPrimaVO> getPedidosMateriaPrimaByEntregado(boolean entregado);
+
 	PedidoMateriaPrimaVO getPedidoMateriaPrima(int id);
-	
+
 	void enviarPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO);
-	
-	void recibirPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO);
+
+	void recibirPedidoMateriaPrima(int id);
 }

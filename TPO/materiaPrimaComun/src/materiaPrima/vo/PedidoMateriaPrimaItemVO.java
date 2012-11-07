@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class PedidoMateriaPrimaItemVO implements Serializable {
 
-	private static final long serialVersionUID = -8241932010498640786L;
+	private static final long serialVersionUID = -9091108485176472960L;
 
 	private int id;
 
@@ -12,13 +12,17 @@ public class PedidoMateriaPrimaItemVO implements Serializable {
 
 	private int cantidad;
 
+	private String unidad;
+
 	public PedidoMateriaPrimaItemVO() {
 	}
 
-	public PedidoMateriaPrimaItemVO(int id, String codigo, int cantidad) {
+	public PedidoMateriaPrimaItemVO(int id, String codigo, int cantidad,
+			String unidad) {
 		this.id = id;
 		this.codigo = codigo;
 		this.cantidad = cantidad;
+		this.unidad = unidad;
 	}
 
 	public int getId() {
@@ -45,7 +49,16 @@ public class PedidoMateriaPrimaItemVO implements Serializable {
 		this.cantidad = cantidad;
 	}
 
+	public String getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(String unidad) {
+		this.unidad = unidad;
+	}
+
 	public String toString() {
-		return String.format("%s: %d", getCodigo(), getCantidad());
+		return String.format("%s: %d %s", getCodigo(), getCantidad(),
+				getUnidad());
 	}
 }

@@ -4,15 +4,24 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import materiaPrima.vo.PedidoMateriaPrimaItemVO;
 
 @Entity
 public class PedidoMateriaPrimaItem implements Serializable {
 
 	private static final long serialVersionUID = -8241932010498640786L;
 
+	@ManyToOne
+	private PedidoMateriaPrima pedidoMateriaPrima;
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	private int id;
 
 	@Column
@@ -21,16 +30,27 @@ public class PedidoMateriaPrimaItem implements Serializable {
 	@Column
 	private int cantidad;
 
-	@ManyToOne
-	private PedidoMateriaPrima pedidoMateriaPrima;
+	@Column
+	private String unidad;
 
 	public PedidoMateriaPrimaItem() {
 	}
 
-	public PedidoMateriaPrimaItem(int id, String codigo, int cantidad) {
+	public PedidoMateriaPrimaItem(PedidoMateriaPrima pedidoMateriaPrima,
+			int id, String codigo, int cantidad, String unidad) {
+		this.pedidoMateriaPrima = pedidoMateriaPrima;
 		this.id = id;
 		this.codigo = codigo;
 		this.cantidad = cantidad;
+		this.unidad = unidad;
+	}
+
+	public PedidoMateriaPrima getPedidoMateriaPrima() {
+		return pedidoMateriaPrima;
+	}
+
+	public void setPedidoMateriaPrima(PedidoMateriaPrima pedidoMateriaPrima) {
+		this.pedidoMateriaPrima = pedidoMateriaPrima;
 	}
 
 	public int getId() {
@@ -57,14 +77,27 @@ public class PedidoMateriaPrimaItem implements Serializable {
 		this.cantidad = cantidad;
 	}
 
+	public String getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(String unidad) {
+		this.unidad = unidad;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + cantidad;
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime
+				* result
+				+ ((pedidoMateriaPrima == null) ? 0 : pedidoMateriaPrima
+						.hashCode());
 		return result;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -73,17 +106,39 @@ public class PedidoMateriaPrimaItem implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		PedidoMateriaPrimaItem other = (PedidoMateriaPrimaItem) obj;
-		if (cantidad != other.cantidad)
-			return false;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
+		if (pedidoMateriaPrima == null) {
+			if (other.pedidoMateriaPrima != null)
+				return false;
+		} else if (!pedidoMateriaPrima.equals(other.pedidoMateriaPrima))
+			return false;
 		return true;
 	}
 
 	public String toString() {
-		return String.format("%s: %d", getCodigo(), getCantidad());
+		return String.format("%s: %d %s", getCodigo(), getCantidad(),
+				getUnidad());
+	}
+
+	public static PedidoMateriaPrimaItemVO toPedidoMateriaPrimaItemVO(
+			PedidoMateriaPrimaItem pedidoMateriaPrimaItem) {
+		return new PedidoMateriaPrimaItemVO(pedidoMateriaPrimaItem.getId(),
+				pedidoMateriaPrimaItem.getCodigo(),
+				pedidoMateriaPrimaItem.getCantidad(),
+				pedidoMateriaPrimaItem.getUnidad());
+	}
+
+	public static PedidoMateriaPrimaItem toPedidoMateriaPrimaItem(
+			PedidoMateriaPrima pedidoMateriaPrima,
+			PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO) {
+		return new PedidoMateriaPrimaItem(pedidoMateriaPrima,
+				pedidoMateriaPrimaItemVO.getId(),
+				pedidoMateriaPrimaItemVO.getCodigo(),
+				pedidoMateriaPrimaItemVO.getCantidad(),
+				pedidoMateriaPrimaItemVO.getUnidad());
 	}
 }

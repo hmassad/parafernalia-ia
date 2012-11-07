@@ -12,13 +12,16 @@ public class PedidoMateriaPrimaItemVO implements Serializable {
 
 	private int cantidad;
 
+	private UnidadVO unidad;
+
 	public PedidoMateriaPrimaItemVO() {
 	}
 
-	public PedidoMateriaPrimaItemVO(int id, String codigo, int cantidad) {
+	public PedidoMateriaPrimaItemVO(int id, String codigo, int cantidad, UnidadVO unidad) {
 		this.id = id;
 		this.codigo = codigo;
 		this.cantidad = cantidad;
+		this.unidad = unidad;
 	}
 
 	public int getId() {
@@ -45,7 +48,15 @@ public class PedidoMateriaPrimaItemVO implements Serializable {
 		this.cantidad = cantidad;
 	}
 
+	public UnidadVO getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(UnidadVO unidad) {
+		this.unidad = unidad;
+	}
+
 	public String toString() {
-		return String.format("%s: %d", getCodigo(), getCantidad());
+		return String.format("%s: %d %s", getCodigo(), getCantidad(), getUnidad());
 	}
 }
