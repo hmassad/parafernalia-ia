@@ -8,7 +8,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import proveedor.beans.local.PedidoMateriaPrimaSessionBeanLocal;
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.documentos.MatPri;
 
 /**
@@ -21,7 +21,7 @@ import proveedor.documentos.MatPri;
 public class RecibirMateriaPrimaMessageDrivenBean implements MessageListener {
 
 	@EJB
-	PedidoMateriaPrimaSessionBeanLocal pedidoMateriaPrimaSessionBeanLocal;
+	private FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	public RecibirMateriaPrimaMessageDrivenBean() {
 	}
@@ -29,11 +29,8 @@ public class RecibirMateriaPrimaMessageDrivenBean implements MessageListener {
 	public void onMessage(Message message) {
 		try {
 			TextMessage textMessage = (TextMessage) message;
-
 			MatPri matPri = MatPri.deserialize(textMessage.getText());
-
-			pedidoMateriaPrimaSessionBeanLocal.recibirPedidoMateriaPrima(matPri
-					.getId());
+			fachadaSessionBeanRemote.recibirPedidoMateriaPrima(matPri.getId());
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}

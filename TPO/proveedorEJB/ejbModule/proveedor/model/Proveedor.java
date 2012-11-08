@@ -8,31 +8,31 @@ import javax.persistence.Id;
 
 import proveedor.vo.ProveedorVO;
 
-@Entity(name="Proveedor")
+@Entity
 public class Proveedor implements Serializable {
 
 	private static final long serialVersionUID = -8248825991712716192L;
 
 	@Id
-	@Column(name="cuit")
+	@Column
 	private String cuit;
 
-	@Column(name="razonSocial")
+	@Column
 	private String razonSocial;
 	
-	@Column(name="telefono")
+	@Column
 	private String telefono;
 	
-	@Column(name="direccion")
+	@Column
 	private String direccion;
 	
-	@Column(name="ciudad")
+	@Column
 	private String ciudad;
 	
-	@Column(name="provincia")
+	@Column
 	private String provincia;
 	
-	@Column(name="codigoPostal")
+	@Column
 	private String codigoPostal;
 
 	public Proveedor(){

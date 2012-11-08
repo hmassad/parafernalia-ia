@@ -1,9 +1,7 @@
 package proveedorWeb.ui;
 
-import javax.ejb.EJB;
-
-import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.vo.ProductoVO;
+import proveedorWeb.ejb.ProveedorClient;
 import proveedorWeb.ui.ProductoEditor.DiscardEvent;
 import proveedorWeb.ui.ProductoEditor.SaveEvent;
 import proveedorWeb.ui.ProductoEditor.SaveListener;
@@ -20,9 +18,6 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class ProductosView extends HorizontalLayout implements View {
-
-	@EJB
-	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	ProductosBrowser productosBrowser;
 	ProductoEditor productoEditor;
@@ -68,9 +63,8 @@ public class ProductosView extends HorizontalLayout implements View {
 									try {
 										ProductoVO producto = productosBrowser
 												.getProducto();
-										fachadaSessionBeanRemote
-												.deleteProducto(producto
-														.getCodigo());
+										ProveedorClient.get().deleteProducto(
+												producto.getCodigo());
 										resetView();
 										new Notification(
 												"Producto borrado",
@@ -113,7 +107,7 @@ public class ProductosView extends HorizontalLayout implements View {
 		productoEditor.addListener(new SaveListener() {
 			public void save(SaveEvent event) {
 				try {
-					fachadaSessionBeanRemote.createProducto(event.getProducto());
+					ProveedorClient.get().createProducto(event.getProducto());
 					new Notification("Se creó el producto", event.getProducto()
 							.getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE)
 							.show(getRoot().getPage());

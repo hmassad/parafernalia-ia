@@ -17,4 +17,8 @@ public interface MateriaPrimaSessionBeanLocal {
 
 	MateriaPrimaVO getMateriaPrima(String codigo);
 	
+	void ingresarStock(String codigoMateriaPrima, int cantidad);
+
+	void descontarStock(String codigoMateriaPrima, int cantidad);
+
 }

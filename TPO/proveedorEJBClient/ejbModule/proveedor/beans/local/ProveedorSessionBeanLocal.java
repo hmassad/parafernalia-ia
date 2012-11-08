@@ -10,4 +10,5 @@ public interface ProveedorSessionBeanLocal {
 	void updateProveedor(ProveedorVO proveedor);
 
 	ProveedorVO getProveedor();
+
 }

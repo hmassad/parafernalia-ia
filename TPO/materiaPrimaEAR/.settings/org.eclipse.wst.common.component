@@ -16,5 +16,8 @@
         <dependent-module archiveName="materiaPrimaComun.jar" deploy-path="/lib" handle="module:/resource/materiaPrimaComun/materiaPrimaComun">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="xstream-1.4.3.jar" deploy-path="/lib" handle="module:/classpath/lib/materiaPrimaComun/lib/xstream-1.4.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

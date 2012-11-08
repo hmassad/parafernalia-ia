@@ -9,16 +9,15 @@ import proveedor.beans.local.ListaPreciosSessionBeanLocal;
 import proveedor.beans.local.MateriaPrimaSessionBeanLocal;
 import proveedor.beans.local.PedidoCasaCentralSessionBeanLocal;
 import proveedor.beans.local.PedidoMateriaPrimaSessionBeanLocal;
+import proveedor.beans.local.PedidosSessionBeanLocal;
 import proveedor.beans.local.ProductosSessionBeanLocal;
 import proveedor.beans.local.ProveedorSessionBeanLocal;
-import proveedor.beans.local.UnidadesSessionBeanLocal;
 import proveedor.vo.ListaPreciosVO;
 import proveedor.vo.MateriaPrimaVO;
 import proveedor.vo.PedidoCasaCentralVO;
 import proveedor.vo.PedidoMateriaPrimaVO;
 import proveedor.vo.ProductoVO;
 import proveedor.vo.ProveedorVO;
-import proveedor.vo.UnidadVO;
 
 /**
  * Session Bean implementation class FachadaSessionBean
@@ -33,19 +32,19 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 	MateriaPrimaSessionBeanLocal materiaPrimaSessionBeanLocal;
 
 	@EJB
+	PedidoMateriaPrimaSessionBeanLocal pedidoMateriaPrimaSessionBeanLocal;
+
+	@EJB
+	PedidoCasaCentralSessionBeanLocal pedidoCasaCentralSessionBeanLocal;
+
+	@EJB
 	ProductosSessionBeanLocal productosSessionBeanLocal;
 
 	@EJB
 	ProveedorSessionBeanLocal proveedorSessionBeanLocal;
 
 	@EJB
-	UnidadesSessionBeanLocal unidadesSessionBeanLocal;
-
-	@EJB
-	PedidoMateriaPrimaSessionBeanLocal pedidoMateriaPrimaSessionBeanLocal;
-
-	@EJB
-	PedidoCasaCentralSessionBeanLocal pedidoCasaCentralSessionBeanLocal;
+	PedidosSessionBeanLocal pedidosSessionBeanLocal;
 
 	public FachadaSessionBean() {
 	}
@@ -110,22 +109,6 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 		proveedorSessionBeanLocal.updateProveedor(proveedorVO);
 	}
 
-	public void createUnidad(UnidadVO unidadVo) {
-		unidadesSessionBeanLocal.createUnidad(unidadVo);
-	}
-
-	public void deleteUnidad(String codigo) {
-		unidadesSessionBeanLocal.deleteUnidad(codigo);
-	}
-
-	public Collection<UnidadVO> getUnidades() {
-		return unidadesSessionBeanLocal.getUnidades();
-	}
-
-	public UnidadVO getUnidad(String codigo) {
-		return unidadesSessionBeanLocal.getUnidad(codigo);
-	}
-
 	public void createPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoVO) {
 		pedidoMateriaPrimaSessionBeanLocal.createPedidoMateriaPrima(pedidoVO);
 	}
@@ -138,7 +121,6 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 		return pedidoMateriaPrimaSessionBeanLocal.getPedidosMateriaPrima();
 	}
 
-	@Override
 	public Collection<PedidoMateriaPrimaVO> getPedidosMateriaPrimaByEntregado(
 			boolean entregado) {
 		return pedidoMateriaPrimaSessionBeanLocal
@@ -151,12 +133,11 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 
 	public void enviarPedidoMateriaPrima(
 			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
-		pedidoMateriaPrimaSessionBeanLocal
-				.enviarPedidoMateriaPrima(pedidoMateriaPrimaVO);
+		pedidosSessionBeanLocal.enviarPedidoMateriaPrima(pedidoMateriaPrimaVO);
 	}
 
 	public void recibirPedidoMateriaPrima(int id) {
-		pedidoMateriaPrimaSessionBeanLocal.recibirPedidoMateriaPrima(id);
+		pedidosSessionBeanLocal.recibirPedidoMateriaPrima(id);
 	}
 
 	public void createPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
@@ -183,13 +164,21 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 	}
 
 	public void recibirPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
-		pedidoCasaCentralSessionBeanLocal
-				.recibirPedidoCasaCentral(pedidoCasaCentralVO);
+		pedidosSessionBeanLocal.recibirPedidoCasaCentral(pedidoCasaCentralVO);
 	}
 
 	public void enviarPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
-		pedidoCasaCentralSessionBeanLocal
-				.enviarPedidoCasaCentral(pedidoCasaCentralVO);
+		pedidosSessionBeanLocal.enviarPedidoCasaCentral(pedidoCasaCentralVO);
+	}
+
+	public void ingresarStock(String codigoMateriaPrima, int cantidad) {
+		materiaPrimaSessionBeanLocal
+				.ingresarStock(codigoMateriaPrima, cantidad);
+	}
+
+	public void descontarStock(String codigoMateriaPrima, int cantidad) {
+		materiaPrimaSessionBeanLocal.descontarStock(codigoMateriaPrima,
+				cantidad);
 	}
 
 }

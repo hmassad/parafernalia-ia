@@ -8,7 +8,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import materiaPrima.beans.PedidoMateriaPrimaSessionBeanLocal;
+import materiaPrima.beans.local.PedidoMateriaPrimaSessionBeanLocal;
 import materiaPrima.documentos.SolMatPri;
 import materiaPrima.documentos.SolMatPri.Item;
 import materiaPrima.vo.PedidoMateriaPrimaItemVO;
@@ -43,8 +43,7 @@ public class RecibirPedidoMateriaPrimaMessaDrivenBean implements
 			for (Item item : solMatPri.getItems()) {
 				pedidoMateriaPrimaVO.getItems().add(
 						new PedidoMateriaPrimaItemVO(item.getId(), item
-								.getCodigo(), item.getCantidad(), item
-								.getUnidad()));
+								.getCodigo(), item.getCantidad()));
 			}
 
 			pedidoMateriaPrimaSessionBeanLocal

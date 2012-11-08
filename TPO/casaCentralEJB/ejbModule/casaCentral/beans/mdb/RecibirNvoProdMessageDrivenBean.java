@@ -7,7 +7,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import casaCentral.documentos.OrCompCCAceptada;
+import casaCentral.documentos.NvoProd;
 
 /**
  * Message-Driven Bean implementation class for:
@@ -16,11 +16,10 @@ import casaCentral.documentos.OrCompCCAceptada;
  */
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/ordenCompraAcepQueue") })
-public class RecibirPedidoCasaCentralMessageDrivenBean implements
-		MessageListener {
+		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/nvoProdQueue") })
+public class RecibirNvoProdMessageDrivenBean implements MessageListener {
 
-	public RecibirPedidoCasaCentralMessageDrivenBean() {
+	public RecibirNvoProdMessageDrivenBean() {
 	}
 
 	/**
@@ -29,13 +28,12 @@ public class RecibirPedidoCasaCentralMessageDrivenBean implements
 	public void onMessage(Message message) {
 		System.out.println();
 		System.out.println();
-		System.out.println("RECIBIDO PEDIDO CASA CENTRAL");
+		System.out.println("RECIBIDO NUEVO PRODUCTO");
 		System.out.println();
 		TextMessage textMessage = (TextMessage) message;
 		try {
-			OrCompCCAceptada orCompCCAceptada = OrCompCCAceptada
-					.deserialize(textMessage.getText());
-			System.out.println(orCompCCAceptada);
+			NvoProd nvoProd = NvoProd.deserialize(textMessage.getText());
+			System.out.println(nvoProd);
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}

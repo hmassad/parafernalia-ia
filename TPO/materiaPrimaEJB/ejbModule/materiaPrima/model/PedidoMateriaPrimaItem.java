@@ -30,19 +30,15 @@ public class PedidoMateriaPrimaItem implements Serializable {
 	@Column
 	private int cantidad;
 
-	@Column
-	private String unidad;
-
 	public PedidoMateriaPrimaItem() {
 	}
 
 	public PedidoMateriaPrimaItem(PedidoMateriaPrima pedidoMateriaPrima,
-			int id, String codigo, int cantidad, String unidad) {
+			int id, String codigo, int cantidad) {
 		this.pedidoMateriaPrima = pedidoMateriaPrima;
 		this.id = id;
 		this.codigo = codigo;
 		this.cantidad = cantidad;
-		this.unidad = unidad;
 	}
 
 	public PedidoMateriaPrima getPedidoMateriaPrima() {
@@ -75,14 +71,6 @@ public class PedidoMateriaPrimaItem implements Serializable {
 
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
-	}
-
-	public String getUnidad() {
-		return unidad;
-	}
-
-	public void setUnidad(String unidad) {
-		this.unidad = unidad;
 	}
 
 	@Override
@@ -120,16 +108,14 @@ public class PedidoMateriaPrimaItem implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("%s: %d %s", getCodigo(), getCantidad(),
-				getUnidad());
+		return String.format("%s: %d %s", getCodigo(), getCantidad());
 	}
 
 	public static PedidoMateriaPrimaItemVO toPedidoMateriaPrimaItemVO(
 			PedidoMateriaPrimaItem pedidoMateriaPrimaItem) {
 		return new PedidoMateriaPrimaItemVO(pedidoMateriaPrimaItem.getId(),
 				pedidoMateriaPrimaItem.getCodigo(),
-				pedidoMateriaPrimaItem.getCantidad(),
-				pedidoMateriaPrimaItem.getUnidad());
+				pedidoMateriaPrimaItem.getCantidad());
 	}
 
 	public static PedidoMateriaPrimaItem toPedidoMateriaPrimaItem(
@@ -138,7 +124,6 @@ public class PedidoMateriaPrimaItem implements Serializable {
 		return new PedidoMateriaPrimaItem(pedidoMateriaPrima,
 				pedidoMateriaPrimaItemVO.getId(),
 				pedidoMateriaPrimaItemVO.getCodigo(),
-				pedidoMateriaPrimaItemVO.getCantidad(),
-				pedidoMateriaPrimaItemVO.getUnidad());
+				pedidoMateriaPrimaItemVO.getCantidad());
 	}
 }

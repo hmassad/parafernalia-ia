@@ -1,10 +1,12 @@
-package materiaPrima.beans;
+package materiaPrima.beans.remote;
 
 import java.util.Collection;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import materiaPrima.beans.local.PedidoMateriaPrimaSessionBeanLocal;
+import materiaPrima.beans.remote.FachadaSessionBeanRemote;
 import materiaPrima.vo.PedidoMateriaPrimaVO;
 
 /**

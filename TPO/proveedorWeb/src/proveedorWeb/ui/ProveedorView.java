@@ -1,8 +1,6 @@
 package proveedorWeb.ui;
 
-import javax.ejb.EJB;
-
-import proveedor.beans.remote.FachadaSessionBeanRemote;
+import proveedorWeb.ejb.ProveedorClient;
 import proveedorWeb.ui.ProveedorEditor.DiscardEvent;
 import proveedorWeb.ui.ProveedorEditor.DiscardListener;
 import proveedorWeb.ui.ProveedorEditor.SaveEvent;
@@ -14,9 +12,6 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class ProveedorView extends VerticalLayout implements View {
-
-	@EJB
-	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	ProveedorEditor proveedorEditor;
 
@@ -30,8 +25,7 @@ public class ProveedorView extends VerticalLayout implements View {
 		proveedorEditor.addListener(new SaveListener() {
 			public void save(SaveEvent event) {
 				try {
-					fachadaSessionBeanRemote.updateProveedor(event
-							.getProveedor());
+					ProveedorClient.get().updateProveedor(event.getProveedor());
 					new Notification("Se guardaron los cambios", event
 							.getProveedor().getRazonSocial(),
 							Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot()
@@ -57,8 +51,7 @@ public class ProveedorView extends VerticalLayout implements View {
 
 	private void resetView() {
 		try {
-			proveedorEditor.setProveedor(fachadaSessionBeanRemote
-					.getProveedor());
+			proveedorEditor.setProveedor(ProveedorClient.get().getProveedor());
 		} catch (Exception e) {
 			e.printStackTrace();
 			new Notification("Ocurrión un error", e.getMessage(),

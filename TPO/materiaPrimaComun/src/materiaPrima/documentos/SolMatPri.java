@@ -21,16 +21,13 @@ public class SolMatPri implements Serializable {
 
 		private int cantidad;
 
-		private String unidad;
-
 		public Item() {
 		}
 
-		public Item(int id, String codigo, int cantidad, String unidad) {
+		public Item(int id, String codigo, int cantidad) {
 			this.id = id;
 			this.codigo = codigo;
 			this.cantidad = cantidad;
-			this.unidad = unidad;
 		}
 
 		public int getId() {
@@ -55,14 +52,6 @@ public class SolMatPri implements Serializable {
 
 		public void setCantidad(int cantidad) {
 			this.cantidad = cantidad;
-		}
-
-		public String getUnidad() {
-			return unidad;
-		}
-
-		public void setUnidad(String unidad) {
-			this.unidad = unidad;
 		}
 	}
 

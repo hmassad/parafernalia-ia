@@ -48,7 +48,8 @@ public class Producto implements Serializable {
 		this.materiasPrimasProducto = new ArrayList<MateriaPrimaProducto>();
 	}
 
-	public Producto(String codigo, String descripcion, String caracteristica, String marca, String origen, String tipo, String medida,
+	public Producto(String codigo, String descripcion, String caracteristica,
+			String marca, String origen, String tipo, String medida,
 			Collection<MateriaPrimaProducto> materiasPrimasProductos) {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
@@ -120,7 +121,8 @@ public class Producto implements Serializable {
 		return materiasPrimasProducto;
 	}
 
-	public void setMateriasPrimasProducto(Collection<MateriaPrimaProducto> materiasPrimasProducto) {
+	public void setMateriasPrimasProducto(
+			Collection<MateriaPrimaProducto> materiasPrimasProducto) {
 		this.materiasPrimasProducto = materiasPrimasProducto;
 	}
 
@@ -133,8 +135,10 @@ public class Producto implements Serializable {
 		for (MateriaPrimaProducto mpp : producto.getMateriasPrimasProducto()) {
 			mppVOs.add(MateriaPrimaProducto.toMateriaPrimaProductoVO(mpp));
 		}
-		return new ProductoVO(producto.getCodigo(), producto.getDescripcion(), producto.getCaracteristica(), producto.getMarca(), producto.getOrigen(),
-				producto.getTipo(), producto.getMedida(), mppVOs);
+		return new ProductoVO(producto.getCodigo(), producto.getDescripcion(),
+				producto.getCaracteristica(), producto.getMarca(),
+				producto.getOrigen(), producto.getTipo(), producto.getMedida(),
+				mppVOs);
 	}
 
 	public static Producto toProducto(ProductoVO productoVO) {
@@ -146,10 +150,12 @@ public class Producto implements Serializable {
 		producto.setOrigen(productoVO.getOrigen());
 		producto.setTipo(productoVO.getTipo());
 		producto.setMedida(productoVO.getMedida());
-		for (MateriaPrimaProductoVO mppVO : productoVO.getMateriasPrimasProducto()) {
-			MateriaPrima mp = MateriaPrima.toMateriaPrima(mppVO.getMateriaPrima());
-			Unidad u = new Unidad(mppVO.getUnidad().getCodigo(), mppVO.getUnidad().getDescripcion());
-			MateriaPrimaProducto mpp = new MateriaPrimaProducto(producto, mp, mppVO.getCantidad(), u);
+		for (MateriaPrimaProductoVO mppVO : productoVO
+				.getMateriasPrimasProducto()) {
+			MateriaPrima mp = MateriaPrima.toMateriaPrima(mppVO
+					.getMateriaPrima());
+			MateriaPrimaProducto mpp = new MateriaPrimaProducto(producto, mp,
+					mppVO.getCantidad());
 			producto.getMateriasPrimasProducto().add(mpp);
 		}
 		return producto;

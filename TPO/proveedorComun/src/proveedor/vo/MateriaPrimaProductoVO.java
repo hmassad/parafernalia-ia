@@ -10,15 +10,12 @@ public class MateriaPrimaProductoVO implements Serializable {
 
 	private int cantidad;
 
-	private UnidadVO unidad;
-
 	public MateriaPrimaProductoVO() {
 	}
 
-	public MateriaPrimaProductoVO(MateriaPrimaVO materiaPrima, int cantidad, UnidadVO unidad) {
+	public MateriaPrimaProductoVO(MateriaPrimaVO materiaPrima, int cantidad) {
 		this.materiaPrima = materiaPrima;
 		this.cantidad = cantidad;
-		this.unidad = unidad;
 	}
 
 	public MateriaPrimaVO getMateriaPrima() {
@@ -37,15 +34,7 @@ public class MateriaPrimaProductoVO implements Serializable {
 		this.cantidad = cantidad;
 	}
 
-	public UnidadVO getUnidad() {
-		return unidad;
-	}
-
-	public void setUnidad(UnidadVO unidad) {
-		this.unidad = unidad;
-	}
-
 	public String toString(){
-		return String.format("%s (%d %s)", getMateriaPrima().toString(), getCantidad(), getUnidad().toString());
+		return String.format("%s (%d %s)", getMateriaPrima().toString(), getCantidad());
 	}
 }
