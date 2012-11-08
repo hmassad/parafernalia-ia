@@ -83,7 +83,7 @@ public class NvoProd implements Serializable {
 	public void setCod_propietario(String cod_propietario) {
 		this.cod_propietario = cod_propietario;
 	}
-
+	
 	public synchronized static NvoProd deserialize(String s) {
 		XStream xs = new XStream(new DomDriver());
 		xs.alias("Rodamiento", NvoProd.class);

@@ -5,8 +5,6 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import proveedor.beans.local.ListaPreciosSessionBeanLocal;
-import proveedor.beans.local.ProveedorSessionBeanLocal;
 import proveedor.documentos.LiPre;
 import proveedor.documentos.LiPre.Proveedor;
 import proveedor.documentos.LiPre.Rodamiento;
@@ -22,20 +20,17 @@ import proveedor.vo.ProveedorVO;
 public class WebServiceFacadeBean implements WebServiceFacade {
 
 	@EJB
-	ProveedorSessionBeanLocal proveedorSessionBeanLocal;
-
-	@EJB
-	ListaPreciosSessionBeanLocal listaPreciosSessionBeanLocal;
+	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	public WebServiceFacadeBean() {
 	}
 
 	@WebMethod
 	public String getListaPrecios() {
-		ProveedorVO proveedorVO = proveedorSessionBeanLocal.getProveedor();
+		ProveedorVO proveedorVO = fachadaSessionBeanRemote.getProveedor();
 		if (proveedorVO == null)
 			return null;
-		ListaPreciosVO listaPreciosVO = listaPreciosSessionBeanLocal
+		ListaPreciosVO listaPreciosVO = fachadaSessionBeanRemote
 				.getUltimaListaPrecios();
 		if (listaPreciosVO == null)
 			return null;
@@ -51,11 +46,7 @@ public class WebServiceFacadeBean implements WebServiceFacade {
 		for (ListaPreciosItemVO lpi : listaPreciosVO.getItems()) {
 			liPre.getItemsLP().add(
 					new Rodamiento(lpi.getProducto().getCodigo(), lpi
-							.getProducto().getCaracteristica(), lpi
-							.getProducto().getMarca(), lpi.getProducto()
-							.getOrigen(), lpi.getProducto().getTipo(), lpi
-							.getProducto().getCodigo(), lpi.getProducto()
-							.getMedida(), lpi.getPrecioUnitario()));
+							.getPrecioUnitario()));
 		}
 		return liPre.serialize();
 	}

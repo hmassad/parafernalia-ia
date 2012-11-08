@@ -1,9 +1,11 @@
 package proveedor.beans.remote;
 
+import java.rmi.RemoteException;
 import java.util.Collection;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.xml.rpc.ServiceException;
 
 import proveedor.beans.local.ListaPreciosSessionBeanLocal;
 import proveedor.beans.local.MateriaPrimaSessionBeanLocal;
@@ -12,12 +14,16 @@ import proveedor.beans.local.PedidoMateriaPrimaSessionBeanLocal;
 import proveedor.beans.local.PedidosSessionBeanLocal;
 import proveedor.beans.local.ProductosSessionBeanLocal;
 import proveedor.beans.local.ProveedorSessionBeanLocal;
+import proveedor.documentos.NvoProd;
 import proveedor.vo.ListaPreciosVO;
 import proveedor.vo.MateriaPrimaVO;
 import proveedor.vo.PedidoCasaCentralVO;
 import proveedor.vo.PedidoMateriaPrimaVO;
 import proveedor.vo.ProductoVO;
 import proveedor.vo.ProveedorVO;
+import servicios.WebServiceFacadeBean;
+import servicios.WebServiceFacadeBeanProxy;
+import servicios.WebServiceFacadeBeanServiceLocator;
 
 /**
  * Session Bean implementation class FachadaSessionBean
@@ -87,6 +93,24 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 
 	public void createProducto(ProductoVO productoVO) {
 		productosSessionBeanLocal.createProducto(productoVO);
+
+		NvoProd nvoProd = new NvoProd(productoVO.getCodigo(),
+				productoVO.getCaracteristica(), productoVO.getMarca(),
+				productoVO.getOrigen(), productoVO.getTipo(),
+				productoVO.getCodigo());
+		String xml = nvoProd.serialize();
+		WebServiceFacadeBeanServiceLocator serviceLocator = new WebServiceFacadeBeanServiceLocator();
+		try {
+			WebServiceFacadeBeanProxy proxy = new WebServiceFacadeBeanProxy();
+			proxy.setEndpoint("http://127.0.0.1:8080/casaCentralEAR-casaCentralEJB/WebServiceFacadeBean");
+			WebServiceFacadeBean port = serviceLocator
+					.getWebServiceFacadeBeanPort();
+			port.notificarNuevoRodamiento(xml);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void deleteProducto(String codigo) {

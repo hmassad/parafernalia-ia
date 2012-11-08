@@ -46,7 +46,6 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 	private PedidoCasaCentralSessionBeanLocal pedidoCasaCentralSessionBeanLocal;
 
 	public PedidosSessionBean() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void enviarPedidoMateriaPrima(
