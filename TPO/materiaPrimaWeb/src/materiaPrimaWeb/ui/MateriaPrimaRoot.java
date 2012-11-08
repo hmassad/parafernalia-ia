@@ -8,8 +8,11 @@ import materiaPrima.beans.remote.FachadaSessionBeanRemote;
 import materiaPrima.vo.PedidoMateriaPrimaVO;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.terminal.WrappedRequest;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Root;
@@ -56,11 +59,30 @@ public class MateriaPrimaRoot extends Root {
 		try {
 			Collection<PedidoMateriaPrimaVO> pedidoMateriaPrimas = fachadaSessionBeanLocal
 					.getPedidosMateriaPrima();
-			materiasPrimasTable
-					.setContainerDataSource(new BeanItemContainer<PedidoMateriaPrimaVO>(
-							PedidoMateriaPrimaVO.class, pedidoMateriaPrimas));
+			BeanItemContainer<PedidoMateriaPrimaVO> container = new BeanItemContainer<PedidoMateriaPrimaVO>(
+					PedidoMateriaPrimaVO.class);
+			container.addContainerProperty("accionEntregar", CssLayout.class,
+					null);
+
+			for (PedidoMateriaPrimaVO pedidoMateriaPrima : pedidoMateriaPrimas) {
+
+				Item item = container.addItem(pedidoMateriaPrima);
+
+				Button btn = new Button("Entregar");
+				btn.setEnabled(true);
+				btn.setImmediate(true);
+				btn.setVisible(true);
+
+				CssLayout layout = new CssLayout();
+				// layout.addComponent(new Label(taskDesc));
+				layout.addComponent(btn);
+
+				item.getItemProperty("accionEntregar").setValue(layout);
+			}
+
+			materiasPrimasTable.setContainerDataSource(container);
 			materiasPrimasTable.setVisibleColumns(new String[] { "codigo",
-					"descripcion" });
+					"descripcion", "accionEntregar" });
 		} catch (Exception e) {
 			e.printStackTrace();
 			new Notification(

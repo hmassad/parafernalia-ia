@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jms.Queue;
 import javax.jms.QueueConnection;
@@ -18,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import materiaPrima.beans.remote.FachadaSessionBeanRemote;
 import materiaPrima.documentos.MatPri;
 import materiaPrima.model.PedidoMateriaPrima;
 import materiaPrima.vo.PedidoMateriaPrimaVO;
@@ -32,9 +30,6 @@ public class PedidoMateriaPrimaSessionBean implements
 
 	@PersistenceContext(unitName = "materiaPrima")
 	private EntityManager entityManager;
-
-	@EJB
-	FachadaSessionBeanRemote fachadaSessionBeanLocal;
 
 	public PedidoMateriaPrimaSessionBean() {
 	}

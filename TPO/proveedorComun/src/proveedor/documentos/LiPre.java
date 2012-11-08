@@ -107,32 +107,13 @@ public class LiPre implements Serializable {
 
 		private String codigoRodamiento;
 
-		private String caracteristica;
-
-		private String marca;
-
-		private String origen;
-
-		private String tipo;
-
-		private String cod_propietario;
-
-		private String medida;
-
 		private float precio;
 
 		public Rodamiento() {
 		}
 
-		public Rodamiento(String codigoRodamiento, String caracteristica, String marca, String origen, String tipo, String cod_propietario, String medida,
-				float precio) {
+		public Rodamiento(String codigoRodamiento,float precio) {
 			this.codigoRodamiento = codigoRodamiento;
-			this.caracteristica = caracteristica;
-			this.marca = marca;
-			this.origen = origen;
-			this.tipo = tipo;
-			this.cod_propietario = cod_propietario;
-			this.medida = medida;
 			this.precio = precio;
 		}
 
@@ -142,54 +123,6 @@ public class LiPre implements Serializable {
 
 		public void setCodigoRodamiento(String codigoRodamiento) {
 			this.codigoRodamiento = codigoRodamiento;
-		}
-
-		public String getCaracteristica() {
-			return caracteristica;
-		}
-
-		public void setCaracteristica(String caracteristica) {
-			this.caracteristica = caracteristica;
-		}
-
-		public String getMarca() {
-			return marca;
-		}
-
-		public void setMarca(String marca) {
-			this.marca = marca;
-		}
-
-		public String getOrigen() {
-			return origen;
-		}
-
-		public void setOrigen(String origen) {
-			this.origen = origen;
-		}
-
-		public String getTipo() {
-			return tipo;
-		}
-
-		public void setTipo(String tipo) {
-			this.tipo = tipo;
-		}
-
-		public String getCod_propietario() {
-			return cod_propietario;
-		}
-
-		public void setCod_propietario(String cod_propietario) {
-			this.cod_propietario = cod_propietario;
-		}
-
-		public String getMedida() {
-			return medida;
-		}
-
-		public void setMedida(String medida) {
-			this.medida = medida;
 		}
 
 		public float getPrecio() {
