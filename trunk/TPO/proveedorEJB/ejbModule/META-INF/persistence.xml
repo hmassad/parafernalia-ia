@@ -7,7 +7,6 @@
 		<class>proveedor.model.MateriaPrimaProducto</class>
 		<class>proveedor.model.Producto</class>
 		<class>proveedor.model.Proveedor</class>
-		<class>proveedor.model.Unidad</class>
 		<jta-data-source>java:/jdbc/proveedor-ds</jta-data-source>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />

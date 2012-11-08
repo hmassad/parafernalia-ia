@@ -45,7 +45,6 @@ public class ProveedorRoot extends Root {
 		CreateMenuItem(menuBar, "Productos", "productos");
 		CreateMenuItem(menuBar, "Lista de Precios", "listaPrecios");
 		CreateMenuItem(menuBar, "Materia Prima", "materiaPrima");
-		CreateMenuItem(menuBar, "Unidades", "unidades");
 		CreateMenuItem(menuBar, "Pedidos de Casa Central", "pedidosCasaCentral");
 		CreateMenuItem(menuBar, "Pedidos de Materia Prima", "pedidosMateriaPrima");
 
@@ -56,7 +55,6 @@ public class ProveedorRoot extends Root {
 		navigator.addView("productos", new ProductosView());
 		// navigator.addView("listaPrecios", new ListaPreciosView());
 		navigator.addView("materiaPrima", new MateriaPrimaView());
-		navigator.addView("unidades", new UnidadesView());
 		navigator.addView("pedidosCasaCentral", new PedidosMateriaPrimaView());
 		navigator.addView("pedidosMateriaPrima", new PedidosCasaCentralView());
 	}

@@ -19,7 +19,4 @@ public interface PedidoMateriaPrimaSessionBeanLocal {
 
 	PedidoMateriaPrimaVO getPedidoMateriaPrima(int id);
 
-	void enviarPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO);
-
-	void recibirPedidoMateriaPrima(int id);
 }

@@ -5,6 +5,8 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import proveedor.beans.local.ListaPreciosSessionBeanLocal;
+import proveedor.beans.local.ProveedorSessionBeanLocal;
 import proveedor.documentos.LiPre;
 import proveedor.documentos.LiPre.Proveedor;
 import proveedor.documentos.LiPre.Rodamiento;
@@ -20,17 +22,20 @@ import proveedor.vo.ProveedorVO;
 public class WebServiceFacadeBean implements WebServiceFacade {
 
 	@EJB
-	FachadaSessionBeanRemote fachadaSessionBeanRemote;
+	ProveedorSessionBeanLocal proveedorSessionBeanLocal;
+
+	@EJB
+	ListaPreciosSessionBeanLocal listaPreciosSessionBeanLocal;
 
 	public WebServiceFacadeBean() {
 	}
 
 	@WebMethod
 	public String getListaPrecios() {
-		ProveedorVO proveedorVO = fachadaSessionBeanRemote.getProveedor();
+		ProveedorVO proveedorVO = proveedorSessionBeanLocal.getProveedor();
 		if (proveedorVO == null)
 			return null;
-		ListaPreciosVO listaPreciosVO = fachadaSessionBeanRemote
+		ListaPreciosVO listaPreciosVO = listaPreciosSessionBeanLocal
 				.getUltimaListaPrecios();
 		if (listaPreciosVO == null)
 			return null;

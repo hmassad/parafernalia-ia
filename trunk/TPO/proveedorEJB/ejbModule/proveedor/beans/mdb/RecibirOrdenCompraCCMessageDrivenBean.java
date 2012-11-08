@@ -8,7 +8,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import proveedor.beans.local.PedidoCasaCentralSessionBeanLocal;
+import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.documentos.OrCompCC;
 import proveedor.documentos.OrCompCC.Item;
 import proveedor.vo.PedidoCasaCentralItemVO;
@@ -24,7 +24,7 @@ import proveedor.vo.PedidoCasaCentralVO;
 public class RecibirOrdenCompraCCMessageDrivenBean implements MessageListener {
 
 	@EJB
-	PedidoCasaCentralSessionBeanLocal pedidoCasaCentralSessionBeanLocal;
+	private FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	public RecibirOrdenCompraCCMessageDrivenBean() {
 	}
@@ -48,7 +48,7 @@ public class RecibirOrdenCompraCCMessageDrivenBean implements MessageListener {
 				pedidoCasaCentralVO.getItems().add(pedidoCasaCentralItemVO);
 			}
 
-			pedidoCasaCentralSessionBeanLocal
+			fachadaSessionBeanRemote
 					.recibirPedidoCasaCentral(pedidoCasaCentralVO);
 		} catch (JMSException e) {
 			e.printStackTrace();

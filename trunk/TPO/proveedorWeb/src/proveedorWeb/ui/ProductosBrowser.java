@@ -41,7 +41,8 @@ public class ProductosBrowser extends VerticalLayout {
 
 	private void fireProductoChangedEvent() {
 		if (productoChangeListeners != null) {
-			ProductoChangeEvent event = new ProductoChangeEvent(ProductosBrowser.this);
+			ProductoChangeEvent event = new ProductoChangeEvent(
+					ProductosBrowser.this);
 			for (ProductoChangeListener listener : productoChangeListeners) {
 				listener.productoChanged(event);
 			}
@@ -86,17 +87,22 @@ public class ProductosBrowser extends VerticalLayout {
 		resultadosTable.setSelectable(true);
 		resultadosTable.setMultiSelect(false);
 		resultadosTable.setImmediate(true);
-		resultadosTable.setContainerDataSource(new BeanItemContainer<ProductoVO>(ProductoVO.class, null));
+		resultadosTable
+				.setContainerDataSource(new BeanItemContainer<ProductoVO>(
+						ProductoVO.class, null));
 		Table.ColumnGenerator resultadosTableColumnGenerator = new Table.ColumnGenerator() {
-			public Object generateCell(Table source, Object itemId, Object columnId) {
+			public Object generateCell(Table source, Object itemId,
+					Object columnId) {
 				ProductoVO producto = (ProductoVO) itemId;
 				StringBuilder sb = new StringBuilder();
 				if (columnId.equals("mp")) {
-					for (MateriaPrimaProductoVO materiaPrimaProducto : producto.getMateriasPrimasProducto()) {
+					for (MateriaPrimaProductoVO materiaPrimaProducto : producto
+							.getMateriasPrimasProducto()) {
 						if (sb.length() == 0)
 							sb.append("<br/>");
-						sb.append(String.format("%s (%d %s)", materiaPrimaProducto.getMateriaPrima().getCodigo(), materiaPrimaProducto.getCantidad(),
-								materiaPrimaProducto.getUnidad().getCodigo()));
+						sb.append(String.format("%d %s", materiaPrimaProducto
+								.getCantidad(), materiaPrimaProducto
+								.getMateriaPrima().getCodigo()));
 					}
 				}
 				Label label = new Label(sb.toString());
@@ -104,9 +110,13 @@ public class ProductosBrowser extends VerticalLayout {
 				return label;
 			}
 		};
-		resultadosTable.addGeneratedColumn("mp", resultadosTableColumnGenerator);
-		resultadosTable.setVisibleColumns(new String[] { "codigo", "descripcion", "caracteristica", "marca", "origen", "mp" });
-		resultadosTable.setColumnHeaders(new String[] { "Código", "Descripción", "Característica", "Marca", "Origen", "Materias Primas" });
+		resultadosTable
+				.addGeneratedColumn("mp", resultadosTableColumnGenerator);
+		resultadosTable.setVisibleColumns(new String[] { "codigo",
+				"descripcion", "caracteristica", "marca", "origen", "mp" });
+		resultadosTable.setColumnHeaders(new String[] { "Código",
+				"Descripción", "Característica", "Marca", "Origen",
+				"Materias Primas" });
 		resultadosTable.addListener(new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				setProducto((ProductoVO) resultadosTable.getValue());
@@ -119,8 +129,11 @@ public class ProductosBrowser extends VerticalLayout {
 	}
 
 	private void setTableRows(List<ProductoVO> productos) {
-		resultadosTable.setContainerDataSource(new BeanItemContainer<ProductoVO>(ProductoVO.class, productos));
-		resultadosTable.setVisibleColumns(new String[] { "codigo", "descripcion", "caracteristica", "marca", "origen", "mp" });
+		resultadosTable
+				.setContainerDataSource(new BeanItemContainer<ProductoVO>(
+						ProductoVO.class, productos));
+		resultadosTable.setVisibleColumns(new String[] { "codigo",
+				"descripcion", "caracteristica", "marca", "origen", "mp" });
 	}
 
 	public ProductoVO getProducto() {

@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -17,10 +15,6 @@ public class PedidoCasaCentralItem implements Serializable {
 	private static final long serialVersionUID = -8241932010498640786L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
-	private int id;
-
 	@Column
 	private String codigo;
 
@@ -33,19 +27,10 @@ public class PedidoCasaCentralItem implements Serializable {
 	public PedidoCasaCentralItem() {
 	}
 
-	public PedidoCasaCentralItem(int id, String codigo, int cantidad, PedidoCasaCentral pedidoCasaCentral) {
-		this.id = id;
+	public PedidoCasaCentralItem(String codigo, int cantidad, PedidoCasaCentral pedidoCasaCentral) {
 		this.codigo = codigo;
 		this.cantidad = cantidad;
 		this.pedidoCasaCentral = pedidoCasaCentral;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getCodigo() {
@@ -78,7 +63,6 @@ public class PedidoCasaCentralItem implements Serializable {
 		int result = 1;
 		result = prime * result + cantidad;
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		result = prime * result + id;
 		result = prime * result + ((pedidoCasaCentral == null) ? 0 : pedidoCasaCentral.hashCode());
 		return result;
 	}
@@ -99,8 +83,6 @@ public class PedidoCasaCentralItem implements Serializable {
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
-		if (id != other.id)
-			return false;
 		if (pedidoCasaCentral == null) {
 			if (other.pedidoCasaCentral != null)
 				return false;
@@ -114,11 +96,11 @@ public class PedidoCasaCentralItem implements Serializable {
 	}
 
 	public static PedidoCasaCentralItemVO toPedidoCasaCentralItemVO(PedidoCasaCentralItem pedidoCasaCentralItem) {
-		return new PedidoCasaCentralItemVO(pedidoCasaCentralItem.getId(), pedidoCasaCentralItem.getCodigo(), pedidoCasaCentralItem.getCantidad());
+		return new PedidoCasaCentralItemVO(pedidoCasaCentralItem.getCodigo(), pedidoCasaCentralItem.getCantidad());
 	}
 
 	public static PedidoCasaCentralItem toPedidoCasaCentralItem(PedidoCasaCentral pedidoCasaCentral, PedidoCasaCentralItemVO pedidoCasaCentralItemVO) {
-		return new PedidoCasaCentralItem(pedidoCasaCentralItemVO.getId(), pedidoCasaCentralItemVO.getCodigo(), pedidoCasaCentralItemVO.getCantidad(),
+		return new PedidoCasaCentralItem(pedidoCasaCentralItemVO.getCodigo(), pedidoCasaCentralItemVO.getCantidad(),
 				pedidoCasaCentral);
 	}
 

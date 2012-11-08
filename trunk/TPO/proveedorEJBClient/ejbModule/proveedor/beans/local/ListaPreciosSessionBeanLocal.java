@@ -18,4 +18,5 @@ public interface ListaPreciosSessionBeanLocal {
 	Collection<ListaPreciosVO> getListasPrecios();
 
 	ListaPreciosVO getUltimaListaPrecios();
+
 }

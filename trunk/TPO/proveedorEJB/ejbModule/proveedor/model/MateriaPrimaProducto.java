@@ -5,14 +5,13 @@ import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import proveedor.vo.MateriaPrimaProductoVO;
 
 @Entity
-@AssociationOverrides({ @AssociationOverride(name = "pk.producto", joinColumns = { @JoinColumn(name = "producto", nullable = false) }),
+@AssociationOverrides({
+		@AssociationOverride(name = "pk.producto", joinColumns = { @JoinColumn(name = "producto", nullable = false) }),
 		@AssociationOverride(name = "pk.materiaPrima", joinColumns = { @JoinColumn(name = "materiaPrima", nullable = false) }) })
 public class MateriaPrimaProducto {
 
@@ -22,17 +21,14 @@ public class MateriaPrimaProducto {
 	@Column
 	private int cantidad;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Unidad unidad;
-
 	public MateriaPrimaProducto() {
 		pk = new MateriaPrimaProductoPk();
 	}
 
-	public MateriaPrimaProducto(Producto producto, MateriaPrima materiaPrima, int cantidad, Unidad unidad) {
+	public MateriaPrimaProducto(Producto producto, MateriaPrima materiaPrima,
+			int cantidad) {
 		pk = new MateriaPrimaProductoPk(producto, materiaPrima);
 		this.cantidad = cantidad;
-		this.unidad = unidad;
 	}
 
 	public MateriaPrimaProductoPk getPk() {
@@ -67,21 +63,12 @@ public class MateriaPrimaProducto {
 		this.cantidad = cantidad;
 	}
 
-	public Unidad getUnidad() {
-		return unidad;
-	}
-
-	public void setUnidad(Unidad unidad) {
-		this.unidad = unidad;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + cantidad;
 		result = prime * result + ((pk == null) ? 0 : pk.hashCode());
-		result = prime * result + ((unidad == null) ? 0 : unidad.hashCode());
 		return result;
 	}
 
@@ -101,25 +88,26 @@ public class MateriaPrimaProducto {
 				return false;
 		} else if (!pk.equals(other.pk))
 			return false;
-		if (unidad == null) {
-			if (other.unidad != null)
-				return false;
-		} else if (!unidad.equals(other.unidad))
-			return false;
 		return true;
 	}
 
 	public String toString() {
-		return String.format("%s (%d %s)", getMateriaPrima(), getCantidad(), getUnidad().getCodigo());
+		return String.format("%s %d", getMateriaPrima().getCodigo(),
+				getCantidad());
 	}
 
-	public static MateriaPrimaProductoVO toMateriaPrimaProductoVO(MateriaPrimaProducto materiaPrimaProducto) {
-		return new MateriaPrimaProductoVO(MateriaPrima.toMateriaPrimaVO(materiaPrimaProducto.getMateriaPrima()), materiaPrimaProducto.getCantidad(),
-				Unidad.toUnidadVO(materiaPrimaProducto.getUnidad()));
+	public static MateriaPrimaProductoVO toMateriaPrimaProductoVO(
+			MateriaPrimaProducto materiaPrimaProducto) {
+		return new MateriaPrimaProductoVO(
+				MateriaPrima.toMateriaPrimaVO(materiaPrimaProducto
+						.getMateriaPrima()), materiaPrimaProducto.getCantidad());
 	}
 
-	public static MateriaPrimaProducto toMateriaPrimaProducto(Producto producto, MateriaPrimaProductoVO materiaPrimaProductoVO) {
-		return new MateriaPrimaProducto(producto, MateriaPrima.toMateriaPrima(materiaPrimaProductoVO.getMateriaPrima()), materiaPrimaProductoVO.getCantidad(),
-				Unidad.toUnidad(materiaPrimaProductoVO.getUnidad()));
+	public static MateriaPrimaProducto toMateriaPrimaProducto(
+			Producto producto, MateriaPrimaProductoVO materiaPrimaProductoVO) {
+		return new MateriaPrimaProducto(producto,
+				MateriaPrima.toMateriaPrima(materiaPrimaProductoVO
+						.getMateriaPrima()),
+				materiaPrimaProductoVO.getCantidad());
 	}
 }

@@ -6,7 +6,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import proveedor.beans.local.ProveedorSessionBeanLocal;
 import proveedor.model.Proveedor;
 import proveedor.vo.ProveedorVO;
 

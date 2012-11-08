@@ -2,10 +2,8 @@ package proveedorWeb.ui;
 
 import java.util.Collection;
 
-import javax.ejb.EJB;
-
-import proveedor.beans.remote.FachadaSessionBeanRemote;
 import proveedor.vo.MateriaPrimaVO;
+import proveedorWeb.ejb.ProveedorClient;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -23,9 +21,6 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class MateriaPrimaView extends VerticalLayout implements View {
-
-	@EJB
-	FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
 	private HorizontalLayout fieldsLayout;
 	private TextField codigoTextField;
@@ -63,7 +58,7 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 					MateriaPrimaVO materiaPrimaVO = new MateriaPrimaVO(codigo,
 							descripcion, 0);
 					try {
-						fachadaSessionBeanRemote
+						ProveedorClient.get()
 								.createMateriaPrima(materiaPrimaVO);
 						new Notification(
 								"Se creó la Materia Prima",
@@ -102,12 +97,13 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 									try {
 										MateriaPrimaVO materiaPrima = (MateriaPrimaVO) resultadosTable
 												.getValue();
-										fachadaSessionBeanRemote
-												.deleteMateriaPrima(materiaPrima
-														.getCodigo());
+										ProveedorClient.get()
+												.deleteMateriaPrima(
+														materiaPrima
+																.getCodigo());
 										resetView();
 										new Notification(
-												"Unidad borrada",
+												"Materia Prima borrada",
 												materiaPrima.getCodigo(),
 												Notification.TYPE_HUMANIZED_MESSAGE)
 												.show(getRoot().getPage());
@@ -153,16 +149,16 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 
 	private void resetView() {
 		try {
-			Collection<MateriaPrimaVO> unidades = fachadaSessionBeanRemote
+			Collection<MateriaPrimaVO> materiaPrimaVO = ProveedorClient.get()
 					.getMateriasPrimas();
 			resultadosTable
 					.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
-							MateriaPrimaVO.class, unidades));
+							MateriaPrimaVO.class, materiaPrimaVO));
 			resultadosTable.setVisibleColumns(new String[] { "codigo",
 					"descripcion" });
 		} catch (Exception e) {
 			e.printStackTrace();
-			new Notification("No se pueden obtener las unidades",
+			new Notification("No se pueden obtener las Materias Primas",
 					e.getMessage(), Notification.TYPE_ERROR_MESSAGE)
 					.show(getRoot().getPage());
 		}

@@ -6,8 +6,6 @@ public class PedidoCasaCentralItemVO implements Serializable {
 
 	private static final long serialVersionUID = -8241932010498640786L;
 
-	private int id;
-
 	private String codigo;
 
 	private int cantidad;
@@ -15,18 +13,9 @@ public class PedidoCasaCentralItemVO implements Serializable {
 	public PedidoCasaCentralItemVO() {
 	}
 
-	public PedidoCasaCentralItemVO(int id, String codigo, int cantidad) {
-		this.id = id;
+	public PedidoCasaCentralItemVO(String codigo, int cantidad) {
 		this.codigo = codigo;
 		this.cantidad = cantidad;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getCodigo() {

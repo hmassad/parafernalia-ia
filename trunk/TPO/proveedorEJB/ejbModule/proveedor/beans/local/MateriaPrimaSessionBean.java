@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import proveedor.beans.local.MateriaPrimaSessionBeanLocal;
 import proveedor.model.MateriaPrima;
 import proveedor.vo.MateriaPrimaVO;
 
@@ -29,22 +28,40 @@ public class MateriaPrimaSessionBean implements MateriaPrimaSessionBeanLocal {
 	}
 
 	public void deleteMateriaPrima(String codigo) {
-		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class, codigo);
+		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
+				codigo);
 		entityManager.remove(materiaPrima);
 	}
 
 	public MateriaPrimaVO getMateriaPrima(String codigo) {
-		MateriaPrima materiaPrimaVO = entityManager.find(MateriaPrima.class, codigo);
-		return MateriaPrima.toMateriaPrimaVO(materiaPrimaVO);
+		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
+				codigo);
+		return MateriaPrima.toMateriaPrimaVO(materiaPrima);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Collection<MateriaPrimaVO> getMateriasPrimas() {
-		Query query = entityManager.createQuery("SELECT MP FROM MateriaPrima MP");
-		Collection<MateriaPrimaVO> materiasPrimasVO = new ArrayList<MateriaPrimaVO>();
-		for (MateriaPrima materiaPrima : (Collection<MateriaPrima>) query.getResultList()) {
-			materiasPrimasVO.add(MateriaPrima.toMateriaPrimaVO(materiaPrima));
+		Query query = entityManager
+				.createQuery("SELECT MP FROM MateriaPrima MP");
+		Collection<MateriaPrimaVO> materiasPrimaVOs = new ArrayList<MateriaPrimaVO>();
+		for (MateriaPrima materiaPrima : (Collection<MateriaPrima>) query
+				.getResultList()) {
+			materiasPrimaVOs.add(MateriaPrima.toMateriaPrimaVO(materiaPrima));
 		}
-		return materiasPrimasVO;
+		return materiasPrimaVOs;
+	}
+
+	public void ingresarStock(String codigoMateriaPrima, int cantidad) {
+		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
+				codigoMateriaPrima);
+		materiaPrima.setStock(materiaPrima.getStock() - cantidad);
+		entityManager.persist(materiaPrima);
+	}
+
+	public void descontarStock(String codigoMateriaPrima, int cantidad) {
+		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
+				codigoMateriaPrima);
+		materiaPrima.setStock(materiaPrima.getStock() + cantidad);
+		entityManager.persist(materiaPrima);
 	}
 }

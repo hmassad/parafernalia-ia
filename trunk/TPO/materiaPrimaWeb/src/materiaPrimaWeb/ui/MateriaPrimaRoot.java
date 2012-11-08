@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.ejb.EJB;
 
-import materiaPrima.beans.FachadaSessionBeanRemote;
+import materiaPrima.beans.remote.FachadaSessionBeanRemote;
 import materiaPrima.vo.PedidoMateriaPrimaVO;
 
 import com.vaadin.annotations.Theme;
@@ -21,7 +21,7 @@ import com.vaadin.ui.VerticalLayout;
 public class MateriaPrimaRoot extends Root {
 
 	@EJB
-	private FachadaSessionBeanRemote fachadaSessionBeanRemote;
+	private FachadaSessionBeanRemote fachadaSessionBeanLocal;
 
 	VerticalLayout mainLayout;
 	Table materiasPrimasTable;
@@ -54,16 +54,17 @@ public class MateriaPrimaRoot extends Root {
 	// TODO agregar botón de entregar a los no entregados
 	private void fillTable() {
 		try {
-			Collection<PedidoMateriaPrimaVO> unidades = fachadaSessionBeanRemote
+			Collection<PedidoMateriaPrimaVO> pedidoMateriaPrimas = fachadaSessionBeanLocal
 					.getPedidosMateriaPrima();
 			materiasPrimasTable
 					.setContainerDataSource(new BeanItemContainer<PedidoMateriaPrimaVO>(
-							PedidoMateriaPrimaVO.class, unidades));
+							PedidoMateriaPrimaVO.class, pedidoMateriaPrimas));
 			materiasPrimasTable.setVisibleColumns(new String[] { "codigo",
 					"descripcion" });
 		} catch (Exception e) {
 			e.printStackTrace();
-			new Notification("No se pueden obtener los pedidos de materia prima",
+			new Notification(
+					"No se pueden obtener los pedidos de materia prima",
 					e.getMessage(), Notification.TYPE_ERROR_MESSAGE)
 					.show(getRoot().getPage());
 		}

@@ -20,7 +20,4 @@ public interface PedidoCasaCentralSessionBeanLocal {
 
 	PedidoCasaCentralVO getPedidoCasaCentral(int id);
 
-	void recibirPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);
-
-	void enviarPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);
 }

@@ -1,4 +1,4 @@
-package materiaPrima.beans;
+package materiaPrima.beans.local;
 
 import java.util.Collection;
 

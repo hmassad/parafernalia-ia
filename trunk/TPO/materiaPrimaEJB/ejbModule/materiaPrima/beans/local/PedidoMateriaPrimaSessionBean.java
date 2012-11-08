@@ -1,4 +1,4 @@
-package materiaPrima.beans;
+package materiaPrima.beans.local;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import materiaPrima.beans.remote.FachadaSessionBeanRemote;
 import materiaPrima.documentos.MatPri;
 import materiaPrima.model.PedidoMateriaPrima;
 import materiaPrima.vo.PedidoMateriaPrimaVO;
@@ -33,7 +34,7 @@ public class PedidoMateriaPrimaSessionBean implements
 	private EntityManager entityManager;
 
 	@EJB
-	FachadaSessionBeanRemote fachadaSessionBeanRemote;
+	FachadaSessionBeanRemote fachadaSessionBeanLocal;
 
 	public PedidoMateriaPrimaSessionBean() {
 	}

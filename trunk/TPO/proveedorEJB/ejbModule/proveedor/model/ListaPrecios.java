@@ -9,6 +9,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -21,6 +23,7 @@ public class ListaPrecios implements Serializable {
 	private static final long serialVersionUID = 5223790124231719250L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
 
@@ -78,8 +81,10 @@ public class ListaPrecios implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id;
-		result = prime * result + ((vigenciaDesde == null) ? 0 : vigenciaDesde.hashCode());
-		result = prime * result + ((vigenciaHasta == null) ? 0 : vigenciaHasta.hashCode());
+		result = prime * result
+				+ ((vigenciaDesde == null) ? 0 : vigenciaDesde.hashCode());
+		result = prime * result
+				+ ((vigenciaHasta == null) ? 0 : vigenciaHasta.hashCode());
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		return result;
 	}
@@ -123,7 +128,9 @@ public class ListaPrecios implements Serializable {
 		for (ListaPreciosItem lpi : listaPrecios.getItems()) {
 			lpiVOs.add(ListaPreciosItem.toListaPreciosItemVO(lpi));
 		}
-		return new ListaPreciosVO(listaPrecios.getId(), listaPrecios.getVigenciaDesde(), listaPrecios.getVigenciaHasta(), lpiVOs);
+		return new ListaPreciosVO(listaPrecios.getId(),
+				listaPrecios.getVigenciaDesde(),
+				listaPrecios.getVigenciaHasta(), lpiVOs);
 	}
 
 	public static ListaPrecios toListaPrecios(ListaPreciosVO listaPreciosVO) {
@@ -132,7 +139,8 @@ public class ListaPrecios implements Serializable {
 		listaPrecios.setVigenciaDesde(listaPreciosVO.getVigenciaDesde());
 		listaPrecios.setVigenciaHasta(listaPreciosVO.getVigenciaHasta());
 		for (ListaPreciosItemVO lpiVO : listaPreciosVO.getItems()) {
-			listaPrecios.getItems().add(ListaPreciosItem.toListaPreciosItem(listaPrecios, lpiVO));
+			listaPrecios.getItems().add(
+					ListaPreciosItem.toListaPreciosItem(listaPrecios, lpiVO));
 		}
 		return listaPrecios;
 	}
