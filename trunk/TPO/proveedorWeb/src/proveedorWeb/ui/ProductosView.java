@@ -5,8 +5,6 @@ import proveedorWeb.ejb.ProveedorClient;
 import proveedorWeb.ui.ProductoEditor.DiscardEvent;
 import proveedorWeb.ui.ProductoEditor.SaveEvent;
 import proveedorWeb.ui.ProductoEditor.SaveListener;
-import proveedorWeb.ui.ProductosBrowser.ProductoChangeEvent;
-import proveedorWeb.ui.ProductosBrowser.ProductoChangeListener;
 
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Button;
@@ -88,14 +86,14 @@ public class ProductosView extends HorizontalLayout implements View {
 		productosBrowser = new ProductosBrowser();
 		left.addComponent(productosBrowser);
 		productosBrowser.setSizeFull();
-		productosBrowser.addListener(new ProductoChangeListener() {
-			public void productoChanged(ProductoChangeEvent event) {
-				ProductoVO producto = event.getProducto();
-				productoEditor.setProducto(producto);
-				productoEditor.setEnabled(producto != null);
-				deleteButton.setEnabled(producto != null);
-			}
-		});
+		// productosBrowser.addListener(new ProductoChangeListener() {
+		// public void productoChanged(ProductoChangeEvent event) {
+		// ProductoVO producto = event.getProducto();
+		// productoEditor.setProducto(producto);
+		// productoEditor.setEnabled(producto != null);
+		// deleteButton.setEnabled(producto != null);
+		// }
+		// });
 
 		// ProductoEditor a la derecha
 		productoEditor = new ProductoEditor(null);

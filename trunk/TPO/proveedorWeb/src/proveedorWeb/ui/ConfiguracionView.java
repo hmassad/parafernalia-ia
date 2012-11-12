@@ -11,12 +11,13 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class ProveedorView extends VerticalLayout implements View {
+public class ConfiguracionView extends VerticalLayout implements View {
 
 	ProveedorEditor proveedorEditor;
 
-	public ProveedorView() {
+	public ConfiguracionView() {
 		setSizeFull();
+		setSpacing(true);
 
 		proveedorEditor = new ProveedorEditor(null);
 		proveedorEditor.setSizeFull();

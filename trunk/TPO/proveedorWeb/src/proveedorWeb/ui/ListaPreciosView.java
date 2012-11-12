@@ -2,8 +2,6 @@ package proveedorWeb.ui;
 
 import proveedor.vo.ListaPreciosVO;
 import proveedorWeb.ejb.ProveedorClient;
-import proveedorWeb.ui.ListaPreciosBrowser.ListaPreciosChangeEvent;
-import proveedorWeb.ui.ListaPreciosBrowser.ListaPreciosChangeListener;
 import proveedorWeb.ui.ListaPreciosEditor.DiscardEvent;
 import proveedorWeb.ui.ListaPreciosEditor.SaveEvent;
 import proveedorWeb.ui.ListaPreciosEditor.SaveListener;
@@ -90,14 +88,14 @@ public class ListaPreciosView extends HorizontalLayout implements View {
 		listaPreciosBrowser = new ListaPreciosBrowser();
 		left.addComponent(listaPreciosBrowser);
 		listaPreciosBrowser.setSizeFull();
-		listaPreciosBrowser.addListener(new ListaPreciosChangeListener() {
-			public void listaPreciosChanged(ListaPreciosChangeEvent event) {
-				ListaPreciosVO listaPreciosVO = event.getListaPrecios();
-				listaPreciosEditor.setListaPrecios(listaPreciosVO);
-				listaPreciosEditor.setEnabled(listaPreciosVO != null);
-				deleteButton.setEnabled(listaPreciosVO != null);
-			}
-		});
+//		listaPreciosBrowser.addListener(new ListaPreciosChangeListener() {
+//			public void listaPreciosChanged(ListaPreciosChangeEvent event) {
+//				ListaPreciosVO listaPreciosVO = event.getListaPrecios();
+//				listaPreciosEditor.setListaPrecios(listaPreciosVO);
+//				listaPreciosEditor.setEnabled(listaPreciosVO != null);
+//				deleteButton.setEnabled(listaPreciosVO != null);
+//			}
+//		});
 
 		// ListaPreciosEditor a la derecha
 		listaPreciosEditor = new ListaPreciosEditor(null);

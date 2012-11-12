@@ -35,18 +35,19 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 		fieldsLayout = new HorizontalLayout();
 		addComponent(fieldsLayout);
 		fieldsLayout.setSpacing(true);
+		fieldsLayout.setMargin(false, false, true, false);
 
 		codigoTextField = new TextField();
 		fieldsLayout.addComponent(codigoTextField);
 		codigoTextField.setInputPrompt("Código");
 		codigoTextField.setNullRepresentation("");
-		codigoTextField.setWidth("362px");
+		codigoTextField.setWidth("100px");
 
 		descripcionTextField = new TextField();
 		fieldsLayout.addComponent(descripcionTextField);
 		descripcionTextField.setInputPrompt("Descripción");
 		descripcionTextField.setNullRepresentation("");
-		descripcionTextField.setWidth("362px");
+		descripcionTextField.setWidth("100px");
 
 		addButton = new Button("Agregar");
 		fieldsLayout.addComponent(addButton);
@@ -123,7 +124,7 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 
 		resultadosTable = new Table();
 		addComponent(resultadosTable);
-		resultadosTable.setWidth("100%");
+		//resultadosTable.setWidth("100%");
 		resultadosTable.setHeight("500px");
 		resultadosTable.setSelectable(true);
 		resultadosTable.setMultiSelect(false);
