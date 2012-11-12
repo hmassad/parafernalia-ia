@@ -35,12 +35,6 @@ public class Producto implements Serializable {
 	@Column
 	private String origen;
 
-	@Column
-	private String tipo;
-
-	@Column
-	private String medida;
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.materiaPrima", cascade = { CascadeType.ALL })
 	private Collection<MateriaPrimaProducto> materiasPrimasProducto;
 
@@ -49,15 +43,13 @@ public class Producto implements Serializable {
 	}
 
 	public Producto(String codigo, String descripcion, String caracteristica,
-			String marca, String origen, String tipo, String medida,
+			String marca, String origen,
 			Collection<MateriaPrimaProducto> materiasPrimasProductos) {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.caracteristica = caracteristica;
 		this.marca = marca;
 		this.origen = origen;
-		this.tipo = tipo;
-		this.medida = medida;
 		this.materiasPrimasProducto = materiasPrimasProductos;
 	}
 
@@ -101,22 +93,6 @@ public class Producto implements Serializable {
 		this.origen = origen;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getMedida() {
-		return medida;
-	}
-
-	public void setMedida(String medida) {
-		this.medida = medida;
-	}
-
 	public Collection<MateriaPrimaProducto> getMateriasPrimasProducto() {
 		return materiasPrimasProducto;
 	}
@@ -137,8 +113,7 @@ public class Producto implements Serializable {
 		}
 		return new ProductoVO(producto.getCodigo(), producto.getDescripcion(),
 				producto.getCaracteristica(), producto.getMarca(),
-				producto.getOrigen(), producto.getTipo(), producto.getMedida(),
-				mppVOs);
+				producto.getOrigen(), mppVOs);
 	}
 
 	public static Producto toProducto(ProductoVO productoVO) {
@@ -148,8 +123,6 @@ public class Producto implements Serializable {
 		producto.setCaracteristica(productoVO.getCaracteristica());
 		producto.setMarca(productoVO.getMarca());
 		producto.setOrigen(productoVO.getOrigen());
-		producto.setTipo(productoVO.getTipo());
-		producto.setMedida(productoVO.getMedida());
 		for (MateriaPrimaProductoVO mppVO : productoVO
 				.getMateriasPrimasProducto()) {
 			MateriaPrima mp = MateriaPrima.toMateriaPrima(mppVO

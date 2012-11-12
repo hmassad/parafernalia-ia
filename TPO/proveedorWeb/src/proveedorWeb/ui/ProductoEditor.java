@@ -254,7 +254,7 @@ public class ProductoEditor extends Panel {
 		cantidadTextField.setNullRepresentation("");
 		cantidadTextField.setWidth("250px");
 		if (materiaPrimaProductoVO != null)
-			cantidadTextField.setValue(materiaPrimaProductoVO.getCantidad());
+			cantidadTextField.setValue(Integer.toString(materiaPrimaProductoVO.getCantidad()));
 
 		Button deleteButton = new Button();
 		materiasPrimasProductoLayout.addComponent(deleteButton, 2, row);

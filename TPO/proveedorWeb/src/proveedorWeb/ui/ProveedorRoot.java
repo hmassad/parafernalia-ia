@@ -53,7 +53,7 @@ public class ProveedorRoot extends Root {
 		navigator = new Navigator(navigatorContainer);
 		navigator.addView("proveedor", new ProveedorView());
 		navigator.addView("productos", new ProductosView());
-		// navigator.addView("listaPrecios", new ListaPreciosView());
+		navigator.addView("listaPrecios", new ListaPreciosView());
 		navigator.addView("materiaPrima", new MateriaPrimaView());
 		navigator.addView("pedidosCasaCentral", new PedidosMateriaPrimaView());
 		navigator.addView("pedidosMateriaPrima", new PedidosCasaCentralView());

@@ -146,7 +146,7 @@ public class WebServiceFacadeBeanServiceLocator extends
 			setWebServiceFacadeBeanPortEndpointAddress(address);
 		} else { // Unknown Port Name
 			throw new javax.xml.rpc.ServiceException(
-					" Cannot set Endpoint Address for Unknown Port" + portName);
+					"Cannot set Endpoint Address for Unknown Port " + portName);
 		}
 	}
 
