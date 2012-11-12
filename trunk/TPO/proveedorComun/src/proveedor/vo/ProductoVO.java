@@ -18,25 +18,20 @@ public class ProductoVO implements Serializable {
 
 	private String origen;
 
-	private String tipo;
-
-	private String medida;
-
 	private Collection<MateriaPrimaProductoVO> materiasPrimasProducto;
 
 	public ProductoVO() {
 		this.materiasPrimasProducto = new ArrayList<MateriaPrimaProductoVO>();
 	}
 
-	public ProductoVO(String codigo, String descripcion, String caracteristica, String marca, String origen, String tipo, String medida,
+	public ProductoVO(String codigo, String descripcion, String caracteristica,
+			String marca, String origen,
 			Collection<MateriaPrimaProductoVO> materiasPrimasProducto) {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.caracteristica = caracteristica;
 		this.marca = marca;
 		this.origen = origen;
-		this.tipo = tipo;
-		this.medida = medida;
 		this.materiasPrimasProducto = materiasPrimasProducto;
 	}
 
@@ -80,27 +75,12 @@ public class ProductoVO implements Serializable {
 		this.origen = origen;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getMedida() {
-		return medida;
-	}
-
-	public void setMedida(String medida) {
-		this.medida = medida;
-	}
-
 	public Collection<MateriaPrimaProductoVO> getMateriasPrimasProducto() {
 		return materiasPrimasProducto;
 	}
 
-	public void setMateriasPrimas(Collection<MateriaPrimaProductoVO> materiasPrimasProducto) {
+	public void setMateriasPrimas(
+			Collection<MateriaPrimaProductoVO> materiasPrimasProducto) {
 		this.materiasPrimasProducto = materiasPrimasProducto;
 	}
 

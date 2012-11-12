@@ -34,7 +34,8 @@ public class MateriaPrimaProductoVO implements Serializable {
 		this.cantidad = cantidad;
 	}
 
-	public String toString(){
-		return String.format("%s (%d %s)", getMateriaPrima().toString(), getCantidad());
+	public String toString() {
+		return String.format("%s (%d %s)", getMateriaPrima().getCodigo(),
+				getCantidad(), getMateriaPrima().getDescripcion());
 	}
 }

@@ -54,8 +54,7 @@ public class ProveedorView extends VerticalLayout implements View {
 			proveedorEditor.setProveedor(ProveedorClient.get().getProveedor());
 		} catch (Exception e) {
 			e.printStackTrace();
-			new Notification("Ocurrión un error", e.getMessage(),
-					Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
+			new Notification("Ocurrión un error", e.getMessage(), Notification.TYPE_ERROR_MESSAGE).show(getRoot().getPage());
 		}
 	}
 }

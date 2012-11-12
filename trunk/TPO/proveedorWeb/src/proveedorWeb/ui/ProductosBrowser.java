@@ -2,16 +2,21 @@ package proveedorWeb.ui;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import javax.naming.NamingException;
 
 import proveedor.vo.MateriaPrimaProductoVO;
 import proveedor.vo.ProductoVO;
+import proveedorWeb.ejb.ProveedorClient;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -66,7 +71,7 @@ public class ProductosBrowser extends VerticalLayout {
 	private List<ProductoChangeListener> productoChangeListeners;
 	private ProductoVO producto;
 
-	private Table resultadosTable;
+	private Table table;
 
 	public ProductosBrowser() {
 		buildMainLayout();
@@ -79,17 +84,16 @@ public class ProductosBrowser extends VerticalLayout {
 		// setWidth(null);
 		setSpacing(true);
 
-		resultadosTable = new Table();
-		addComponent(resultadosTable);
-		resultadosTable.setWidth("100%");
-		resultadosTable.setHeight("500px");
+		table = new Table();
+		addComponent(table);
+		table.setWidth("100%");
+		table.setHeight("500px");
 		// resultadosTable.setHeight(null);
-		resultadosTable.setSelectable(true);
-		resultadosTable.setMultiSelect(false);
-		resultadosTable.setImmediate(true);
-		resultadosTable
-				.setContainerDataSource(new BeanItemContainer<ProductoVO>(
-						ProductoVO.class, null));
+		table.setSelectable(true);
+		table.setMultiSelect(false);
+		table.setImmediate(true);
+		table.setContainerDataSource(new BeanItemContainer<ProductoVO>(
+				ProductoVO.class, null));
 		Table.ColumnGenerator resultadosTableColumnGenerator = new Table.ColumnGenerator() {
 			public Object generateCell(Table source, Object itemId,
 					Object columnId) {
@@ -110,30 +114,35 @@ public class ProductosBrowser extends VerticalLayout {
 				return label;
 			}
 		};
-		resultadosTable
-				.addGeneratedColumn("mp", resultadosTableColumnGenerator);
-		resultadosTable.setVisibleColumns(new String[] { "codigo",
-				"descripcion", "caracteristica", "marca", "origen", "mp" });
-		resultadosTable.setColumnHeaders(new String[] { "Código",
-				"Descripción", "Característica", "Marca", "Origen",
-				"Materias Primas" });
-		resultadosTable.addListener(new ValueChangeListener() {
+		table.addGeneratedColumn("mp", resultadosTableColumnGenerator);
+		table.setVisibleColumns(new String[] { "codigo", "descripcion",
+				"caracteristica", "marca", "origen", "mp" });
+		table.setColumnHeaders(new String[] { "Código", "Descripción",
+				"Característica", "Marca", "Origen", "Materias Primas" });
+		table.addListener(new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
-				setProducto((ProductoVO) resultadosTable.getValue());
+				setProducto((ProductoVO) table.getValue());
 			}
 		});
 	}
 
 	public void refresh() {
-		setProducto(null);
+		try {
+			setTableRows(ProveedorClient.get().getProductos());
+			setProducto(null);
+		} catch (NamingException e) {
+			e.printStackTrace();
+			new Notification("No se pueden obtener los productos",
+					e.getMessage(), Notification.TYPE_ERROR_MESSAGE)
+					.show(getRoot().getPage());
+		}
 	}
 
-	private void setTableRows(List<ProductoVO> productos) {
-		resultadosTable
-				.setContainerDataSource(new BeanItemContainer<ProductoVO>(
-						ProductoVO.class, productos));
-		resultadosTable.setVisibleColumns(new String[] { "codigo",
-				"descripcion", "caracteristica", "marca", "origen", "mp" });
+	private void setTableRows(Collection<ProductoVO> productos) {
+		table.setContainerDataSource(new BeanItemContainer<ProductoVO>(
+				ProductoVO.class, productos));
+		table.setVisibleColumns(new String[] { "codigo", "descripcion",
+				"caracteristica", "marca", "origen", "mp" });
 	}
 
 	public ProductoVO getProducto() {
@@ -144,7 +153,7 @@ public class ProductosBrowser extends VerticalLayout {
 		if (producto != this.producto) {
 			this.producto = producto;
 			if (producto == null)
-				resultadosTable.select(null);
+				table.select(null);
 			fireProductoChangedEvent();
 		}
 	}
