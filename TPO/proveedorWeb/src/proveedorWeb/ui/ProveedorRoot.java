@@ -41,7 +41,7 @@ public class ProveedorRoot extends Root {
 		menuBar.setHtmlContentAllowed(true);
 
 		CreateMenuItem(menuBar, "<b><em>Proveedor</em></b>", "default");
-		CreateMenuItem(menuBar, "Proveedor", "proveedor");
+		CreateMenuItem(menuBar, "Configuración", "configuracion");
 		CreateMenuItem(menuBar, "Productos", "productos");
 		CreateMenuItem(menuBar, "Lista de Precios", "listaPrecios");
 		CreateMenuItem(menuBar, "Materia Prima", "materiaPrima");
@@ -51,7 +51,7 @@ public class ProveedorRoot extends Root {
 		final Panel navigatorContainer = new Panel();
 		addComponent(navigatorContainer);
 		navigator = new Navigator(navigatorContainer);
-		navigator.addView("proveedor", new ProveedorView());
+		navigator.addView("configuracion", new ConfiguracionView());
 		navigator.addView("productos", new ProductosView());
 		navigator.addView("listaPrecios", new ListaPreciosView());
 		navigator.addView("materiaPrima", new MateriaPrimaView());
