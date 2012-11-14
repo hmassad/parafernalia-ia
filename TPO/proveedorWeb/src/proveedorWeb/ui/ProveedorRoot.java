@@ -40,26 +40,25 @@ public class ProveedorRoot extends Root {
 		menuLayout.addComponent(menuBar);
 		menuBar.setHtmlContentAllowed(true);
 
-		CreateMenuItem(menuBar, "<b><em>Proveedor</em></b>", "default");
-		CreateMenuItem(menuBar, "Configuración", "configuracion");
 		CreateMenuItem(menuBar, "Productos", "productos");
 		CreateMenuItem(menuBar, "Lista de Precios", "listaPrecios");
 		CreateMenuItem(menuBar, "Materia Prima", "materiaPrima");
 		CreateMenuItem(menuBar, "Pedidos de Casa Central", "pedidosCasaCentral");
-		CreateMenuItem(menuBar, "Pedidos de Materia Prima", "pedidosMateriaPrima");
+		CreateMenuItem(menuBar, "Pedidos de Materia Prima",
+				"pedidosMateriaPrima");
 
 		final Panel navigatorContainer = new Panel();
 		addComponent(navigatorContainer);
 		navigator = new Navigator(navigatorContainer);
-		navigator.addView("configuracion", new ConfiguracionView());
 		navigator.addView("productos", new ProductosView());
 		navigator.addView("listaPrecios", new ListaPreciosView());
 		navigator.addView("materiaPrima", new MateriaPrimaView());
-		navigator.addView("pedidosCasaCentral", new PedidosMateriaPrimaView());
-		navigator.addView("pedidosMateriaPrima", new PedidosCasaCentralView());
+		navigator.addView("pedidosMateriaPrima", new PedidosMateriaPrimaView());
+		navigator.addView("pedidosCasaCentral", new PedidosCasaCentralView());
 	}
 
-	private MenuBar.MenuItem CreateMenuItem(MenuBar menuBar, String display, final String viewAndParameters) {
+	private MenuBar.MenuItem CreateMenuItem(MenuBar menuBar, String display,
+			final String viewAndParameters) {
 		Command command = null;
 		if (viewAndParameters != null) {
 			command = new Command() {

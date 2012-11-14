@@ -15,18 +15,22 @@ public class LiPreTest {
 				"telefono", "direccion", "ciudad", "provincia", "codigoPostal");
 
 		Collection<ListaPreciosItemVO> listaPreciosItemVOs = new ArrayList<ListaPreciosItemVO>();
-		listaPreciosItemVOs.add(new ListaPreciosItemVO(new ProductoVO(
-				"codigo1", "descripcion1", "caractaristica1", "marca1",
-				"origen1", new ArrayList<MateriaPrimaProductoVO>()), 1));
-		listaPreciosItemVOs.add(new ListaPreciosItemVO(new ProductoVO(
-				"codigo2", "descripcion2", "caractaristica2", "marca2",
-				"origen2", new ArrayList<MateriaPrimaProductoVO>()), 1));
-		listaPreciosItemVOs.add(new ListaPreciosItemVO(new ProductoVO(
-				"codigo3", "descripcion3", "caractaristica3", "marca3",
-				"origen3", new ArrayList<MateriaPrimaProductoVO>()), 1));
-		listaPreciosItemVOs.add(new ListaPreciosItemVO(new ProductoVO(
-				"codigo4", "descripcion4", "caractaristica4", "marca4",
-				"origen4", new ArrayList<MateriaPrimaProductoVO>()), 1));
+		listaPreciosItemVOs
+				.add(new ListaPreciosItemVO(new ProductoVO("codigo1",
+						"descripcion1", "caractaristica1", "marca1", "origen1",
+						"tipo1", new ArrayList<MateriaPrimaProductoVO>()), 1));
+		listaPreciosItemVOs
+				.add(new ListaPreciosItemVO(new ProductoVO("codigo2",
+						"descripcion2", "caractaristica2", "marca2", "origen2",
+						"tipo2", new ArrayList<MateriaPrimaProductoVO>()), 1));
+		listaPreciosItemVOs
+				.add(new ListaPreciosItemVO(new ProductoVO("codigo3",
+						"descripcion3", "caractaristica3", "marca3", "origen3",
+						"tipo3", new ArrayList<MateriaPrimaProductoVO>()), 1));
+		listaPreciosItemVOs
+				.add(new ListaPreciosItemVO(new ProductoVO("codigo4",
+						"descripcion4", "caractaristica4", "marca4", "origen4",
+						"tipo4", new ArrayList<MateriaPrimaProductoVO>()), 1));
 		ListaPreciosVO listaPreciosVO = new ListaPreciosVO(1, new Date(),
 				new Date(), listaPreciosItemVOs);
 

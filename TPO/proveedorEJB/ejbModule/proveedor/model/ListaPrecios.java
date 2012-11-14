@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import proveedor.vo.ListaPreciosItemVO;
 import proveedor.vo.ListaPreciosVO;
@@ -22,18 +24,12 @@ public class ListaPrecios implements Serializable {
 
 	private static final long serialVersionUID = 5223790124231719250L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
 
-	@Column
 	private Date vigenciaDesde;
 
-	@Column
 	private Date vigenciaHasta;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.listaPrecios", cascade = { CascadeType.ALL })
 	private Collection<ListaPreciosItem> items;
 
 	public ListaPrecios() {
@@ -44,6 +40,9 @@ public class ListaPrecios implements Serializable {
 		this.items = items;
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	public int getId() {
 		return id;
 	}
@@ -52,6 +51,8 @@ public class ListaPrecios implements Serializable {
 		this.id = id;
 	}
 
+	@Column
+	@Temporal(TemporalType.DATE)
 	public Date getVigenciaDesde() {
 		return vigenciaDesde;
 	}
@@ -60,6 +61,8 @@ public class ListaPrecios implements Serializable {
 		this.vigenciaDesde = vigenciaDesde;
 	}
 
+	@Column
+	@Temporal(TemporalType.DATE)
 	public Date getVigenciaHasta() {
 		return vigenciaHasta;
 	}
@@ -68,6 +71,7 @@ public class ListaPrecios implements Serializable {
 		this.vigenciaHasta = vigenciaHasta;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.listaPrecios", cascade = { CascadeType.ALL })
 	public Collection<ListaPreciosItem> getItems() {
 		return items;
 	}

@@ -9,7 +9,7 @@ import proveedor.vo.PedidoMateriaPrimaVO;
 @Local
 public interface PedidoMateriaPrimaSessionBeanLocal {
 
-	void createPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoVO);
+	void createPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO);
 
 	void deletePedidoMateriaPrima(int id);
 
@@ -19,4 +19,5 @@ public interface PedidoMateriaPrimaSessionBeanLocal {
 
 	PedidoMateriaPrimaVO getPedidoMateriaPrima(int id);
 
+	void updatePedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO);
 }

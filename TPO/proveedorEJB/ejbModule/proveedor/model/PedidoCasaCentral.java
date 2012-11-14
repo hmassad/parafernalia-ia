@@ -8,11 +8,12 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import proveedor.vo.PedidoCasaCentralItemVO;
 import proveedor.vo.PedidoCasaCentralVO;
@@ -22,21 +23,14 @@ public class PedidoCasaCentral implements Serializable {
 
 	private static final long serialVersionUID = -104577832298987023L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
 
-	@Column
 	private Date fecha;
 
-	@Column
 	private boolean entregado;
 
-	@Column
 	private String nroOrdenCompra;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pedidoCasaCentral", cascade = { CascadeType.ALL })
 	private Collection<PedidoCasaCentralItem> items;
 
 	public PedidoCasaCentral() {
@@ -52,6 +46,9 @@ public class PedidoCasaCentral implements Serializable {
 		this.items = items;
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	public int getId() {
 		return id;
 	}
@@ -60,14 +57,8 @@ public class PedidoCasaCentral implements Serializable {
 		this.id = id;
 	}
 
-	public boolean getEntregado() {
-		return entregado;
-	}
-
-	public void setEntregado(boolean entregado) {
-		this.entregado = entregado;
-	}
-
+	@Column
+	@Temporal(TemporalType.DATE)
 	public Date getFecha() {
 		return fecha;
 	}
@@ -76,6 +67,16 @@ public class PedidoCasaCentral implements Serializable {
 		this.fecha = fecha;
 	}
 
+	@Column
+	public boolean getEntregado() {
+		return entregado;
+	}
+
+	public void setEntregado(boolean entregado) {
+		this.entregado = entregado;
+	}
+
+	@Column
 	public String getNroOrdenCompra() {
 		return nroOrdenCompra;
 	}
@@ -84,6 +85,7 @@ public class PedidoCasaCentral implements Serializable {
 		this.nroOrdenCompra = nroOrdenCompra;
 	}
 
+	@OneToMany(mappedBy = "pk.pedidoCasaCentral", cascade = { CascadeType.ALL })
 	public Collection<PedidoCasaCentralItem> getItems() {
 		return items;
 	}

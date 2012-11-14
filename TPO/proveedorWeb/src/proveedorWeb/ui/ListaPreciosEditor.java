@@ -23,6 +23,9 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 
+// TODO arreglar DateField de vigenciaDesde y vigenciaHasta
+// TODO cambiar el editor por un gridlayout con checkbox (incluir o no), label (codigo/descripcion), textfield (precio)
+
 @SuppressWarnings("serial")
 public class ListaPreciosEditor extends Panel {
 

@@ -118,6 +118,7 @@ public class ProductoEditor extends Panel {
 	private TextField caracteristicaTextField;
 	private TextField marcaTextField;
 	private TextField origenTextField;
+	private TextField tipoTextField;
 	private GridLayout materiasPrimasProductoLayout;
 	private HorizontalLayout actionsLayout;
 	private Button saveButton;
@@ -189,6 +190,12 @@ public class ProductoEditor extends Panel {
 		origenTextField.setInputPrompt("Origen");
 		origenTextField.setNullRepresentation("");
 		origenTextField.setWidth("362px");
+
+		tipoTextField = new TextField();
+		fieldsLayout.addComponent(tipoTextField);
+		tipoTextField.setInputPrompt("Tipo");
+		tipoTextField.setNullRepresentation("");
+		tipoTextField.setWidth("362px");
 
 		VerticalLayout materiasPrimasContainer = new VerticalLayout();
 		mainLayout.addComponent(materiasPrimasContainer);
@@ -295,6 +302,7 @@ public class ProductoEditor extends Panel {
 		producto.setCaracteristica(caracteristicaTextField.getValue());
 		producto.setMarca(marcaTextField.getValue());
 		producto.setOrigen(origenTextField.getValue());
+		producto.setTipo(tipoTextField.getValue());
 		for (int i = 0; i < materiasPrimasProductoLayout.getRows(); i++) {
 			try {
 				MateriaPrimaVO materiaPrimaVO = (MateriaPrimaVO) ((ComboBox) materiasPrimasProductoLayout
@@ -331,6 +339,7 @@ public class ProductoEditor extends Panel {
 			caracteristicaTextField.setValue(null);
 			marcaTextField.setValue(null);
 			origenTextField.setValue(null);
+			tipoTextField.setValue(null);
 			addMateriaPrimaProducto(null);
 		} else {
 			codigoTextField.setValue(producto.getCodigo());
@@ -338,6 +347,7 @@ public class ProductoEditor extends Panel {
 			caracteristicaTextField.setValue(producto.getCaracteristica());
 			marcaTextField.setValue(producto.getMarca());
 			origenTextField.setValue(producto.getOrigen());
+			tipoTextField.setValue(producto.getTipo());
 			if (producto.getMateriasPrimasProducto().size() == 0) {
 				addMateriaPrimaProducto(null);
 			} else {

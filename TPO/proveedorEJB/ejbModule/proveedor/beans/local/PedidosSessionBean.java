@@ -13,28 +13,19 @@ import javax.jms.QueueSession;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.InitialContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
+import proveedor.configuration.Configuration;
 import proveedor.documentos.OrCompCCAceptada;
 import proveedor.documentos.SolMatPri;
-import proveedor.model.MateriaPrima;
-import proveedor.model.PedidoMateriaPrima;
-import proveedor.model.PedidoMateriaPrimaItem;
+import proveedor.vo.MateriaPrimaProductoVO;
 import proveedor.vo.MateriaPrimaVO;
 import proveedor.vo.PedidoCasaCentralItemVO;
 import proveedor.vo.PedidoCasaCentralVO;
 import proveedor.vo.PedidoMateriaPrimaItemVO;
 import proveedor.vo.PedidoMateriaPrimaVO;
 
-/**
- * Session Bean implementation class PedidosSessionBean
- */
 @Stateless
 public class PedidosSessionBean implements PedidosSessionBeanLocal {
-
-	@PersistenceContext(unitName = "proveedor")
-	private EntityManager entityManager;
 
 	@EJB
 	private MateriaPrimaSessionBeanLocal materiaPrimaSessionBeanLocal;
@@ -52,8 +43,8 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
 
 		// insertar pedidoMateriaPrima
-		entityManager.persist(PedidoMateriaPrima
-				.toPedidoMateriaPrima(pedidoMateriaPrimaVO));
+		pedidoMateriaPrimaSessionBeanLocal
+				.createPedidoMateriaPrima(pedidoMateriaPrimaVO);
 
 		// transformar PedidoMateriaPrimaVO en SolMatPri
 		SolMatPri solMatPri = new SolMatPri();
@@ -63,7 +54,8 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 		for (PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO : pedidoMateriaPrimaVO
 				.getItems()) {
 			solMatPri.getItems().add(
-					new SolMatPri.Item(i, pedidoMateriaPrimaItemVO.getCodigo(),
+					new SolMatPri.Item(i, pedidoMateriaPrimaItemVO
+							.getMateriaPrima().getCodigo(),
 							pedidoMateriaPrimaItemVO.getCantidad()));
 			i++;
 		}
@@ -74,7 +66,8 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 			Hashtable<String, String> props = new Hashtable<String, String>();
 			props.put(InitialContext.INITIAL_CONTEXT_FACTORY,
 					"org.jnp.interfaces.NamingContextFactory");
-			props.put(InitialContext.PROVIDER_URL, "jnp://localhost:1099");
+			props.put(InitialContext.PROVIDER_URL, "jnp://"
+					+ Configuration.MateriaPrimaHost + ":1099");
 			InitialContext ctx = new InitialContext(props);
 
 			Queue queue = (Queue) ctx.lookup("queue/pedidoMateriaPrima");
@@ -116,34 +109,52 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 
 	public void recibirPedidoMateriaPrima(int id) {
 		// buscar PedidoMateriaPrima y marcar como entregado
-		PedidoMateriaPrima pedidoMateriaPrima = entityManager.find(
-				PedidoMateriaPrima.class, id);
-		pedidoMateriaPrima.setEntregado(true);
-		entityManager.persist(pedidoMateriaPrima);
+		PedidoMateriaPrimaVO pedidoMateriaPrimaVO = pedidoMateriaPrimaSessionBeanLocal
+				.getPedidoMateriaPrima(id);
+		pedidoMateriaPrimaVO.setEntregado(true);
+		pedidoMateriaPrimaSessionBeanLocal
+				.updatePedidoMateriaPrima(pedidoMateriaPrimaVO);
 
 		// actualizar stock de MateriaPrima
-		for (PedidoMateriaPrimaItem pedidoMateriaPrimaItem : pedidoMateriaPrima
+		for (PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO : pedidoMateriaPrimaVO
 				.getItems()) {
-			materiaPrimaSessionBeanLocal.ingresarStock(
-					pedidoMateriaPrimaItem.getCodigo(),
-					pedidoMateriaPrimaItem.getCantidad());
+			materiaPrimaSessionBeanLocal.ingresarStock(pedidoMateriaPrimaItemVO
+					.getMateriaPrima().getCodigo(), pedidoMateriaPrimaItemVO
+					.getCantidad());
 		}
 
-		// buscar PedidoCasaCentral que se puedan completar con lo pedido y
-		// enviar a Casa Central
+		// buscar PedidoCasaCentral que se puedan completar y enviar
 		for (PedidoCasaCentralVO pedidoCasaCentralVO : pedidoCasaCentralSessionBeanLocal
 				.getPedidosCasaCentralByEntregado(false)) {
 			boolean entregable = true;
-			for (PedidoCasaCentralItemVO pedidoCasaCentralItemVO : pedidoCasaCentralVO
+
+			// obtener las cantidades en total del pedido de materia prima
+			Hashtable<MateriaPrimaVO, Integer> materiasPrimasPedido = new Hashtable<MateriaPrimaVO, Integer>();
+			for (PedidoCasaCentralItemVO pcciVO : pedidoCasaCentralVO
 					.getItems()) {
+				for (MateriaPrimaProductoVO mppVO : pcciVO.getProducto()
+						.getMateriasPrimasProducto()) {
+					int cantidad = mppVO.getCantidad();
+					if (materiasPrimasPedido.containsKey(mppVO
+							.getMateriaPrima())) {
+						cantidad += materiasPrimasPedido.get(mppVO
+								.getMateriaPrima());
+					}
+					materiasPrimasPedido.put(mppVO.getMateriaPrima(), cantidad);
+				}
+			}
+
+			for (MateriaPrimaVO mpVO : materiasPrimasPedido.keySet()) {
+				int cantidadPedido = materiasPrimasPedido.get(mpVO);
 				MateriaPrimaVO materiaPrimaVO = materiaPrimaSessionBeanLocal
-						.getMateriaPrima(pedidoCasaCentralItemVO.getCodigo());
-				if (materiaPrimaVO.getStock() < pedidoCasaCentralItemVO
-						.getCantidad()) {
+						.getMateriaPrima(mpVO.getCodigo());
+				int cantidadStock = materiaPrimaVO.getStock();
+				if (cantidadStock < cantidadPedido) {
 					entregable = false;
 					break;
 				}
 			}
+
 			if (entregable) {
 				enviarPedidoCasaCentral(pedidoCasaCentralVO);
 			}
@@ -151,27 +162,46 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 	}
 
 	public void recibirPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
+
+		// guardar PedidoCasaCentral
+		pedidoCasaCentralVO.setEntregado(false);
+		pedidoCasaCentralSessionBeanLocal
+				.createPedidoCasaCentral(pedidoCasaCentralVO);
+
+		// obtener las cantidades en total que se piden de materia prima
+		Hashtable<MateriaPrimaVO, Integer> materiasPrimasPedido = new Hashtable<MateriaPrimaVO, Integer>();
+		for (PedidoCasaCentralItemVO pcciVO : pedidoCasaCentralVO.getItems()) {
+			for (MateriaPrimaProductoVO mppVO : pcciVO.getProducto()
+					.getMateriasPrimasProducto()) {
+				int cantidad = mppVO.getCantidad();
+				if (materiasPrimasPedido.containsKey(mppVO.getMateriaPrima())) {
+					cantidad += materiasPrimasPedido.get(mppVO
+							.getMateriaPrima());
+				}
+				materiasPrimasPedido.put(mppVO.getMateriaPrima(), cantidad);
+			}
+		}
+
 		// verificar si con el stock actual se completa el pedido
 		PedidoMateriaPrimaVO pedidoMateriaPrimaVO = new PedidoMateriaPrimaVO();
 		pedidoMateriaPrimaVO.setFecha(new Date());
 		pedidoMateriaPrimaVO.setEntregado(false);
 
-		for (PedidoCasaCentralItemVO item : pedidoCasaCentralVO.getItems()) {
-			MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
-					item.getCodigo());
-			if (materiaPrima.getStock() < item.getCantidad()) {
+		for (MateriaPrimaVO mpVO : materiasPrimasPedido.keySet()) {
+			MateriaPrimaVO materiaPrimaVO = materiaPrimaSessionBeanLocal
+					.getMateriaPrima(mpVO.getCodigo());
+			int cantidadStock = materiaPrimaVO.getStock();
+			int cantidadPedido = materiasPrimasPedido.get(mpVO);
+			if (cantidadStock < cantidadPedido) {
 				pedidoMateriaPrimaVO.getItems().add(
-						new PedidoMateriaPrimaItemVO(item.getCodigo(), item
-								.getCantidad() - materiaPrima.getStock()));
+						new PedidoMateriaPrimaItemVO(mpVO,
+								(cantidadStock - cantidadPedido) * 2));
 			}
 		}
+
 		if (pedidoMateriaPrimaVO.getItems().size() > 0) {
 			// si no se puede cumplir el pedido, pedir el doble de
 			// MateriaPrima que haga falta
-			for (PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO : pedidoMateriaPrimaVO
-					.getItems())
-				pedidoMateriaPrimaItemVO.setCantidad(pedidoMateriaPrimaItemVO
-						.getCantidad() * 2);
 			enviarPedidoMateriaPrima(pedidoMateriaPrimaVO);
 		} else {
 			// si se puede cumplir el pedido, enviar pedido
@@ -180,14 +210,6 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 	}
 
 	public void enviarPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
-
-		// descontar stock
-		for (PedidoCasaCentralItemVO pedidoCasaCentraItemlVO : pedidoCasaCentralVO
-				.getItems()) {
-			materiaPrimaSessionBeanLocal.descontarStock(
-					pedidoCasaCentraItemlVO.getCodigo(),
-					pedidoCasaCentraItemlVO.getCantidad());
-		}
 
 		// enviar mensaje a cola
 		OrCompCCAceptada orCompCCAceptada = new OrCompCCAceptada(
@@ -198,10 +220,12 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 			Hashtable<String, String> props = new Hashtable<String, String>();
 			props.put(InitialContext.INITIAL_CONTEXT_FACTORY,
 					"org.jnp.interfaces.NamingContextFactory");
-			props.put(InitialContext.PROVIDER_URL, "jnp://localhost:1099");
+			props.put(InitialContext.PROVIDER_URL, "jnp://"
+					+ Configuration.CasaCentralHost + ":1099");
 			InitialContext ctx = new InitialContext(props);
 
-			Queue queue = (Queue) ctx.lookup("queue/ordenCompraAcepQueue");
+			Queue queue = (Queue) ctx
+					.lookup("queue/casa-central-solcompra-queque");
 
 			// buscar la Connection Factory en JNDI
 			QueueConnectionFactory qfactory = (QueueConnectionFactory) ctx
@@ -235,7 +259,24 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			return;
 		}
+
+		// descontar stock
+		for (PedidoCasaCentralItemVO pedidoCasaCentraItemlVO : pedidoCasaCentralVO
+				.getItems()) {
+			for (MateriaPrimaProductoVO materiaPrimaProducto : pedidoCasaCentraItemlVO
+					.getProducto().getMateriasPrimasProducto()) {
+				materiaPrimaSessionBeanLocal.descontarStock(
+						materiaPrimaProducto.getMateriaPrima().getCodigo(),
+						pedidoCasaCentraItemlVO.getCantidad());
+			}
+		}
+
+		// marcar pedido como entregado
+		pedidoCasaCentralVO.setEntregado(true);
+		pedidoCasaCentralSessionBeanLocal
+				.updatePedidoCasaCentral(pedidoCasaCentralVO);
 	}
 
 }

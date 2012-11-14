@@ -88,14 +88,6 @@ public class ListaPreciosView extends HorizontalLayout implements View {
 		listaPreciosBrowser = new ListaPreciosBrowser();
 		left.addComponent(listaPreciosBrowser);
 		listaPreciosBrowser.setSizeFull();
-//		listaPreciosBrowser.addListener(new ListaPreciosChangeListener() {
-//			public void listaPreciosChanged(ListaPreciosChangeEvent event) {
-//				ListaPreciosVO listaPreciosVO = event.getListaPrecios();
-//				listaPreciosEditor.setListaPrecios(listaPreciosVO);
-//				listaPreciosEditor.setEnabled(listaPreciosVO != null);
-//				deleteButton.setEnabled(listaPreciosVO != null);
-//			}
-//		});
 
 		// ListaPreciosEditor a la derecha
 		listaPreciosEditor = new ListaPreciosEditor(null);

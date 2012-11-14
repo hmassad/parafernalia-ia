@@ -5,8 +5,11 @@
 		<class>proveedor.model.ListaPreciosItem</class>
 		<class>proveedor.model.MateriaPrima</class>
 		<class>proveedor.model.MateriaPrimaProducto</class>
+		<class>proveedor.model.PedidoCasaCentral</class>
+		<class>proveedor.model.PedidoCasaCentralItem</class>
+		<class>proveedor.model.PedidoMateriaPrima</class>
+		<class>proveedor.model.PedidoMateriaPrimaItem</class>
 		<class>proveedor.model.Producto</class>
-		<class>proveedor.model.Proveedor</class>
 		<jta-data-source>java:/jdbc/proveedor-ds</jta-data-source>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />

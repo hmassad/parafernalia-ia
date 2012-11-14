@@ -3,7 +3,6 @@ package proveedor.model;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 @Embeddable
@@ -11,10 +10,8 @@ public class MateriaPrimaProductoPk implements Serializable {
 
 	private static final long serialVersionUID = -7655231103229499772L;
 
-	@ManyToOne(fetch = FetchType.LAZY)
 	private Producto producto;
 
-	@ManyToOne(fetch = FetchType.LAZY)
 	private MateriaPrima materiaPrima;
 
 	public MateriaPrimaProductoPk() {
@@ -25,6 +22,7 @@ public class MateriaPrimaProductoPk implements Serializable {
 		this.materiaPrima = materiaPrima;
 	}
 
+	@ManyToOne
 	public Producto getProducto() {
 		return producto;
 	}
@@ -33,6 +31,7 @@ public class MateriaPrimaProductoPk implements Serializable {
 		this.producto = producto;
 	}
 
+	@ManyToOne
 	public MateriaPrima getMateriaPrima() {
 		return materiaPrima;
 	}

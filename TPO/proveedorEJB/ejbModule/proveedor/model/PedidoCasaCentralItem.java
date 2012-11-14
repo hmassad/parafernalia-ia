@@ -2,45 +2,66 @@ package proveedor.model;
 
 import java.io.Serializable;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 
 import proveedor.vo.PedidoCasaCentralItemVO;
 
 @Entity
+@AssociationOverrides({
+		@AssociationOverride(name = "pk.pedidoCasaCentral", joinColumns = @JoinColumn(name = "pedidoCasaCentral", nullable = false)),
+		@AssociationOverride(name = "pk.producto", joinColumns = @JoinColumn(name = "producto", nullable = false)) })
 public class PedidoCasaCentralItem implements Serializable {
 
-	private static final long serialVersionUID = -8241932010498640786L;
+	private static final long serialVersionUID = -8938777789442961126L;
 
-	@Id
-	@Column
-	private String codigo;
+	private PedidoCasaCentralItemPk pk;
 
-	@Column
 	private int cantidad;
 
-	@ManyToOne
-	private PedidoCasaCentral pedidoCasaCentral;
-
 	public PedidoCasaCentralItem() {
+		pk = new PedidoCasaCentralItemPk();
 	}
 
-	public PedidoCasaCentralItem(String codigo, int cantidad, PedidoCasaCentral pedidoCasaCentral) {
-		this.codigo = codigo;
+	public PedidoCasaCentralItem(PedidoCasaCentral pedidoCasaCentral,
+			Producto producto, int cantidad) {
+		this.pk = new PedidoCasaCentralItemPk(pedidoCasaCentral, producto);
 		this.cantidad = cantidad;
-		this.pedidoCasaCentral = pedidoCasaCentral;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	@EmbeddedId
+	public PedidoCasaCentralItemPk getPk() {
+		return pk;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setPk(PedidoCasaCentralItemPk pk) {
+		this.pk = pk;
 	}
 
+	@Transient
+	public PedidoCasaCentral getPedidoCasaCentral() {
+		return pk.getPedidoCasaCentral();
+	}
+
+	public void setPedidoCasaCentral(PedidoCasaCentral pedidoCasaCentral) {
+		pk.setPedidoCasaCentral(pedidoCasaCentral);
+	}
+
+	@Transient
+	public Producto getProducto() {
+		return pk.getProducto();
+	}
+
+	public void setProducto(Producto producto) {
+		pk.setProducto(producto);
+	}
+
+	@Column
 	public int getCantidad() {
 		return cantidad;
 	}
@@ -49,21 +70,12 @@ public class PedidoCasaCentralItem implements Serializable {
 		this.cantidad = cantidad;
 	}
 
-	public PedidoCasaCentral getPedidoCasaCentral() {
-		return pedidoCasaCentral;
-	}
-
-	public void setPedidoCasaCentral(PedidoCasaCentral pedidoCasaCentral) {
-		this.pedidoCasaCentral = pedidoCasaCentral;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + cantidad;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		result = prime * result + ((pedidoCasaCentral == null) ? 0 : pedidoCasaCentral.hashCode());
+		result = prime * result + ((pk == null) ? 0 : pk.hashCode());
 		return result;
 	}
 
@@ -78,30 +90,36 @@ public class PedidoCasaCentralItem implements Serializable {
 		PedidoCasaCentralItem other = (PedidoCasaCentralItem) obj;
 		if (cantidad != other.cantidad)
 			return false;
-		if (codigo == null) {
-			if (other.codigo != null)
+		if (pk == null) {
+			if (other.pk != null)
 				return false;
-		} else if (!codigo.equals(other.codigo))
-			return false;
-		if (pedidoCasaCentral == null) {
-			if (other.pedidoCasaCentral != null)
-				return false;
-		} else if (!pedidoCasaCentral.equals(other.pedidoCasaCentral))
+		} else if (!pk.equals(other.pk))
 			return false;
 		return true;
 	}
 
 	public String toString() {
-		return String.format("%s: %d", getCodigo(), getCantidad());
+		return String
+				.format("%s: %d", getProducto().getCodigo(), getCantidad());
 	}
 
-	public static PedidoCasaCentralItemVO toPedidoCasaCentralItemVO(PedidoCasaCentralItem pedidoCasaCentralItem) {
-		return new PedidoCasaCentralItemVO(pedidoCasaCentralItem.getCodigo(), pedidoCasaCentralItem.getCantidad());
+	public static PedidoCasaCentralItemVO toPedidoCasaCentralItemVO(
+			PedidoCasaCentralItem pedidoCasaCentralItem) {
+		return new PedidoCasaCentralItemVO(
+				Producto.toProductoVO(pedidoCasaCentralItem.getProducto()),
+				pedidoCasaCentralItem.getCantidad());
 	}
 
-	public static PedidoCasaCentralItem toPedidoCasaCentralItem(PedidoCasaCentral pedidoCasaCentral, PedidoCasaCentralItemVO pedidoCasaCentralItemVO) {
-		return new PedidoCasaCentralItem(pedidoCasaCentralItemVO.getCodigo(), pedidoCasaCentralItemVO.getCantidad(),
-				pedidoCasaCentral);
+	public static PedidoCasaCentralItem toPedidoCasaCentralItem(
+			PedidoCasaCentral pedidoCasaCentral,
+			PedidoCasaCentralItemVO pedidoCasaCentralItemVO) {
+
+		PedidoCasaCentralItem pcci = new PedidoCasaCentralItem();
+		pcci.setPedidoCasaCentral(pedidoCasaCentral);
+		pcci.setProducto(Producto.toProducto(pedidoCasaCentralItemVO
+				.getProducto()));
+		pcci.setCantidad(pedidoCasaCentralItemVO.getCantidad());
+		return pcci;
 	}
 
 }

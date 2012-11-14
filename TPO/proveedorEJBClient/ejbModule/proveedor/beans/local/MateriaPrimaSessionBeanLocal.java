@@ -10,15 +10,15 @@ import proveedor.vo.MateriaPrimaVO;
 public interface MateriaPrimaSessionBeanLocal {
 
 	void createMateriaPrima(MateriaPrimaVO materiaPrima);
-	
+
 	void deleteMateriaPrima(String codigo);
-	
+
 	Collection<MateriaPrimaVO> getMateriasPrimas();
 
 	MateriaPrimaVO getMateriaPrima(String codigo);
-	
-	void ingresarStock(String codigoMateriaPrima, int cantidad);
 
-	void descontarStock(String codigoMateriaPrima, int cantidad);
+	void ingresarStock(String codigo, int cantidad);
+
+	void descontarStock(String codigo, int cantidad);
 
 }

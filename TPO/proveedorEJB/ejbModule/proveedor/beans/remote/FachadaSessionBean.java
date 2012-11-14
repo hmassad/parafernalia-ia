@@ -1,9 +1,12 @@
 package proveedor.beans.remote;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.Collection;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.xml.rpc.ServiceException;
 
 import proveedor.beans.local.ListaPreciosSessionBeanLocal;
 import proveedor.beans.local.MateriaPrimaSessionBeanLocal;
@@ -41,10 +44,10 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 	ProductosSessionBeanLocal productosSessionBeanLocal;
 
 	@EJB
-	ProveedorSessionBeanLocal proveedorSessionBeanLocal;
+	PedidosSessionBeanLocal pedidosSessionBeanLocal;
 
 	@EJB
-	PedidosSessionBeanLocal pedidosSessionBeanLocal;
+	ProveedorSessionBeanLocal proveedorSessionBeanLocal;
 
 	public FachadaSessionBean() {
 	}
@@ -85,26 +88,12 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 		return materiaPrimaSessionBeanLocal.getMateriaPrima(codigo);
 	}
 
-	public void createProducto(ProductoVO productoVO) {
+	public void createProducto(ProductoVO productoVO) throws RemoteException,
+			MalformedURLException, ServiceException {
 		productosSessionBeanLocal.createProducto(productoVO);
 
-//		NvoProd nvoProd = new NvoProd(productoVO.getCodigo(),
-//				productoVO.getCaracteristica(), productoVO.getMarca(),
-//				productoVO.getOrigen(), productoVO.getTipo(),
-//				productoVO.getCodigo());
-//		String xml = nvoProd.serialize();
-//		WebServiceFacadeBeanServiceLocator serviceLocator = new WebServiceFacadeBeanServiceLocator();
-//		try {
-//			WebServiceFacadeBeanProxy proxy = new WebServiceFacadeBeanProxy();
-//			proxy.setEndpoint("http://127.0.0.1:8080/casaCentralEAR-casaCentralEJB/WebServiceFacadeBean");
-//			WebServiceFacadeBean port = serviceLocator
-//					.getWebServiceFacadeBeanPort();
-//			port.notificarNuevoRodamiento(xml);
-//		} catch (ServiceException e) {
-//			e.printStackTrace();
-//		} catch (RemoteException e) {
-//			e.printStackTrace();
-//		}
+//		new NuevoRodamientoWebServiceClient()
+//				.notificarNuevoProducto(productoVO);
 	}
 
 	public void deleteProducto(String codigo) {
@@ -117,14 +106,6 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 
 	public ProductoVO getProducto(String codigo) {
 		return productosSessionBeanLocal.getProducto(codigo);
-	}
-
-	public ProveedorVO getProveedor() {
-		return proveedorSessionBeanLocal.getProveedor();
-	}
-
-	public void updateProveedor(ProveedorVO proveedorVO) {
-		proveedorSessionBeanLocal.updateProveedor(proveedorVO);
 	}
 
 	public void createPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoVO) {
@@ -147,6 +128,12 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 
 	public PedidoMateriaPrimaVO getPedidoMateriaPrima(int id) {
 		return pedidoMateriaPrimaSessionBeanLocal.getPedidoMateriaPrima(id);
+	}
+
+	public void updatePedidoMateriaPrima(
+			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
+		pedidoMateriaPrimaSessionBeanLocal
+				.updatePedidoMateriaPrima(pedidoMateriaPrimaVO);
 	}
 
 	public void enviarPedidoMateriaPrima(
@@ -181,6 +168,11 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 		return pedidoCasaCentralSessionBeanLocal.getPedidoCasaCentral(id);
 	}
 
+	public void updatePedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
+		pedidoCasaCentralSessionBeanLocal
+				.updatePedidoCasaCentral(pedidoCasaCentralVO);
+	}
+
 	public void recibirPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
 		pedidosSessionBeanLocal.recibirPedidoCasaCentral(pedidoCasaCentralVO);
 	}
@@ -197,6 +189,10 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 	public void descontarStock(String codigoMateriaPrima, int cantidad) {
 		materiaPrimaSessionBeanLocal.descontarStock(codigoMateriaPrima,
 				cantidad);
+	}
+
+	public ProveedorVO getProveedor() {
+		return proveedorSessionBeanLocal.getProveedor();
 	}
 
 }

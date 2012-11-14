@@ -10,14 +10,11 @@ public class ListaPreciosItemPk implements Serializable {
 
 	private static final long serialVersionUID = -3594072828811225019L;
 
-	@ManyToOne
 	private ListaPrecios listaPrecios;
 
-	@ManyToOne
 	private Producto producto;
 
 	public ListaPreciosItemPk() {
-
 	}
 
 	public ListaPreciosItemPk(ListaPrecios listaPrecios, Producto producto) {
@@ -25,6 +22,7 @@ public class ListaPreciosItemPk implements Serializable {
 		this.producto = producto;
 	}
 
+	@ManyToOne
 	public ListaPrecios getListaPrecios() {
 		return listaPrecios;
 	}
@@ -33,6 +31,7 @@ public class ListaPreciosItemPk implements Serializable {
 		this.listaPrecios = listaPrecios;
 	}
 
+	@ManyToOne
 	public Producto getProducto() {
 		return producto;
 	}

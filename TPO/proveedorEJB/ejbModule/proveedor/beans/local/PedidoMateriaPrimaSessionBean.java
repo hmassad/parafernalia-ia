@@ -26,8 +26,10 @@ public class PedidoMateriaPrimaSessionBean implements
 
 	public void createPedidoMateriaPrima(
 			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
-		entityManager.persist(PedidoMateriaPrima
-				.toPedidoMateriaPrima(pedidoMateriaPrimaVO));
+		PedidoMateriaPrima pedidoMateriaPrima = PedidoMateriaPrima
+				.toPedidoMateriaPrima(pedidoMateriaPrimaVO);
+		entityManager.persist(pedidoMateriaPrima);
+		pedidoMateriaPrimaVO.setId(pedidoMateriaPrima.getId());
 	}
 
 	public void deletePedidoMateriaPrima(int id) {
@@ -59,8 +61,8 @@ public class PedidoMateriaPrimaSessionBean implements
 	public Collection<PedidoMateriaPrimaVO> getPedidosMateriaPrimaByEntregado(
 			boolean entregado) {
 		Query query = entityManager.createQuery(
-				"SELECT PMP FROM PedidoMateriaPrima PMP WHERE entregado = 1?")
-				.setParameter(1, entregado);
+				"SELECT PMP FROM PedidoMateriaPrima PMP WHERE PMP.entregado = :entregado")
+				.setParameter("entregado", entregado);
 		Collection<PedidoMateriaPrimaVO> pedidosMateriaPrimaVO = new ArrayList<PedidoMateriaPrimaVO>();
 		for (PedidoMateriaPrima pedidoMateriaPrima : (Collection<PedidoMateriaPrima>) query
 				.getResultList()) {
@@ -68,6 +70,13 @@ public class PedidoMateriaPrimaSessionBean implements
 					.toPedidoMateriaPrimaVO(pedidoMateriaPrima));
 		}
 		return pedidosMateriaPrimaVO;
+	}
+
+	public void updatePedidoMateriaPrima(
+			PedidoMateriaPrimaVO pedidoMateriaPrimaVO) {
+		PedidoMateriaPrima pedidoMateriaPrima = PedidoMateriaPrima
+				.toPedidoMateriaPrima(pedidoMateriaPrimaVO);
+		pedidoMateriaPrima = entityManager.merge(pedidoMateriaPrima);
 	}
 
 }

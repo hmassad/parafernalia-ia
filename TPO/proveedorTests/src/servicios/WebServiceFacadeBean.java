@@ -8,5 +8,5 @@
 package servicios;
 
 public interface WebServiceFacadeBean extends java.rmi.Remote {
-    public void notificarNuevoRodamiento(java.lang.String arg0) throws java.rmi.RemoteException;
+    public java.lang.String getListaPrecios() throws java.rmi.RemoteException;
 }

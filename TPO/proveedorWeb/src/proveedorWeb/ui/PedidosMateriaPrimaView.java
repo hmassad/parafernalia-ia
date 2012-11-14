@@ -11,6 +11,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
+//TODO agregar columna con detalle del pedido
+
 @SuppressWarnings("serial")
 public class PedidosMateriaPrimaView extends VerticalLayout implements View {
 

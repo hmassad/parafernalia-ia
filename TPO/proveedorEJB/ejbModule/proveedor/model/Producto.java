@@ -14,28 +14,23 @@ import javax.persistence.OneToMany;
 import proveedor.vo.MateriaPrimaProductoVO;
 import proveedor.vo.ProductoVO;
 
-@Entity(name = "Producto")
+@Entity
 public class Producto implements Serializable {
 
 	private static final long serialVersionUID = -487364569551425362L;
 
-	@Id
-	@Column
 	private String codigo;
 
-	@Column
 	private String descripcion;
 
-	@Column
 	private String caracteristica;
 
-	@Column
 	private String marca;
 
-	@Column
 	private String origen;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.materiaPrima", cascade = { CascadeType.ALL })
+	private String tipo;
+
 	private Collection<MateriaPrimaProducto> materiasPrimasProducto;
 
 	public Producto() {
@@ -43,16 +38,19 @@ public class Producto implements Serializable {
 	}
 
 	public Producto(String codigo, String descripcion, String caracteristica,
-			String marca, String origen,
+			String marca, String origen, String tipo,
 			Collection<MateriaPrimaProducto> materiasPrimasProductos) {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.caracteristica = caracteristica;
 		this.marca = marca;
 		this.origen = origen;
+		this.tipo = tipo;
 		this.materiasPrimasProducto = materiasPrimasProductos;
 	}
 
+	@Id
+	@Column
 	public String getCodigo() {
 		return codigo;
 	}
@@ -61,6 +59,7 @@ public class Producto implements Serializable {
 		this.codigo = codigo;
 	}
 
+	@Column
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -69,6 +68,7 @@ public class Producto implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	@Column
 	public String getCaracteristica() {
 		return caracteristica;
 	}
@@ -77,6 +77,7 @@ public class Producto implements Serializable {
 		this.caracteristica = caracteristica;
 	}
 
+	@Column
 	public String getMarca() {
 		return marca;
 	}
@@ -85,6 +86,7 @@ public class Producto implements Serializable {
 		this.marca = marca;
 	}
 
+	@Column
 	public String getOrigen() {
 		return origen;
 	}
@@ -93,6 +95,16 @@ public class Producto implements Serializable {
 		this.origen = origen;
 	}
 
+	@Column
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.producto", cascade = { CascadeType.ALL })
 	public Collection<MateriaPrimaProducto> getMateriasPrimasProducto() {
 		return materiasPrimasProducto;
 	}
@@ -113,7 +125,7 @@ public class Producto implements Serializable {
 		}
 		return new ProductoVO(producto.getCodigo(), producto.getDescripcion(),
 				producto.getCaracteristica(), producto.getMarca(),
-				producto.getOrigen(), mppVOs);
+				producto.getOrigen(), producto.getTipo(), mppVOs);
 	}
 
 	public static Producto toProducto(ProductoVO productoVO) {
@@ -123,6 +135,7 @@ public class Producto implements Serializable {
 		producto.setCaracteristica(productoVO.getCaracteristica());
 		producto.setMarca(productoVO.getMarca());
 		producto.setOrigen(productoVO.getOrigen());
+		producto.setTipo(productoVO.getTipo());
 		for (MateriaPrimaProductoVO mppVO : productoVO
 				.getMateriasPrimasProducto()) {
 			MateriaPrima mp = MateriaPrima.toMateriaPrima(mppVO

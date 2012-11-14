@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import proveedor.beans.local.ProductosSessionBeanLocal;
 import proveedor.model.Producto;
 import proveedor.vo.ProductoVO;
 
@@ -25,7 +24,8 @@ public class ProductosSessionBean implements ProductosSessionBeanLocal {
 	}
 
 	public void createProducto(ProductoVO productoVO) {
-		entityManager.persist(Producto.toProducto(productoVO));
+		Producto producto = Producto.toProducto(productoVO);
+		producto = entityManager.merge(producto);
 	}
 
 	public void deleteProducto(String codigo) {

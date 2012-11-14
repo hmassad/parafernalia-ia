@@ -102,9 +102,9 @@ public class ListaPreciosBrowser extends VerticalLayout {
 				if (columnId.equals("i")) {
 					for (ListaPreciosItemVO listaPreciosItem : listaPrecios
 							.getItems()) {
-						if (sb.length() == 0)
+						if (sb.length() > 0)
 							sb.append("<br/>");
-						sb.append(String.format("%d $%.2f", listaPreciosItem
+						sb.append(String.format("%s %.02f", listaPreciosItem
 								.getProducto().getCodigo(), listaPreciosItem
 								.getPrecioUnitario()));
 					}
