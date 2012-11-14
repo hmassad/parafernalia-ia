@@ -6,7 +6,6 @@
 		<project>materiaPrimaComun</project>
 		<project>materiaPrimaEJB</project>
 		<project>materiaPrimaEJBClient</project>
-		<project>materiaPrimaWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
