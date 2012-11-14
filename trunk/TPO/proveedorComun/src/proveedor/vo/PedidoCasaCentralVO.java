@@ -43,7 +43,7 @@ public class PedidoCasaCentralVO implements Serializable {
 		return entregado;
 	}
 
-	public void setEstado(boolean entregado) {
+	public void setEntregado(boolean entregado) {
 		this.entregado = entregado;
 	}
 

@@ -6,24 +6,24 @@ public class PedidoCasaCentralItemVO implements Serializable {
 
 	private static final long serialVersionUID = -8241932010498640786L;
 
-	private String codigo;
+	private ProductoVO producto;
 
 	private int cantidad;
 
 	public PedidoCasaCentralItemVO() {
 	}
 
-	public PedidoCasaCentralItemVO(String codigo, int cantidad) {
-		this.codigo = codigo;
+	public PedidoCasaCentralItemVO(ProductoVO producto, int cantidad) {
+		this.producto = producto;
 		this.cantidad = cantidad;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public ProductoVO getProducto() {
+		return producto;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setProducto(ProductoVO producto) {
+		this.producto = producto;
 	}
 
 	public int getCantidad() {
@@ -35,6 +35,7 @@ public class PedidoCasaCentralItemVO implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("%s: %d", getCodigo(), getCantidad());
+		return String
+				.format("%s: %d", getProducto().getCodigo(), getCantidad());
 	}
 }

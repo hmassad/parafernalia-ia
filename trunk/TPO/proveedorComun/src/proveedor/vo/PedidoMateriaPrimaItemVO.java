@@ -6,24 +6,24 @@ public class PedidoMateriaPrimaItemVO implements Serializable {
 
 	private static final long serialVersionUID = -9091108485176472960L;
 
-	private String codigo;
+	private MateriaPrimaVO materiaPrima;
 
 	private int cantidad;
 
 	public PedidoMateriaPrimaItemVO() {
 	}
 
-	public PedidoMateriaPrimaItemVO(String codigo, int cantidad) {
-		this.codigo = codigo;
+	public PedidoMateriaPrimaItemVO(MateriaPrimaVO materiaPrima, int cantidad) {
+		this.materiaPrima = materiaPrima;
 		this.cantidad = cantidad;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public MateriaPrimaVO getMateriaPrima() {
+		return materiaPrima;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setMateriaPrima(MateriaPrimaVO materiaPrima) {
+		this.materiaPrima = materiaPrima;
 	}
 
 	public int getCantidad() {
@@ -35,6 +35,7 @@ public class PedidoMateriaPrimaItemVO implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("%s: %d", getCodigo(), getCantidad());
+		return String.format("%s: %d", getMateriaPrima().getCodigo(),
+				getCantidad());
 	}
 }
