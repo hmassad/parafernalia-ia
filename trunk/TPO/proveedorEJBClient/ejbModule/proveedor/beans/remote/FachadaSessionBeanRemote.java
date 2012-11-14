@@ -1,8 +1,11 @@
 package proveedor.beans.remote;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.Collection;
 
 import javax.ejb.Remote;
+import javax.xml.rpc.ServiceException;
 
 import proveedor.vo.ListaPreciosVO;
 import proveedor.vo.MateriaPrimaVO;
@@ -12,13 +15,6 @@ import proveedor.vo.ProductoVO;
 import proveedor.vo.ProveedorVO;
 
 @Remote
-// public interface FachadaSessionBeanRemote extends
-// ListaPreciosSessionBeanLocal,
-// MateriaPrimaSessionBeanLocal, ProductosSessionBeanLocal,
-// ProveedorSessionBeanLocal, PedidoMateriaPrimaSessionBeanLocal,
-// PedidoCasaCentralSessionBeanLocal {
-//
-// }
 public interface FachadaSessionBeanRemote {
 
 	// Materia Prima
@@ -60,9 +56,11 @@ public interface FachadaSessionBeanRemote {
 
 	PedidoCasaCentralVO getPedidoCasaCentral(int id);
 
+	void updatePedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);
+	
 	// Pedido Materia Prima
 
-	void createPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoVO);
+	void createPedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO);
 
 	void deletePedidoMateriaPrima(int id);
 
@@ -73,21 +71,18 @@ public interface FachadaSessionBeanRemote {
 
 	PedidoMateriaPrimaVO getPedidoMateriaPrima(int id);
 
+	void updatePedidoMateriaPrima(PedidoMateriaPrimaVO pedidoMateriaPrimaVO);
+	
 	// Productos
 
-	void createProducto(ProductoVO producto);
+	void createProducto(ProductoVO producto) throws RemoteException,
+			MalformedURLException, ServiceException;
 
 	void deleteProducto(String codigo);
 
 	Collection<ProductoVO> getProductos();
 
 	ProductoVO getProducto(String codigo);
-
-	// Proveedor
-
-	void updateProveedor(ProveedorVO proveedor);
-
-	ProveedorVO getProveedor();
 
 	// Pedidos
 
@@ -98,5 +93,9 @@ public interface FachadaSessionBeanRemote {
 	void recibirPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);
 
 	void enviarPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);
+
+	// Proveedor
+	
+	ProveedorVO getProveedor();
 
 }

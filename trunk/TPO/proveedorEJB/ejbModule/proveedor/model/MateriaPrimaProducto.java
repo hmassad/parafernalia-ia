@@ -6,19 +6,18 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 
 import proveedor.vo.MateriaPrimaProductoVO;
 
 @Entity
 @AssociationOverrides({
-		@AssociationOverride(name = "pk.producto", joinColumns = { @JoinColumn(name = "producto", nullable = false) }),
-		@AssociationOverride(name = "pk.materiaPrima", joinColumns = { @JoinColumn(name = "materiaPrima", nullable = false) }) })
+		@AssociationOverride(name = "pk.producto", joinColumns = @JoinColumn(name = "producto", nullable = false)),
+		@AssociationOverride(name = "pk.materiaPrima", joinColumns = @JoinColumn(name = "materiaPrima", nullable = false)) })
 public class MateriaPrimaProducto {
 
-	@EmbeddedId
 	private MateriaPrimaProductoPk pk;
 
-	@Column
 	private int cantidad;
 
 	public MateriaPrimaProducto() {
@@ -31,6 +30,7 @@ public class MateriaPrimaProducto {
 		this.cantidad = cantidad;
 	}
 
+	@EmbeddedId
 	public MateriaPrimaProductoPk getPk() {
 		return pk;
 	}
@@ -39,6 +39,7 @@ public class MateriaPrimaProducto {
 		this.pk = pk;
 	}
 
+	@Transient
 	public Producto getProducto() {
 		return pk.getProducto();
 	}
@@ -47,6 +48,7 @@ public class MateriaPrimaProducto {
 		pk.setProducto(producto);
 	}
 
+	@Transient
 	public MateriaPrima getMateriaPrima() {
 		return pk.getMateriaPrima();
 	}
@@ -55,6 +57,7 @@ public class MateriaPrimaProducto {
 		pk.setMateriaPrima(materiaPrima);
 	}
 
+	@Column
 	public int getCantidad() {
 		return cantidad;
 	}

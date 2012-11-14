@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import proveedor.vo.PedidoMateriaPrimaItemVO;
 import proveedor.vo.PedidoMateriaPrimaVO;
@@ -22,18 +24,12 @@ public class PedidoMateriaPrima implements Serializable {
 
 	private static final long serialVersionUID = -2765474910705830418L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
 
-	@Column
 	private boolean entregado;
 
-	@Column
 	private Date fecha;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pedidoMateriaPrima", cascade = { CascadeType.ALL })
 	private Collection<PedidoMateriaPrimaItem> items;
 
 	public PedidoMateriaPrima() {
@@ -48,6 +44,9 @@ public class PedidoMateriaPrima implements Serializable {
 		this.items = items;
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	public int getId() {
 		return id;
 	}
@@ -56,6 +55,7 @@ public class PedidoMateriaPrima implements Serializable {
 		this.id = id;
 	}
 
+	@Column
 	public boolean getEntregado() {
 		return entregado;
 	}
@@ -64,6 +64,8 @@ public class PedidoMateriaPrima implements Serializable {
 		this.entregado = entregado;
 	}
 
+	@Column
+	@Temporal(TemporalType.DATE)
 	public Date getFecha() {
 		return fecha;
 	}
@@ -72,6 +74,7 @@ public class PedidoMateriaPrima implements Serializable {
 		this.fecha = fecha;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.pedidoMateriaPrima", cascade = { CascadeType.ALL })
 	public Collection<PedidoMateriaPrimaItem> getItems() {
 		return items;
 	}

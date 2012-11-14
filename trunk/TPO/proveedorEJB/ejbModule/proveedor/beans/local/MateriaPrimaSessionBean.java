@@ -24,7 +24,8 @@ public class MateriaPrimaSessionBean implements MateriaPrimaSessionBeanLocal {
 	}
 
 	public void createMateriaPrima(MateriaPrimaVO materiaPrimaVO) {
-		entityManager.persist(MateriaPrima.toMateriaPrima(materiaPrimaVO));
+		MateriaPrima materiaPrima = MateriaPrima.toMateriaPrima(materiaPrimaVO);
+		materiaPrima = entityManager.merge(materiaPrima);
 	}
 
 	public void deleteMateriaPrima(String codigo) {
@@ -55,13 +56,13 @@ public class MateriaPrimaSessionBean implements MateriaPrimaSessionBeanLocal {
 		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
 				codigoMateriaPrima);
 		materiaPrima.setStock(materiaPrima.getStock() - cantidad);
-		entityManager.persist(materiaPrima);
+		entityManager.merge(materiaPrima);
 	}
 
 	public void descontarStock(String codigoMateriaPrima, int cantidad) {
 		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
 				codigoMateriaPrima);
 		materiaPrima.setStock(materiaPrima.getStock() + cantidad);
-		entityManager.persist(materiaPrima);
+		entityManager.merge(materiaPrima);
 	}
 }

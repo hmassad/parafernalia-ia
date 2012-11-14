@@ -9,14 +9,10 @@ import proveedor.vo.MateriaPrimaVO;
 @Entity
 public class MateriaPrima {
 
-	@Id
-	@Column
 	private String codigo;
 
-	@Column
 	private String descripcion;
 
-	@Column
 	private int stock;
 
 	public MateriaPrima() {
@@ -28,6 +24,8 @@ public class MateriaPrima {
 		this.stock = stock;
 	}
 
+	@Id
+	@Column
 	public String getCodigo() {
 		return codigo;
 	}
@@ -36,6 +34,7 @@ public class MateriaPrima {
 		this.codigo = codigo;
 	}
 
+	@Column
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -44,6 +43,7 @@ public class MateriaPrima {
 		this.descripcion = descripcion;
 	}
 
+	@Column
 	public int getStock() {
 		return stock;
 	}

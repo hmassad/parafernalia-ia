@@ -27,7 +27,7 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 	private TextField descripcionTextField;
 	private Button addButton;
 	private Button deleteButton;
-	private Table resultadosTable;
+	private Table table;
 
 	public MateriaPrimaView() {
 		setSizeFull();
@@ -96,7 +96,7 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 							public void onClose(ConfirmDialog dialog) {
 								if (dialog.isConfirmed())
 									try {
-										MateriaPrimaVO materiaPrima = (MateriaPrimaVO) resultadosTable
+										MateriaPrimaVO materiaPrima = (MateriaPrimaVO) table
 												.getValue();
 										ProveedorClient.get()
 												.deleteMateriaPrima(
@@ -122,23 +122,23 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 			}
 		});
 
-		resultadosTable = new Table();
-		addComponent(resultadosTable);
-		//resultadosTable.setWidth("100%");
-		resultadosTable.setHeight("500px");
-		resultadosTable.setSelectable(true);
-		resultadosTable.setMultiSelect(false);
-		resultadosTable.setImmediate(true);
-		resultadosTable
+		table = new Table();
+		addComponent(table);
+		table.setWidth("100%");
+		table.setHeight("500px");
+		table.setSelectable(true);
+		table.setMultiSelect(false);
+		table.setImmediate(true);
+		table
 				.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
 						MateriaPrimaVO.class, null));
-		resultadosTable.setVisibleColumns(new String[] { "codigo",
+		table.setVisibleColumns(new String[] { "codigo",
 				"descripcion" });
-		resultadosTable
+		table
 				.setColumnHeaders(new String[] { "Código", "Descripción" });
-		resultadosTable.addListener(new ValueChangeListener() {
+		table.addListener(new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
-				deleteButton.setEnabled(resultadosTable.getValue() != null);
+				deleteButton.setEnabled(table.getValue() != null);
 			}
 		});
 
@@ -152,10 +152,10 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 		try {
 			Collection<MateriaPrimaVO> materiaPrimaVO = ProveedorClient.get()
 					.getMateriasPrimas();
-			resultadosTable
+			table
 					.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
 							MateriaPrimaVO.class, materiaPrimaVO));
-			resultadosTable.setVisibleColumns(new String[] { "codigo",
+			table.setVisibleColumns(new String[] { "codigo",
 					"descripcion" });
 		} catch (Exception e) {
 			e.printStackTrace();

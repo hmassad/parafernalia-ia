@@ -2,54 +2,66 @@ package proveedor.model;
 
 import java.io.Serializable;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 
 import proveedor.vo.PedidoMateriaPrimaItemVO;
 
 @Entity
+@AssociationOverrides({
+		@AssociationOverride(name = "pk.pedidoMateriaPrima", joinColumns = @JoinColumn(name = "pedidoMateriaPrima", nullable = false)),
+		@AssociationOverride(name = "pk.materiaPrima", joinColumns = @JoinColumn(name = "materiaPrima", nullable = false)) })
 public class PedidoMateriaPrimaItem implements Serializable {
 
 	private static final long serialVersionUID = -8241932010498640786L;
 
-	@Id
-	@Column
-	private String codigo;
+	private PedidoMateriaPrimaItemPk pk;
 
-	@Column
 	private int cantidad;
 
-	@ManyToOne
-	private PedidoMateriaPrima pedidoMateriaPrima;
-
 	public PedidoMateriaPrimaItem() {
+		pk = new PedidoMateriaPrimaItemPk();
 	}
 
 	public PedidoMateriaPrimaItem(PedidoMateriaPrima pedidoMateriaPrima,
-			String codigo, int cantidad) {
-		this.pedidoMateriaPrima = pedidoMateriaPrima;
-		this.codigo = codigo;
+			MateriaPrima materiaPrima, int cantidad) {
+		this.pk = new PedidoMateriaPrimaItemPk(pedidoMateriaPrima, materiaPrima);
 		this.cantidad = cantidad;
 	}
 
+	@EmbeddedId
+	public PedidoMateriaPrimaItemPk getPk() {
+		return pk;
+	}
+
+	public void setPk(PedidoMateriaPrimaItemPk pk) {
+		this.pk = pk;
+	}
+
+	@Transient
 	public PedidoMateriaPrima getPedidoMateriaPrima() {
-		return pedidoMateriaPrima;
+		return pk.getPedidoMateriaPrima();
 	}
 
 	public void setPedidoMateriaPrima(PedidoMateriaPrima pedidoMateriaPrima) {
-		this.pedidoMateriaPrima = pedidoMateriaPrima;
+		pk.setPedidoMateriaPrima(pedidoMateriaPrima);
 	}
 
-	public String getCodigo() {
-		return codigo;
+	@Transient
+	public MateriaPrima getMateriaPrima() {
+		return pk.getMateriaPrima();
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setMateriaPrima(MateriaPrima materiaPrima) {
+		pk.setMateriaPrima(materiaPrima);
 	}
 
+	@Column
 	public int getCantidad() {
 		return cantidad;
 	}
@@ -62,11 +74,8 @@ public class PedidoMateriaPrimaItem implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		result = prime
-				* result
-				+ ((pedidoMateriaPrima == null) ? 0 : pedidoMateriaPrima
-						.hashCode());
+		result = prime * result + cantidad;
+		result = prime * result + ((pk == null) ? 0 : pk.hashCode());
 		return result;
 	}
 
@@ -79,26 +88,26 @@ public class PedidoMateriaPrimaItem implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		PedidoMateriaPrimaItem other = (PedidoMateriaPrimaItem) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
-				return false;
-		} else if (!codigo.equals(other.codigo))
+		if (cantidad != other.cantidad)
 			return false;
-		if (pedidoMateriaPrima == null) {
-			if (other.pedidoMateriaPrima != null)
+		if (pk == null) {
+			if (other.pk != null)
 				return false;
-		} else if (!pedidoMateriaPrima.equals(other.pedidoMateriaPrima))
+		} else if (!pk.equals(other.pk))
 			return false;
 		return true;
 	}
 
 	public String toString() {
-		return String.format("%s: %d %s", getCodigo(), getCantidad());
+		return String.format("%s: %d", getMateriaPrima().getCodigo(),
+				getCantidad());
 	}
 
 	public static PedidoMateriaPrimaItemVO toPedidoMateriaPrimaItemVO(
 			PedidoMateriaPrimaItem pedidoMateriaPrimaItem) {
-		return new PedidoMateriaPrimaItemVO(pedidoMateriaPrimaItem.getCodigo(),
+		return new PedidoMateriaPrimaItemVO(
+				MateriaPrima.toMateriaPrimaVO(pedidoMateriaPrimaItem
+						.getMateriaPrima()),
 				pedidoMateriaPrimaItem.getCantidad());
 	}
 
@@ -106,7 +115,8 @@ public class PedidoMateriaPrimaItem implements Serializable {
 			PedidoMateriaPrima pedidoMateriaPrima,
 			PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO) {
 		return new PedidoMateriaPrimaItem(pedidoMateriaPrima,
-				pedidoMateriaPrimaItemVO.getCodigo(),
+				MateriaPrima.toMateriaPrima(pedidoMateriaPrimaItemVO
+						.getMateriaPrima()),
 				pedidoMateriaPrimaItemVO.getCantidad());
 	}
 }

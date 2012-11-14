@@ -24,7 +24,9 @@ public class ListaPreciosSessionBean implements ListaPreciosSessionBeanLocal {
 	}
 
 	public void createListaPrecios(ListaPreciosVO listaPreciosVO) {
-		entityManager.persist(ListaPrecios.toListaPrecios(listaPreciosVO));
+		ListaPrecios listaPrecios = ListaPrecios.toListaPrecios(listaPreciosVO);
+		entityManager.persist(listaPrecios);
+		listaPreciosVO.setId(listaPrecios.getId());
 	}
 
 	public void deleteListaPrecios(int id) {
@@ -33,23 +35,33 @@ public class ListaPreciosSessionBean implements ListaPreciosSessionBeanLocal {
 	}
 
 	public ListaPreciosVO getListaPrecios(int id) {
-		ListaPrecios listaPreciosVO = entityManager.find(ListaPrecios.class, id);
+		ListaPrecios listaPreciosVO = entityManager
+				.find(ListaPrecios.class, id);
 		return ListaPrecios.toListaPreciosVO(listaPreciosVO);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Collection<ListaPreciosVO> getListasPrecios() {
-		Query query = entityManager.createQuery("SELECT LP FROM ListaPrecios LP");
+		Query query = entityManager
+				.createQuery("SELECT LP FROM ListaPrecios LP");
 		Collection<ListaPreciosVO> listasPreciosVO = new ArrayList<ListaPreciosVO>();
-		for (ListaPrecios listaPrecios : (Collection<ListaPrecios>) query.getResultList()) {
+		for (ListaPrecios listaPrecios : (Collection<ListaPrecios>) query
+				.getResultList()) {
 			listasPreciosVO.add(ListaPrecios.toListaPreciosVO(listaPrecios));
 		}
 		return listasPreciosVO;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListaPreciosVO getUltimaListaPrecios() {
-		Query query = entityManager.createQuery("SELECT LP FROM ListaPrecios LP ORDER BY vigenciaHasta DESC");
-		query.setMaxResults(1);
-		return ListaPrecios.toListaPreciosVO((ListaPrecios) query.getSingleResult());
+		Query query = entityManager
+				.createQuery(
+						"SELECT LP FROM ListaPrecios LP ORDER BY LP.vigenciaHasta DESC")
+				.setMaxResults(1);
+		for (ListaPrecios listaPrecios : (Collection<ListaPrecios>) query
+				.getResultList()) {
+			return ListaPrecios.toListaPreciosVO(listaPrecios);
+		}
+		return null;
 	}
 }

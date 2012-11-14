@@ -7,8 +7,6 @@ import proveedor.vo.ProveedorVO;
 @Local
 public interface ProveedorSessionBeanLocal {
 
-	void updateProveedor(ProveedorVO proveedor);
-
 	ProveedorVO getProveedor();
 
 }

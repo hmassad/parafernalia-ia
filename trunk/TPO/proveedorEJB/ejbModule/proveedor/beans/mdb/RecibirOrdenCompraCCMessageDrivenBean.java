@@ -14,10 +14,6 @@ import proveedor.documentos.OrCompCC.Item;
 import proveedor.vo.PedidoCasaCentralItemVO;
 import proveedor.vo.PedidoCasaCentralVO;
 
-/**
- * Message-Driven Bean implementation class for:
- * RecibirOrdenCompraCCMessageDrivenBean
- */
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/ordenCompraQueue") })
@@ -40,12 +36,13 @@ public class RecibirOrdenCompraCCMessageDrivenBean implements MessageListener {
 			PedidoCasaCentralVO pedidoCasaCentralVO = new PedidoCasaCentralVO();
 			pedidoCasaCentralVO.setNroOrdenCompra(orCompCC.getNroOrdenCompra());
 			pedidoCasaCentralVO.setFecha(orCompCC.getFecha());
+			pedidoCasaCentralVO.setEntregado(false);
 			for (Item item : orCompCC.getItemsOCCC()) {
-				PedidoCasaCentralItemVO pedidoCasaCentralItemVO = new PedidoCasaCentralItemVO();
-				pedidoCasaCentralItemVO.setCantidad(item.getCantidad());
-				pedidoCasaCentralItemVO.setCodigo(item.getRodamiento()
-						.getCodigoRodamiento());
-				pedidoCasaCentralVO.getItems().add(pedidoCasaCentralItemVO);
+				pedidoCasaCentralVO.getItems().add(
+						new PedidoCasaCentralItemVO(fachadaSessionBeanRemote
+								.getProducto(item.getRodamiento()
+										.getCodigoRodamiento()), item
+								.getCantidad()));
 			}
 
 			fachadaSessionBeanRemote
@@ -54,5 +51,4 @@ public class RecibirOrdenCompraCCMessageDrivenBean implements MessageListener {
 			e.printStackTrace();
 		}
 	}
-
 }

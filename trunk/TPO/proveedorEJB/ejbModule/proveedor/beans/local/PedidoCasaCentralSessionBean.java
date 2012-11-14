@@ -27,7 +27,9 @@ public class PedidoCasaCentralSessionBean implements
 	}
 
 	public void createPedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
-		entityManager.persist(toPedidoCasaCentral(pedidoCasaCentralVO));
+		PedidoCasaCentral pedidoCasaCentral = toPedidoCasaCentral(pedidoCasaCentralVO);
+		entityManager.persist(pedidoCasaCentral);
+		pedidoCasaCentralVO.setId(pedidoCasaCentral.getId());
 	}
 
 	public void deletePedidoCasaCentral(int id) {
@@ -58,8 +60,8 @@ public class PedidoCasaCentralSessionBean implements
 	public Collection<PedidoCasaCentralVO> getPedidosCasaCentralByEntregado(
 			boolean entregado) {
 		Query query = entityManager.createQuery(
-				"SELECT PCC FROM PedidoCasaCentral PCC WHERE entregado = 1?")
-				.setParameter(1, entregado);
+				"SELECT PCC FROM PedidoCasaCentral PCC WHERE PCC.entregado = :entregado")
+				.setParameter("entregado", entregado);
 		Collection<PedidoCasaCentralVO> pedidosCasaCentralVO = new ArrayList<PedidoCasaCentralVO>();
 		for (PedidoCasaCentral pedidoCasaCentral : (Collection<PedidoCasaCentral>) query
 				.getResultList()) {
@@ -95,6 +97,12 @@ public class PedidoCasaCentralSessionBean implements
 					PedidoCasaCentralItem.toPedidoCasaCentralItem(
 							pedidoCasaCentral, pedidoCasaCentralItem));
 		return pedidoCasaCentral;
+	}
+
+	public void updatePedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO) {
+		PedidoCasaCentral pedidoCasaCentral = PedidoCasaCentral
+				.toPedidoCasaCentral(pedidoCasaCentralVO);
+		pedidoCasaCentral = entityManager.merge(pedidoCasaCentral);
 	}
 
 }

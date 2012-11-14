@@ -15,9 +15,6 @@ public class ProveedorClient {
 
 	private static FachadaSessionBeanRemote fachadaSessionBeanRemote;
 
-	/**
-	 * @throws NamingException
-	 */
 	public static FachadaSessionBeanRemote get() throws NamingException {
 		if (fachadaSessionBeanRemote == null) {
 			Hashtable<String, String> props = new Hashtable<String, String>();
@@ -33,4 +30,5 @@ public class ProveedorClient {
 		}
 		return fachadaSessionBeanRemote;
 	}
+
 }

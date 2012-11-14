@@ -20,4 +20,5 @@ public interface PedidoCasaCentralSessionBeanLocal {
 
 	PedidoCasaCentralVO getPedidoCasaCentral(int id);
 
+	void updatePedidoCasaCentral(PedidoCasaCentralVO pedidoCasaCentralVO);
 }

@@ -44,10 +44,10 @@ public class WebServiceFacadeBeanProxy implements servicios.WebServiceFacadeBean
     return webServiceFacadeBean;
   }
   
-  public void notificarNuevoRodamiento(java.lang.String arg0) throws java.rmi.RemoteException{
+  public java.lang.String getListaPrecios() throws java.rmi.RemoteException{
     if (webServiceFacadeBean == null)
       _initWebServiceFacadeBeanProxy();
-    webServiceFacadeBean.notificarNuevoRodamiento(arg0);
+    return webServiceFacadeBean.getListaPrecios();
   }
   
   
