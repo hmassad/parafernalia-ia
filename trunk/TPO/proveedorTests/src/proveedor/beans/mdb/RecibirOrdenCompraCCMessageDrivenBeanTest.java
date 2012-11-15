@@ -31,7 +31,7 @@ public class RecibirOrdenCompraCCMessageDrivenBeanTest {
 		orCompCC.setCliente(new Cliente("6"));
 
 		orCompCC.getItemsOCCC().add(
-				new Item("nroItem1", new Rodamiento("1"), 1));
+				new Item("nroItem1", new Rodamiento("1"), 10));
 //		orCompCC.getItemsOCCC().add(
 //				new Item("nroItem2", new Rodamiento("codigoRodamiento2"), 2));
 //		orCompCC.getItemsOCCC().add(
