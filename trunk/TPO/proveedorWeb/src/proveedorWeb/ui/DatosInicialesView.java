@@ -108,7 +108,7 @@ public class DatosInicialesView extends VerticalLayout implements View {
 							.getPage());
 				} catch (Exception e) {
 					e.printStackTrace();
-					new Notification("No se pueden obtener los Pedidos", e
+					new Notification("No se pueden generar el Producto", e
 							.getMessage(), Notification.TYPE_ERROR_MESSAGE)
 							.show(getRoot().getPage());
 				}

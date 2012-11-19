@@ -15,7 +15,6 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Root;
 import com.vaadin.ui.VerticalLayout;
 
-// TODO poner logo de uade para daniela
 @Theme("proveedor")
 @SuppressWarnings("serial")
 public class ProveedorRoot extends Root {
