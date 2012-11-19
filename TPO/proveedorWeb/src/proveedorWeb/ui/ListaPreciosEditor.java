@@ -6,25 +6,16 @@ import java.util.List;
 
 import proveedor.vo.ListaPreciosItemVO;
 import proveedor.vo.ListaPreciosVO;
-import proveedor.vo.ProductoVO;
-import proveedorWeb.ejb.ProveedorClient;
 
-import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.BaseTheme;
-
-// TODO arreglar DateField de vigenciaDesde y vigenciaHasta
-// TODO cambiar el editor por un gridlayout con checkbox (incluir o no), label (codigo/descripcion), textfield (precio)
 
 @SuppressWarnings("serial")
 public class ListaPreciosEditor extends Panel {
@@ -113,6 +104,7 @@ public class ListaPreciosEditor extends Panel {
 		discardListeners.remove(listener);
 	}
 
+	private ListaPreciosVO listaPrecios;
 	private List<SaveListener> saveListeners;
 	private List<DiscardListener> discardListeners;
 
@@ -160,41 +152,32 @@ public class ListaPreciosEditor extends Panel {
 
 		fieldsLayout = new VerticalLayout();
 		mainLayout.addComponent(fieldsLayout);
+		fieldsLayout.setWidth("100%");
 
 		vigenciaDesdeDateField = new DateField();
 		fieldsLayout.addComponent(vigenciaDesdeDateField);
 		vigenciaDesdeDateField.setCaption("Vigencia Desde");
 		vigenciaDesdeDateField.setWidth("362px");
+		vigenciaDesdeDateField.setEnabled(true);
 
 		vigenciaHastaDateField = new DateField();
 		fieldsLayout.addComponent(vigenciaHastaDateField);
 		vigenciaHastaDateField.setCaption("Vigencia Hasta");
 		vigenciaHastaDateField.setWidth("362px");
+		vigenciaHastaDateField.setEnabled(true);
 
 		VerticalLayout productosContainer = new VerticalLayout();
 		mainLayout.addComponent(productosContainer);
 
-		listaPreciosItemLayout = new GridLayout(3, 1);
+		listaPreciosItemLayout = new GridLayout(2, 1);
 		productosContainer.addComponent(listaPreciosItemLayout);
 		listaPreciosItemLayout.setSpacing(true);
-
-		Button addProductoButton = new Button("Agregar Producto");
-		productosContainer.addComponent(addProductoButton);
-		addProductoButton.setStyleName(BaseTheme.BUTTON_LINK);
-		addProductoButton.addListener(new ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				addListaPreciosItem(null);
-				try {
-					((Focusable) listaPreciosItemLayout.getComponent(0,
-							listaPreciosItemLayout.getRows() - 1)).focus();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 
 	private void addListaPreciosItem(ListaPreciosItemVO listaPreciosItemVO) {
+		if (listaPreciosItemVO == null)
+			return;
+
 		int row = listaPreciosItemLayout.getRows();
 		if (row == 1) {
 			if (listaPreciosItemLayout.getComponent(0, 0) == null)
@@ -203,96 +186,57 @@ public class ListaPreciosEditor extends Panel {
 		if (row >= listaPreciosItemLayout.getRows())
 			listaPreciosItemLayout.setRows(row + 1);
 
-		final ComboBox productoComboBox = new ComboBox();
-		listaPreciosItemLayout.addComponent(productoComboBox, 0, row);
-		productoComboBox.setImmediate(true);
-		productoComboBox.setInputPrompt("Producto");
-		productoComboBox.setWidth("100px");
-
-		try {
-			for (ProductoVO pVO : ProveedorClient.get().getProductos()) {
-				productoComboBox.addItem(pVO);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		if (listaPreciosItemVO != null) {
-			ProductoVO productoVO = listaPreciosItemVO.getProducto();
-			if (productoVO != null) {
-				if (productoComboBox.getItem(productoVO) == null)
-					productoComboBox.addItem(productoVO);
-				productoComboBox.setValue(productoVO);
-			}
-		}
+		final Label productoLabel = new Label();
+		listaPreciosItemLayout.addComponent(productoLabel, 0, row);
+		productoLabel.setValue(listaPreciosItemVO.getProducto().getCodigo());
 
 		TextField precioTextField = new TextField();
 		listaPreciosItemLayout.addComponent(precioTextField, 1, row);
 		precioTextField.setNullRepresentation("");
-		precioTextField.setWidth("250px");
-		if (listaPreciosItemVO != null)
-			precioTextField.setValue(listaPreciosItemVO.getPrecioUnitario());
+		precioTextField.setValue(Float.toString(listaPreciosItemVO
+				.getPrecioUnitario()));
 
-		Button deleteButton = new Button();
-		listaPreciosItemLayout.addComponent(deleteButton, 2, row);
-		listaPreciosItemLayout.setComponentAlignment(deleteButton,
-				Alignment.MIDDLE_LEFT);
-		deleteButton.setDescription("Borrar producto");
-		deleteButton.setIcon(new ThemeResource("images/trash-16x16.png"));
-		deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
-		deleteButton.addListener(new ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				if (listaPreciosItemLayout.getRows() == 1) {
-					listaPreciosItemLayout.removeRow(0);
-					addListaPreciosItem(null);
-					try {
-						((Focusable) listaPreciosItemLayout.getComponent(0,
-								listaPreciosItemLayout.getRows() - 1)).focus();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else {
-					for (int i = 0; i < listaPreciosItemLayout.getRows(); i++) {
-						if (listaPreciosItemLayout.getComponent(2, i) == event
-								.getButton()) {
-							listaPreciosItemLayout.removeRow(i);
-							break;
-						}
-					}
-				}
-			}
-		});
 	}
 
 	public ListaPreciosVO getListaPrecios() {
-		ListaPreciosVO listaPrecios = new ListaPreciosVO();
-		listaPrecios.setVigenciaDesde(vigenciaDesdeDateField.getValue());
-		listaPrecios.setVigenciaHasta(vigenciaHastaDateField.getValue());
-		for (int i = 0; i < listaPreciosItemLayout.getRows(); i++) {
-			try {
-				ProductoVO productoVO = (ProductoVO) ((ComboBox) listaPreciosItemLayout
-						.getComponent(0, i)).getValue();
-				Float precio = null;
-				try {
-					precio = new Float(
-							Float.parseFloat(((TextField) listaPreciosItemLayout
-									.getComponent(1, i)).getValue()));
-				} catch (NumberFormatException ex) {
-					// leave precio null, the string is invalid
+
+		if (listaPrecios == null)
+			return null;
+
+		try {
+			listaPrecios.setVigenciaDesde(vigenciaDesdeDateField.getValue());
+			listaPrecios.setVigenciaHasta(vigenciaHastaDateField.getValue());
+
+			for (int i = 0; i < listaPreciosItemLayout.getRows(); i++) {
+				for (ListaPreciosItemVO lpi : listaPrecios.getItems()) {
+					if (lpi.getProducto()
+							.getCodigo()
+							.equals(((Label) listaPreciosItemLayout
+									.getComponent(0, i)).getValue())) {
+
+						Float precio = null;
+						try {
+							precio = new Float(
+									Float.parseFloat(((TextField) listaPreciosItemLayout
+											.getComponent(1, i)).getValue()));
+						} catch (NumberFormatException ex) {
+							// leave precio null, the string is invalid
+						}
+						lpi.setPrecioUnitario(precio);
+
+						break;
+					}
 				}
-				if (productoVO != null && precio != null) {
-					listaPrecios.getItems().add(
-							new ListaPreciosItemVO(productoVO, precio));
-				}
-			} catch (NullPointerException e) {
-				// HACK GridLayout no tiene filas.
-				break;
 			}
+		} catch (NullPointerException e) {
+			// HACK GridLayout no tiene filas.
 		}
 		return listaPrecios;
 	}
 
 	public void setListaPrecios(ListaPreciosVO listaPrecios) {
+		this.listaPrecios = listaPrecios;
+
 		for (int i = 0; i < listaPreciosItemLayout.getRows(); i++)
 			listaPreciosItemLayout.removeRow(i);
 		listaPreciosItemLayout.removeAllComponents();
@@ -305,7 +249,7 @@ public class ListaPreciosEditor extends Panel {
 			vigenciaDesdeDateField.setValue(listaPrecios.getVigenciaDesde());
 			vigenciaHastaDateField.setValue(listaPrecios.getVigenciaHasta());
 			if (listaPrecios.getItems().size() == 0) {
-				addListaPreciosItem(null);
+				// addListaPreciosItem(null);
 			} else {
 				for (ListaPreciosItemVO lpiVO : listaPrecios.getItems()) {
 					addListaPreciosItem(lpiVO);

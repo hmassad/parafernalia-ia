@@ -14,14 +14,7 @@
 	<classpathentry kind="con"
 		path="org.eclipse.jst.j2ee.internal.module.container" />
 	<classpathentry combineaccessrules="false" kind="src"
-		path="/proveedorEJBClient">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency"
-				value="/WEB-INF/lib" />
-		</attributes>
-	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src"
-		path="/proveedorComun">
+		path="/proveedorEJB">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency"
 				value="/WEB-INF/lib" />

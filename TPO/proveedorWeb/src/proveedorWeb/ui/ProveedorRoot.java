@@ -2,8 +2,12 @@ package proveedorWeb.ui;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.WrappedRequest;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -22,31 +26,44 @@ public class ProveedorRoot extends Root {
 	public void init(WrappedRequest request) {
 		getApplication().setRootPreserved(true);
 
-		getPage().setTitle("Proveedor");
+		getPage().setTitle("Proveedor G6");
 
 		buildLayout();
 
-		navigator.navigateTo("proveedor");
+		navigator.navigateTo("materiaPrima");
 	}
 
 	private void buildLayout() {
 		mainLayout = new VerticalLayout();
 		addComponent(mainLayout);
-		mainLayout.setSizeFull();
 
-		final HorizontalLayout menuLayout = new HorizontalLayout();
-		mainLayout.addComponent(menuLayout);
+		final HorizontalLayout headerLayout = new HorizontalLayout();
+		addComponent(headerLayout);
+		headerLayout.setSpacing(true);
+
+		final Label logoLabel = new Label();
+		logoLabel.setCaption("Proveedor G6");
+		logoLabel.setStyleName("h1");
+		headerLayout.addComponent(logoLabel);
+
+		final Embedded logoImage = new Embedded("", new ThemeResource(
+				"images/uade.png"));
+		logoImage.setType(Embedded.TYPE_IMAGE);
+		headerLayout.addComponent(logoImage);
+		headerLayout.setComponentAlignment(logoLabel, Alignment.TOP_RIGHT);
+		logoImage.setHeight("50px");
 
 		final MenuBar menuBar = new MenuBar();
-		menuLayout.addComponent(menuBar);
-		menuBar.setHtmlContentAllowed(true);
+		addComponent(menuBar);
+		menuBar.setWidth("100%");
 
+		CreateMenuItem(menuBar, "Materia Prima", "materiaPrima");
 		CreateMenuItem(menuBar, "Productos", "productos");
 		CreateMenuItem(menuBar, "Lista de Precios", "listaPrecios");
-		CreateMenuItem(menuBar, "Materia Prima", "materiaPrima");
 		CreateMenuItem(menuBar, "Pedidos de Casa Central", "pedidosCasaCentral");
 		CreateMenuItem(menuBar, "Pedidos de Materia Prima",
 				"pedidosMateriaPrima");
+		CreateMenuItem(menuBar, "Datos Iniciales", "datosIniciales");
 
 		final Panel navigatorContainer = new Panel();
 		addComponent(navigatorContainer);
@@ -56,6 +73,7 @@ public class ProveedorRoot extends Root {
 		navigator.addView("materiaPrima", new MateriaPrimaView());
 		navigator.addView("pedidosMateriaPrima", new PedidosMateriaPrimaView());
 		navigator.addView("pedidosCasaCentral", new PedidosCasaCentralView());
+		navigator.addView("datosIniciales", new DatosInicialesView());
 	}
 
 	private MenuBar.MenuItem CreateMenuItem(MenuBar menuBar, String display,

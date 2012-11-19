@@ -129,13 +129,10 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 		table.setSelectable(true);
 		table.setMultiSelect(false);
 		table.setImmediate(true);
-		table
-				.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
-						MateriaPrimaVO.class, null));
-		table.setVisibleColumns(new String[] { "codigo",
-				"descripcion" });
-		table
-				.setColumnHeaders(new String[] { "Código", "Descripción" });
+		table.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
+				MateriaPrimaVO.class, null));
+		table.setVisibleColumns(new String[] { "codigo", "descripcion", "stock" });
+		table.setColumnHeaders(new String[] { "Código", "Descripción", "Stock" });
 		table.addListener(new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				deleteButton.setEnabled(table.getValue() != null);
@@ -152,11 +149,10 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 		try {
 			Collection<MateriaPrimaVO> materiaPrimaVO = ProveedorClient.get()
 					.getMateriasPrimas();
-			table
-					.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
-							MateriaPrimaVO.class, materiaPrimaVO));
-			table.setVisibleColumns(new String[] { "codigo",
-					"descripcion" });
+			table.setContainerDataSource(new BeanItemContainer<MateriaPrimaVO>(
+					MateriaPrimaVO.class, materiaPrimaVO));
+			table.setVisibleColumns(new String[] { "codigo", "descripcion",
+					"stock" });
 		} catch (Exception e) {
 			e.printStackTrace();
 			new Notification("No se pueden obtener las Materias Primas",

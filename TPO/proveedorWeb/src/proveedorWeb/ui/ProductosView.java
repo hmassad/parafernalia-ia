@@ -5,6 +5,7 @@ import proveedorWeb.ejb.ProveedorClient;
 import proveedorWeb.ui.ProductoEditor.DiscardEvent;
 import proveedorWeb.ui.ProductoEditor.SaveEvent;
 import proveedorWeb.ui.ProductoEditor.SaveListener;
+import WsServer.CasaCentralClient;
 
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Button;
@@ -53,7 +54,7 @@ public class ProductosView extends HorizontalLayout implements View {
 		deleteButton.addListener(new ClickListener() {
 			public void buttonClick(ClickEvent event) {
 
-				ConfirmDialog.show(getRoot(), "¿Borrar Produucto?",
+				ConfirmDialog.show(getRoot(), "¿Borrar Producto?",
 						"Una vez borrado, no se puede volver atrás.", "Borrar",
 						"Cancelar", new ConfirmDialog.Listener() {
 							public void onClose(ConfirmDialog dialog) {
@@ -105,6 +106,7 @@ public class ProductosView extends HorizontalLayout implements View {
 		productoEditor.addListener(new SaveListener() {
 			public void save(SaveEvent event) {
 				try {
+					CasaCentralClient.nuevoRodamiento(event.getProducto());
 					ProveedorClient.get().createProducto(event.getProducto());
 					new Notification("Se creó el producto", event.getProducto()
 							.getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE)

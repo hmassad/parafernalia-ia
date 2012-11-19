@@ -55,14 +55,14 @@ public class MateriaPrimaSessionBean implements MateriaPrimaSessionBeanLocal {
 	public void ingresarStock(String codigoMateriaPrima, int cantidad) {
 		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
 				codigoMateriaPrima);
-		materiaPrima.setStock(materiaPrima.getStock() - cantidad);
+		materiaPrima.setStock(materiaPrima.getStock() + cantidad);
 		entityManager.merge(materiaPrima);
 	}
 
 	public void descontarStock(String codigoMateriaPrima, int cantidad) {
 		MateriaPrima materiaPrima = entityManager.find(MateriaPrima.class,
 				codigoMateriaPrima);
-		materiaPrima.setStock(materiaPrima.getStock() + cantidad);
+		materiaPrima.setStock(materiaPrima.getStock() - cantidad);
 		entityManager.merge(materiaPrima);
 	}
 }

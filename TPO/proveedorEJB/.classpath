@@ -8,22 +8,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/proveedorComun">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/jtds-1.2.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/proveedorComun/lib/xstream-1.4.3.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/axis.jar">
+	<classpathentry exported="true" kind="lib" path="lib/xstream-1.4.3.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>

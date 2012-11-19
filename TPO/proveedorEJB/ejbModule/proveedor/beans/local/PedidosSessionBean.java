@@ -128,13 +128,14 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 				.getPedidosCasaCentralByEntregado(false)) {
 			boolean entregable = true;
 
-			// obtener las cantidades en total del pedido de materia prima
+			// obtener las cantidades en total de materia prima del pedido de
+			// casa central
 			Hashtable<MateriaPrimaVO, Integer> materiasPrimasPedido = new Hashtable<MateriaPrimaVO, Integer>();
 			for (PedidoCasaCentralItemVO pcciVO : pedidoCasaCentralVO
 					.getItems()) {
 				for (MateriaPrimaProductoVO mppVO : pcciVO.getProducto()
 						.getMateriasPrimasProducto()) {
-					int cantidad = mppVO.getCantidad();
+					int cantidad = mppVO.getCantidad() * pcciVO.getCantidad();
 					if (materiasPrimasPedido.containsKey(mppVO
 							.getMateriaPrima())) {
 						cantidad += materiasPrimasPedido.get(mppVO
@@ -168,12 +169,13 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 		pedidoCasaCentralSessionBeanLocal
 				.createPedidoCasaCentral(pedidoCasaCentralVO);
 
-		// obtener las cantidades en total que se piden de materia prima
+		// obtener las cantidades en total de materia prima que se necesitan
+		// para cumplir el pedido de casa central
 		Hashtable<MateriaPrimaVO, Integer> materiasPrimasPedido = new Hashtable<MateriaPrimaVO, Integer>();
 		for (PedidoCasaCentralItemVO pcciVO : pedidoCasaCentralVO.getItems()) {
 			for (MateriaPrimaProductoVO mppVO : pcciVO.getProducto()
 					.getMateriasPrimasProducto()) {
-				int cantidad = mppVO.getCantidad();
+				int cantidad = mppVO.getCantidad() * pcciVO.getCantidad();
 				if (materiasPrimasPedido.containsKey(mppVO.getMateriaPrima())) {
 					cantidad += materiasPrimasPedido.get(mppVO
 							.getMateriaPrima());
@@ -195,7 +197,7 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 			if (cantidadStock < cantidadPedido) {
 				pedidoMateriaPrimaVO.getItems().add(
 						new PedidoMateriaPrimaItemVO(mpVO,
-								(cantidadStock - cantidadPedido) * 2));
+								(cantidadPedido - cantidadStock) * 2));
 			}
 		}
 
@@ -267,9 +269,11 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 				.getItems()) {
 			for (MateriaPrimaProductoVO materiaPrimaProducto : pedidoCasaCentraItemlVO
 					.getProducto().getMateriasPrimasProducto()) {
+				int cantidad = materiaPrimaProducto.getCantidad()
+						* pedidoCasaCentraItemlVO.getCantidad();
 				materiaPrimaSessionBeanLocal.descontarStock(
 						materiaPrimaProducto.getMateriaPrima().getCodigo(),
-						pedidoCasaCentraItemlVO.getCantidad());
+						cantidad);
 			}
 		}
 

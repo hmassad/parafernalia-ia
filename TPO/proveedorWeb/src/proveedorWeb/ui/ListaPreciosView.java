@@ -1,6 +1,13 @@
 package proveedorWeb.ui;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.naming.NamingException;
+
+import proveedor.vo.ListaPreciosItemVO;
 import proveedor.vo.ListaPreciosVO;
+import proveedor.vo.ProductoVO;
 import proveedorWeb.ejb.ProveedorClient;
 import proveedorWeb.ui.ListaPreciosEditor.DiscardEvent;
 import proveedorWeb.ui.ListaPreciosEditor.SaveEvent;
@@ -40,10 +47,33 @@ public class ListaPreciosView extends HorizontalLayout implements View {
 		actionsContainer.addComponent(addButton);
 		addButton.addListener(new ClickListener() {
 			public void buttonClick(ClickEvent event) {
-				listaPreciosBrowser.setEnabled(false);
-				listaPreciosEditor.setListaPrecios(null);
-				listaPreciosEditor.setEnabled(true);
-				addButton.setEnabled(false);
+				try {
+					ListaPreciosVO lp = new ListaPreciosVO();
+					Date now = new Date();
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(now);
+					cal.add(Calendar.DAY_OF_MONTH, 1);
+					Date tomorrow = cal.getTime();
+
+					lp.setVigenciaDesde(now);
+					lp.setVigenciaHasta(tomorrow);
+					for (ProductoVO p : ProveedorClient.get().getProductos()) {
+						ListaPreciosItemVO lpi = new ListaPreciosItemVO();
+						lpi.setProducto(p);
+						lpi.setPrecioUnitario(0);
+						lp.getItems().add(lpi);
+					}
+
+					listaPreciosBrowser.setEnabled(false);
+					listaPreciosEditor.setListaPrecios(lp);
+					listaPreciosEditor.setEnabled(true);
+					addButton.setEnabled(false);
+				} catch (NamingException e) {
+					e.printStackTrace();
+					new Notification("error", e.getMessage(),
+							Notification.TYPE_ERROR_MESSAGE).show(getRoot()
+							.getPage());
+				}
 			}
 		});
 

@@ -120,9 +120,11 @@ public class Producto implements Serializable {
 
 	public static ProductoVO toProductoVO(Producto producto) {
 		Collection<MateriaPrimaProductoVO> mppVOs = new ArrayList<MateriaPrimaProductoVO>();
-		for (MateriaPrimaProducto mpp : producto.getMateriasPrimasProducto()) {
-			mppVOs.add(MateriaPrimaProducto.toMateriaPrimaProductoVO(mpp));
-		}
+		if (producto.getMateriasPrimasProducto() != null)
+			for (MateriaPrimaProducto mpp : producto
+					.getMateriasPrimasProducto()) {
+				mppVOs.add(MateriaPrimaProducto.toMateriaPrimaProductoVO(mpp));
+			}
 		return new ProductoVO(producto.getCodigo(), producto.getDescripcion(),
 				producto.getCaracteristica(), producto.getMarca(),
 				producto.getOrigen(), producto.getTipo(), mppVOs);
