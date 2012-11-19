@@ -10,7 +10,7 @@ public class Configuration {
 
 	public final static String CasaCentralWebServiceLocation = "http://"
 			+ CasaCentralHost
-			+ ":8080/CasaEAR-casa-negocio/RemoteSessionBean";
+			+ ":8080/casaCentralEAR-casaCentralEJB/RemoteSessionBean";
 
 	public final static ProveedorVO Proveedor = new ProveedorVO("6", "Grupo 6",
 			"0810-666-6666", "Lima 717", "Ciudad Autónoma de Buenos Aires",
