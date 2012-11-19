@@ -1,5 +1,7 @@
 package proveedor.beans.local;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,9 +25,25 @@ public class ProductosSessionBean implements ProductosSessionBeanLocal {
 	public ProductosSessionBean() {
 	}
 
-	public void createProducto(ProductoVO productoVO) {
+	public void createProducto(ProductoVO productoVO)
+			throws MalformedURLException, RemoteException {
 		Producto producto = Producto.toProducto(productoVO);
-		producto = entityManager.merge(producto);
+		entityManager.persist(producto);
+
+		// NvoProd nvoProd = new NvoProd(productoVO.getCodigo(),
+		// productoVO.getCaracteristica(), productoVO.getMarca(),
+		// productoVO.getOrigen(), productoVO.getTipo(),
+		// productoVO.getCodigo());
+		// String xml = nvoProd.serialize();
+		//
+		// URL wsdlDocumentLocation = new URL(
+		// proveedor.configuration.Configuration.CasaCentralWebServiceLocation
+		// + "?wsdl");
+		// QName serviceName = new QName("http://webservice.casacentral.ejb/",
+		// "RemoteSessionBeanService");
+		// Service service = Service.create(wsdlDocumentLocation, serviceName);
+		// RemoteSessionBean port = service.getPort(RemoteSessionBean.class);
+		// port.nuevoRodamiento(xml);
 	}
 
 	public void deleteProducto(String codigo) {

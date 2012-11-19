@@ -91,9 +91,6 @@ public class FachadaSessionBean implements FachadaSessionBeanRemote {
 	public void createProducto(ProductoVO productoVO) throws RemoteException,
 			MalformedURLException, ServiceException {
 		productosSessionBeanLocal.createProducto(productoVO);
-
-//		new NuevoRodamientoWebServiceClient()
-//				.notificarNuevoProducto(productoVO);
 	}
 
 	public void deleteProducto(String codigo) {

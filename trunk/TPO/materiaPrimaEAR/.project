@@ -3,9 +3,7 @@
 	<name>materiaPrimaEAR</name>
 	<comment></comment>
 	<projects>
-		<project>materiaPrimaComun</project>
 		<project>materiaPrimaEJB</project>
-		<project>materiaPrimaEJBClient</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -2,39 +2,59 @@ package proveedorWeb.ui;
 
 import java.util.Collection;
 
+import proveedor.vo.PedidoCasaCentralItemVO;
 import proveedor.vo.PedidoCasaCentralVO;
 import proveedorWeb.ejb.ProveedorClient;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
+import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
-// TODO agregar columna con detalle del pedido
-
 @SuppressWarnings("serial")
 public class PedidosCasaCentralView extends VerticalLayout implements View {
 
-	private Table pedidosTable;
+	private Table table;
 
 	public PedidosCasaCentralView() {
 		setSizeFull();
 
-		pedidosTable = new Table();
-		addComponent(pedidosTable);
-		pedidosTable.setWidth("100%");
-		pedidosTable.setHeight("500px");
-		pedidosTable.setSelectable(false);
-		pedidosTable.setMultiSelect(false);
-		pedidosTable.setImmediate(false);
-		pedidosTable
-				.setContainerDataSource(new BeanItemContainer<PedidoCasaCentralVO>(
-						PedidoCasaCentralVO.class, null));
-		pedidosTable.setVisibleColumns(new String[] { "id", "fecha",
-				"entregado", "nroOrdenCompra" });
-		pedidosTable.setColumnHeaders(new String[] { "ID", "Fecha",
-				"Entregado", "Nro Orden Compra" });
+		table = new Table();
+		addComponent(table);
+		table.setWidth("100%");
+		table.setHeight("500px");
+		table.setSelectable(false);
+		table.setMultiSelect(false);
+		table.setImmediate(false);
+		table.setContainerDataSource(new BeanItemContainer<PedidoCasaCentralVO>(
+				PedidoCasaCentralVO.class, null));
+		Table.ColumnGenerator resultadosTableColumnGenerator = new Table.ColumnGenerator() {
+			public Object generateCell(Table source, Object itemId,
+					Object columnId) {
+				PedidoCasaCentralVO pedidoCasaCentral = (PedidoCasaCentralVO) itemId;
+				StringBuilder sb = new StringBuilder();
+				if (columnId.equals("items")) {
+					for (PedidoCasaCentralItemVO item : pedidoCasaCentral
+							.getItems()) {
+						if (sb.length() > 0)
+							sb.append("<br/>");
+						sb.append(String.format("%d x %s", item.getCantidad(),
+								item.getProducto().getCodigo()));
+					}
+				}
+				Label label = new Label(sb.toString());
+				label.setContentMode(ContentMode.XHTML);
+				return label;
+			}
+		};
+		table.addGeneratedColumn("items", resultadosTableColumnGenerator);
+		table.setVisibleColumns(new String[] { "id", "fecha", "entregado",
+				"nroOrdenCompra", "items" });
+		table.setColumnHeaders(new String[] { "ID", "Fecha", "Entregado",
+				"Nro Orden Compra", "Detalle" });
 
 	}
 
@@ -46,11 +66,10 @@ public class PedidosCasaCentralView extends VerticalLayout implements View {
 		try {
 			Collection<PedidoCasaCentralVO> pedidos = ProveedorClient.get()
 					.getPedidosCasaCentral();
-			pedidosTable
-					.setContainerDataSource(new BeanItemContainer<PedidoCasaCentralVO>(
-							PedidoCasaCentralVO.class, pedidos));
-			pedidosTable.setVisibleColumns(new String[] { "id", "fecha",
-					"entregado", "nroOrdenCompra" });
+			table.setContainerDataSource(new BeanItemContainer<PedidoCasaCentralVO>(
+					PedidoCasaCentralVO.class, pedidos));
+			table.setVisibleColumns(new String[] { "id", "fecha", "entregado",
+					"nroOrdenCompra", "items" });
 		} catch (Exception e) {
 			e.printStackTrace();
 			new Notification("No se pueden obtener los Pedidos",

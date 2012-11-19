@@ -104,7 +104,7 @@ public class ProductosBrowser extends VerticalLayout {
 							.getMateriasPrimasProducto()) {
 						if (sb.length() > 0)
 							sb.append("<br/>");
-						sb.append(String.format("%d %s", materiaPrimaProducto
+						sb.append(String.format("%d x %s", materiaPrimaProducto
 								.getCantidad(), materiaPrimaProducto
 								.getMateriaPrima().getCodigo()));
 					}
