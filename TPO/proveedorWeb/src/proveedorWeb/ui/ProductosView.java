@@ -5,7 +5,6 @@ import proveedorWeb.ejb.ProveedorClient;
 import proveedorWeb.ui.ProductoEditor.DiscardEvent;
 import proveedorWeb.ui.ProductoEditor.SaveEvent;
 import proveedorWeb.ui.ProductoEditor.SaveListener;
-import WsServer.CasaCentralClient;
 
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Button;
@@ -14,6 +13,8 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+
+import ejb.casacentral.webservice.CasaCentralClient;
 
 @SuppressWarnings("serial")
 public class ProductosView extends HorizontalLayout implements View {

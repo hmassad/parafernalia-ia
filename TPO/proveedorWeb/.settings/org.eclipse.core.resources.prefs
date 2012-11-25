@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/WsServer/RemoteSessionBean.java=UTF-8
-encoding//src/WsServer/RemoteSessionBeanBindingStub.java=UTF-8
-encoding//src/WsServer/RemoteSessionBeanService.java=UTF-8
-encoding//src/WsServer/RemoteSessionBeanServiceLocator.java=UTF-8
+encoding//src/ejb/casacentral/webservice/RemoteSessionBean.java=UTF-8
+encoding//src/ejb/casacentral/webservice/RemoteSessionBeanBindingStub.java=UTF-8
+encoding//src/ejb/casacentral/webservice/RemoteSessionBeanService.java=UTF-8
+encoding//src/ejb/casacentral/webservice/RemoteSessionBeanServiceLocator.java=UTF-8

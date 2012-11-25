@@ -39,17 +39,19 @@ public class ProveedorRoot extends Root {
 		final HorizontalLayout headerLayout = new HorizontalLayout();
 		addComponent(headerLayout);
 		headerLayout.setSpacing(true);
+		headerLayout.setWidth("100%");
 
 		final Label logoLabel = new Label();
 		logoLabel.setCaption("Proveedor G6");
 		logoLabel.setStyleName("h1");
 		headerLayout.addComponent(logoLabel);
+		headerLayout.setComponentAlignment(logoLabel, Alignment.BOTTOM_LEFT);
 
 		final Embedded logoImage = new Embedded("", new ThemeResource(
 				"images/uade.png"));
 		logoImage.setType(Embedded.TYPE_IMAGE);
 		headerLayout.addComponent(logoImage);
-		headerLayout.setComponentAlignment(logoLabel, Alignment.TOP_RIGHT);
+		headerLayout.setComponentAlignment(logoImage, Alignment.BOTTOM_RIGHT);
 		logoImage.setHeight("50px");
 
 		final MenuBar menuBar = new MenuBar();

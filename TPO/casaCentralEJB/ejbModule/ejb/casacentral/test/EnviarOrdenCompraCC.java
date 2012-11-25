@@ -31,9 +31,9 @@ public class EnviarOrdenCompraCC {
 			orCompCC.setCliente(new Cliente("6"));
 
 			orCompCC.getItemsOCCC().add(
-					new Item("nroItem1", new Rodamiento("P1"), 1));
+					new Item("nroItem1", new Rodamiento("P1"), 100));
 			orCompCC.getItemsOCCC().add(
-					new Item("nroItem2", new Rodamiento("P2"), 2));
+					new Item("nroItem2", new Rodamiento("P2"), 20));
 
 			String contenido = orCompCC.serialize();
 

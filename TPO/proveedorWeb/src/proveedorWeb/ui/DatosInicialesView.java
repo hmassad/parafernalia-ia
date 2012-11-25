@@ -7,7 +7,6 @@ import proveedor.vo.MateriaPrimaProductoVO;
 import proveedor.vo.MateriaPrimaVO;
 import proveedor.vo.ProductoVO;
 import proveedorWeb.ejb.ProveedorClient;
-import WsServer.CasaCentralClient;
 
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Button;
@@ -15,6 +14,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+
+import ejb.casacentral.webservice.CasaCentralClient;
 
 @SuppressWarnings("serial")
 public class DatosInicialesView extends VerticalLayout implements View {

@@ -1,4 +1,4 @@
-package WsServer;
+package ejb.casacentral.webservice;
 
 import java.rmi.RemoteException;
 

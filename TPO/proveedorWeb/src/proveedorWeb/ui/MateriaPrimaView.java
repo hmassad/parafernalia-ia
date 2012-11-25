@@ -36,6 +36,7 @@ public class MateriaPrimaView extends VerticalLayout implements View {
 		addComponent(fieldsLayout);
 		fieldsLayout.setSpacing(true);
 		fieldsLayout.setMargin(false, false, true, false);
+		fieldsLayout.addStyleName("bordered");
 
 		codigoTextField = new TextField();
 		fieldsLayout.addComponent(codigoTextField);

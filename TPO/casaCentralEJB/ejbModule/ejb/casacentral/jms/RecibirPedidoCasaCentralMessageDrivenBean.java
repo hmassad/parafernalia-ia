@@ -16,7 +16,7 @@ import proveedor.documentos.OrCompCCAceptada;
  */
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/casa-central-solcompra-queque") })
+		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/ordenCompraAcepQueue") })
 public class RecibirPedidoCasaCentralMessageDrivenBean implements
 		MessageListener {
 
