@@ -1,4 +1,4 @@
-package WsServer;
+package ejb.casacentral.webservice;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,7 +23,7 @@ public class CasaCentralClient {
 			Service service = Service
 					.create(new URL(
 							proveedor.configuration.Configuration.CasaCentralWebServiceLocation
-									+ "?wsdl"), new QName("http://WsServer/",
+									+ "?wsdl"), new QName("http://webservice.casacentral.ejb/",
 							"RemoteSessionBeanService"));
 			remoteSessionBean = service.getPort(RemoteSessionBean.class);
 		}
@@ -35,7 +35,7 @@ public class CasaCentralClient {
 		NvoProd nvoProd = new NvoProd(productoVO.getCodigo(),
 				productoVO.getCaracteristica(), productoVO.getMarca(),
 				productoVO.getOrigen(), productoVO.getTipo(),
-				productoVO.getCodigo());
+				"6");
 		String xml = nvoProd.serialize();
 
 		get().nuevoRodamiento(xml);

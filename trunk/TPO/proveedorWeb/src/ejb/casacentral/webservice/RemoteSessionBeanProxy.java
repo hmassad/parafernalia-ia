@@ -1,8 +1,8 @@
-package WsServer;
+package ejb.casacentral.webservice;
 
-public class RemoteSessionBeanProxy implements WsServer.RemoteSessionBean {
+public class RemoteSessionBeanProxy implements ejb.casacentral.webservice.RemoteSessionBean {
   private String _endpoint = null;
-  private WsServer.RemoteSessionBean remoteSessionBean = null;
+  private ejb.casacentral.webservice.RemoteSessionBean remoteSessionBean = null;
   
   public RemoteSessionBeanProxy() {
     _initRemoteSessionBeanProxy();
@@ -15,7 +15,7 @@ public class RemoteSessionBeanProxy implements WsServer.RemoteSessionBean {
   
   private void _initRemoteSessionBeanProxy() {
     try {
-      remoteSessionBean = (new WsServer.RemoteSessionBeanServiceLocator()).getRemoteSessionBeanPort();
+      remoteSessionBean = (new ejb.casacentral.webservice.RemoteSessionBeanServiceLocator()).getRemoteSessionBeanPort();
       if (remoteSessionBean != null) {
         if (_endpoint != null)
           ((javax.xml.rpc.Stub)remoteSessionBean)._setProperty("javax.xml.rpc.service.endpoint.address", _endpoint);
@@ -38,28 +38,22 @@ public class RemoteSessionBeanProxy implements WsServer.RemoteSessionBean {
     
   }
   
-  public WsServer.RemoteSessionBean getRemoteSessionBean() {
+  public ejb.casacentral.webservice.RemoteSessionBean getRemoteSessionBean() {
     if (remoteSessionBean == null)
       _initRemoteSessionBeanProxy();
     return remoteSessionBean;
   }
   
-  public java.lang.String preciosDeRodamientos(java.lang.String arg0) throws java.rmi.RemoteException{
+  public java.lang.String cotizarRodamiento(java.lang.String arg0) throws java.rmi.RemoteException{
     if (remoteSessionBean == null)
       _initRemoteSessionBeanProxy();
-    return remoteSessionBean.preciosDeRodamientos(arg0);
+    return remoteSessionBean.cotizarRodamiento(arg0);
   }
   
   public java.lang.String nuevoRodamiento(java.lang.String arg0) throws java.rmi.RemoteException{
     if (remoteSessionBean == null)
       _initRemoteSessionBeanProxy();
     return remoteSessionBean.nuevoRodamiento(arg0);
-  }
-  
-  public java.lang.String pruebaMetodo1() throws java.rmi.RemoteException{
-    if (remoteSessionBean == null)
-      _initRemoteSessionBeanProxy();
-    return remoteSessionBean.pruebaMetodo1();
   }
   
   

@@ -5,10 +5,10 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package WsServer;
+package ejb.casacentral.webservice;
 
 public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
-		implements WsServer.RemoteSessionBean {
+		implements ejb.casacentral.webservice.RemoteSessionBean {
 	@SuppressWarnings({ "unused", "rawtypes" })
 	private java.util.Vector cachedSerClasses = new java.util.Vector();
 	@SuppressWarnings({ "unused", "rawtypes" })
@@ -21,7 +21,7 @@ public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
 	static org.apache.axis.description.OperationDesc[] _operations;
 
 	static {
-		_operations = new org.apache.axis.description.OperationDesc[3];
+		_operations = new org.apache.axis.description.OperationDesc[2];
 		_initOperationDesc1();
 	}
 
@@ -29,7 +29,7 @@ public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
 		org.apache.axis.description.OperationDesc oper;
 		org.apache.axis.description.ParameterDesc param;
 		oper = new org.apache.axis.description.OperationDesc();
-		oper.setName("PreciosDeRodamientos");
+		oper.setName("cotizarRodamiento");
 		param = new org.apache.axis.description.ParameterDesc(
 				new javax.xml.namespace.QName("", "arg0"),
 				org.apache.axis.description.ParameterDesc.IN,
@@ -64,16 +64,6 @@ public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
 		oper.setUse(org.apache.axis.constants.Use.LITERAL);
 		_operations[1] = oper;
 
-		oper = new org.apache.axis.description.OperationDesc();
-		oper.setName("pruebaMetodo1");
-		oper.setReturnType(new javax.xml.namespace.QName(
-				"http://www.w3.org/2001/XMLSchema", "string"));
-		oper.setReturnClass(java.lang.String.class);
-		oper.setReturnQName(new javax.xml.namespace.QName("", "return"));
-		oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
-		oper.setUse(org.apache.axis.constants.Use.LITERAL);
-		_operations[2] = oper;
-
 	}
 
 	public RemoteSessionBeanBindingStub() throws org.apache.axis.AxisFault {
@@ -97,7 +87,7 @@ public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
 				.setTypeMappingVersion("1.2");
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes" })
 	protected org.apache.axis.client.Call createCall()
 			throws java.rmi.RemoteException {
 		try {
@@ -132,7 +122,7 @@ public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
 		}
 	}
 
-	public java.lang.String preciosDeRodamientos(java.lang.String arg0)
+	public java.lang.String cotizarRodamiento(java.lang.String arg0)
 			throws java.rmi.RemoteException {
 		if (super.cachedEndpoint == null) {
 			throw new org.apache.axis.NoEndPointException();
@@ -148,7 +138,7 @@ public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
 				Boolean.FALSE);
 		_call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
 		_call.setOperationName(new javax.xml.namespace.QName(
-				"http://WsServer/", "PreciosDeRodamientos"));
+				"http://webservice.casacentral.ejb/", "cotizarRodamiento"));
 
 		setRequestHeaders(_call);
 		setAttachments(_call);
@@ -188,51 +178,13 @@ public class RemoteSessionBeanBindingStub extends org.apache.axis.client.Stub
 				Boolean.FALSE);
 		_call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
 		_call.setOperationName(new javax.xml.namespace.QName(
-				"http://WsServer/", "nuevoRodamiento"));
+				"http://webservice.casacentral.ejb/", "nuevoRodamiento"));
 
 		setRequestHeaders(_call);
 		setAttachments(_call);
 		try {
 			java.lang.Object _resp = _call
 					.invoke(new java.lang.Object[] { arg0 });
-
-			if (_resp instanceof java.rmi.RemoteException) {
-				throw (java.rmi.RemoteException) _resp;
-			} else {
-				extractAttachments(_call);
-				try {
-					return (java.lang.String) _resp;
-				} catch (java.lang.Exception _exception) {
-					return (java.lang.String) org.apache.axis.utils.JavaUtils
-							.convert(_resp, java.lang.String.class);
-				}
-			}
-		} catch (org.apache.axis.AxisFault axisFaultException) {
-			throw axisFaultException;
-		}
-	}
-
-	public java.lang.String pruebaMetodo1() throws java.rmi.RemoteException {
-		if (super.cachedEndpoint == null) {
-			throw new org.apache.axis.NoEndPointException();
-		}
-		org.apache.axis.client.Call _call = createCall();
-		_call.setOperation(_operations[2]);
-		_call.setUseSOAPAction(true);
-		_call.setSOAPActionURI("");
-		_call.setEncodingStyle(null);
-		_call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR,
-				Boolean.FALSE);
-		_call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS,
-				Boolean.FALSE);
-		_call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-		_call.setOperationName(new javax.xml.namespace.QName(
-				"http://WsServer/", "pruebaMetodo1"));
-
-		setRequestHeaders(_call);
-		setAttachments(_call);
-		try {
-			java.lang.Object _resp = _call.invoke(new java.lang.Object[] {});
 
 			if (_resp instanceof java.rmi.RemoteException) {
 				throw (java.rmi.RemoteException) _resp;

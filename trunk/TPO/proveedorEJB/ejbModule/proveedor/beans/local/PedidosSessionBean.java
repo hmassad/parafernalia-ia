@@ -227,7 +227,7 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 			InitialContext ctx = new InitialContext(props);
 
 			Queue queue = (Queue) ctx
-					.lookup("queue/casa-central-solcompra-queque");
+					.lookup("queue/ordenCompraAcepQueue");
 
 			// buscar la Connection Factory en JNDI
 			QueueConnectionFactory qfactory = (QueueConnectionFactory) ctx
