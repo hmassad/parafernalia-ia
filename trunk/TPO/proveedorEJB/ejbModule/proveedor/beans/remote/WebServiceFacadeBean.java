@@ -30,6 +30,7 @@ public class WebServiceFacadeBean implements WebServiceFacade {
 		ProveedorVO proveedorVO = fachadaSessionBeanRemote.getProveedor();
 		if (proveedorVO == null)
 			return null;
+		
 		ListaPreciosVO listaPreciosVO = fachadaSessionBeanRemote
 				.getUltimaListaPrecios();
 		if (listaPreciosVO == null)

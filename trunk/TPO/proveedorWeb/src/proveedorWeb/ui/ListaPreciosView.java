@@ -131,8 +131,7 @@ public class ListaPreciosView extends HorizontalLayout implements View {
 				try {
 					ProveedorClient.get().createListaPrecios(
 							event.getListaPrecios());
-					new Notification("Se creó la lista de precios", Integer
-							.toString(event.getListaPrecios().getId()),
+					new Notification("Se creó la lista de precios",
 							Notification.TYPE_HUMANIZED_MESSAGE).show(getRoot()
 							.getPage());
 				} catch (Exception e) {

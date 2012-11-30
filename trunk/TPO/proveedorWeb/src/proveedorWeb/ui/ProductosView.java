@@ -14,8 +14,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
-import ejb.casacentral.webservice.CasaCentralClient;
-
 @SuppressWarnings("serial")
 public class ProductosView extends HorizontalLayout implements View {
 
@@ -107,7 +105,6 @@ public class ProductosView extends HorizontalLayout implements View {
 		productoEditor.addListener(new SaveListener() {
 			public void save(SaveEvent event) {
 				try {
-					CasaCentralClient.nuevoRodamiento(event.getProducto());
 					ProveedorClient.get().createProducto(event.getProducto());
 					new Notification("Se creó el producto", event.getProducto()
 							.getCodigo(), Notification.TYPE_HUMANIZED_MESSAGE)

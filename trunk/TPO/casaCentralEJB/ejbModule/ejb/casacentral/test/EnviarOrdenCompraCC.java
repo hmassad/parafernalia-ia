@@ -12,10 +12,10 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 
-import proveedor.documentos.OrCompCC;
-import proveedor.documentos.OrCompCC.Cliente;
-import proveedor.documentos.OrCompCC.Item;
-import proveedor.documentos.OrCompCC.Item.Rodamiento;
+import ejb.casacentral.documentos.OrCompCC;
+import ejb.casacentral.documentos.OrCompCC.Cliente;
+import ejb.casacentral.documentos.OrCompCC.Item;
+import ejb.casacentral.documentos.OrCompCC.Item.Rodamiento;
 
 public class EnviarOrdenCompraCC {
 

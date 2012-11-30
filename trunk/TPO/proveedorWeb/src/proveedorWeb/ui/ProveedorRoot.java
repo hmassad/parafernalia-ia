@@ -13,13 +13,11 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Root;
-import com.vaadin.ui.VerticalLayout;
 
 @Theme("proveedor")
 @SuppressWarnings("serial")
 public class ProveedorRoot extends Root {
 
-	VerticalLayout mainLayout;
 	Navigator navigator;
 
 	public void init(WrappedRequest request) {
@@ -33,9 +31,6 @@ public class ProveedorRoot extends Root {
 	}
 
 	private void buildLayout() {
-		mainLayout = new VerticalLayout();
-		addComponent(mainLayout);
-
 		final HorizontalLayout headerLayout = new HorizontalLayout();
 		addComponent(headerLayout);
 		headerLayout.setSpacing(true);

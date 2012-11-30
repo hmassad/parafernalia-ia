@@ -15,8 +15,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
-import ejb.casacentral.webservice.CasaCentralClient;
-
 @SuppressWarnings("serial")
 public class DatosInicialesView extends VerticalLayout implements View {
 
@@ -88,7 +86,6 @@ public class DatosInicialesView extends VerticalLayout implements View {
 					producto = new ProductoVO("P1", "Producto 1",
 							"Característica 1", "Marca 1", "Origen 1",
 							"Tipo 1", mpp);
-					CasaCentralClient.nuevoRodamiento(producto);
 					ProveedorClient.get().createProducto(producto);
 
 					mpp = new ArrayList<MateriaPrimaProductoVO>();
@@ -101,7 +98,6 @@ public class DatosInicialesView extends VerticalLayout implements View {
 					producto = new ProductoVO("P2", "Producto 2",
 							"Característica 2", "Marca 2", "Origen 2",
 							"Tipo 2", mpp);
-					CasaCentralClient.nuevoRodamiento(producto);
 					ProveedorClient.get().createProducto(producto);
 
 					new Notification("Productos generados",
