@@ -159,12 +159,14 @@ public class ListaPreciosEditor extends Panel {
 		vigenciaDesdeDateField.setCaption("Vigencia Desde");
 		vigenciaDesdeDateField.setWidth("362px");
 		vigenciaDesdeDateField.setEnabled(true);
+		vigenciaDesdeDateField.setDateFormat("dd/MM/yyyy");
 
 		vigenciaHastaDateField = new DateField();
 		fieldsLayout.addComponent(vigenciaHastaDateField);
 		vigenciaHastaDateField.setCaption("Vigencia Hasta");
 		vigenciaHastaDateField.setWidth("362px");
 		vigenciaHastaDateField.setEnabled(true);
+		vigenciaHastaDateField.setDateFormat("dd/MM/yyyy");
 
 		VerticalLayout productosContainer = new VerticalLayout();
 		mainLayout.addComponent(productosContainer);

@@ -1,4 +1,4 @@
-package proveedor.documentos;
+package ejb.casacentral.documentos;
 
 import java.io.Serializable;
 import java.util.ArrayList;

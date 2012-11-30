@@ -9,9 +9,14 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.xml.ws.WebServiceRef;
 
+import proveedor.configuration.Configuration;
+import proveedor.documentos.NvoProd;
 import proveedor.model.Producto;
 import proveedor.vo.ProductoVO;
+import casaCentral.webservice.RemoteSessionBean;
+import casaCentral.webservice.RemoteSessionBeanService;
 
 /**
  * Session Bean implementation class ProductosSessionBean
@@ -22,6 +27,10 @@ public class ProductosSessionBean implements ProductosSessionBeanLocal {
 	@PersistenceContext(unitName = "proveedor")
 	private EntityManager entityManager;
 
+	@WebServiceRef(wsdlLocation = Configuration.CasaCentralWebServiceLocation
+			+ "?wsdl")
+	static RemoteSessionBeanService service;
+
 	public ProductosSessionBean() {
 	}
 
@@ -30,20 +39,14 @@ public class ProductosSessionBean implements ProductosSessionBeanLocal {
 		Producto producto = Producto.toProducto(productoVO);
 		entityManager.persist(producto);
 
-		// NvoProd nvoProd = new NvoProd(productoVO.getCodigo(),
-		// productoVO.getCaracteristica(), productoVO.getMarca(),
-		// productoVO.getOrigen(), productoVO.getTipo(),
-		// productoVO.getCodigo());
-		// String xml = nvoProd.serialize();
-		//
-		// URL wsdlDocumentLocation = new URL(
-		// proveedor.configuration.Configuration.CasaCentralWebServiceLocation
-		// + "?wsdl");
-		// QName serviceName = new QName("http://webservice.casacentral.ejb/",
-		// "RemoteSessionBeanService");
-		// Service service = Service.create(wsdlDocumentLocation, serviceName);
-		// RemoteSessionBean port = service.getPort(RemoteSessionBean.class);
-		// port.nuevoRodamiento(xml);
+		NvoProd nvoProd = new NvoProd(productoVO.getCodigo(),
+				productoVO.getCaracteristica(), productoVO.getMarca(),
+				productoVO.getOrigen(), productoVO.getTipo(),
+				Configuration.Proveedor.getCuit());
+		String xml = nvoProd.serialize();
+
+		RemoteSessionBean port = service.getRemoteSessionBeanPort();
+		port.nuevoRodamiento(xml);
 	}
 
 	public void deleteProducto(String codigo) {

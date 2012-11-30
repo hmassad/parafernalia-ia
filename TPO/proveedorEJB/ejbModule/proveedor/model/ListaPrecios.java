@@ -93,7 +93,6 @@ public class ListaPrecios implements Serializable {
 		return result;
 	}
 
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -122,7 +121,6 @@ public class ListaPrecios implements Serializable {
 		return true;
 	}
 
-	@Override
 	public String toString() {
 		return Integer.toString(getId());
 	}

@@ -7,7 +7,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import proveedor.documentos.OrCompCCAceptada;
+import ejb.casacentral.documentos.OrCompCCAceptada;
 
 /**
  * Message-Driven Bean implementation class for:
