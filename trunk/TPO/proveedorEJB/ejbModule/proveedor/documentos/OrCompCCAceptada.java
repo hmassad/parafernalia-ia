@@ -28,13 +28,13 @@ public class OrCompCCAceptada implements Serializable {
 
 	public synchronized static OrCompCCAceptada deserialize(String s) {
 		XStream xs = new XStream(new DomDriver());
-		xs.alias("OrdenCompraCCAcepVO", OrCompCCAceptada.class);
+		xs.alias("OrdenCompraCCAcep", OrCompCCAceptada.class);
 		return (OrCompCCAceptada) xs.fromXML(s);
 	}
 
 	public synchronized String serialize() {
 		XStream xs = new XStream(new DomDriver());
-		xs.alias("OrdenCompraCCAcepVO", OrCompCCAceptada.class);
+		xs.alias("OrdenCompraCCAcep", OrCompCCAceptada.class);
 		return xs.toXML(this);
 	}
 

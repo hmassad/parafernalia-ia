@@ -4,9 +4,9 @@ import proveedor.vo.ProveedorVO;
 
 public class Configuration {
 
-	public final static String MateriaPrimaHost = "192.168.0.2";
+	public final static String MateriaPrimaHost = "127.0.0.1";
 
-	public final static ProveedorVO Proveedor = new ProveedorVO("06", "Grupo 6",
+	public final static ProveedorVO Proveedor = new ProveedorVO("6", "6",
 			"0810-666-6666", "Lima 717", "Ciudad Autónoma de Buenos Aires",
 			"Buenos Aires", "1000");
 
@@ -23,9 +23,12 @@ public class Configuration {
 	// public final static String CasaCentralWebServiceLocation = "http://"
 	// + CasaCentralHost + ":8080/CasaEar-casa-negocio/RemoteSessionBean";
 
-	// Casa Central 05
+	// // Casa Central 05
 	// public final static String CasaCentralHost = "172.16.176.34";
 	//
 	// public final static String CasaCentralWebServiceLocation = "http://"
 	// + CasaCentralHost + ":8080/TPOEAR-TPO/RemoteSessionBean";
+
+	public final static String CasaCentralWebServiceWdslLocation = CasaCentralWebServiceLocation
+			+ "?wsdl";
 }

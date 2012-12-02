@@ -1,0 +1,78 @@
+<definitions name='RemoteSessionBeanService' targetNamespace='http://webservice.casacentral.ejb/' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://webservice.casacentral.ejb/' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types>
+  <xs:schema targetNamespace='http://webservice.casacentral.ejb/' version='1.0' xmlns:tns='http://webservice.casacentral.ejb/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:element name='cotizarRodamiento' type='tns:cotizarRodamiento'/>
+   <xs:element name='cotizarRodamientoResponse' type='tns:cotizarRodamientoResponse'/>
+   <xs:element name='nuevoRodamiento' type='tns:nuevoRodamiento'/>
+   <xs:element name='nuevoRodamientoResponse' type='tns:nuevoRodamientoResponse'/>
+   <xs:complexType name='nuevoRodamiento'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='arg0' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='nuevoRodamientoResponse'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='return' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='cotizarRodamiento'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='arg0' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='cotizarRodamientoResponse'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='return' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+  </xs:schema>
+ </types>
+ <message name='RemoteSessionBean_nuevoRodamientoResponse'>
+  <part element='tns:nuevoRodamientoResponse' name='nuevoRodamientoResponse'></part>
+ </message>
+ <message name='RemoteSessionBean_cotizarRodamiento'>
+  <part element='tns:cotizarRodamiento' name='cotizarRodamiento'></part>
+ </message>
+ <message name='RemoteSessionBean_cotizarRodamientoResponse'>
+  <part element='tns:cotizarRodamientoResponse' name='cotizarRodamientoResponse'></part>
+ </message>
+ <message name='RemoteSessionBean_nuevoRodamiento'>
+  <part element='tns:nuevoRodamiento' name='nuevoRodamiento'></part>
+ </message>
+ <portType name='RemoteSessionBean'>
+  <operation name='cotizarRodamiento' parameterOrder='cotizarRodamiento'>
+   <input message='tns:RemoteSessionBean_cotizarRodamiento'></input>
+   <output message='tns:RemoteSessionBean_cotizarRodamientoResponse'></output>
+  </operation>
+  <operation name='nuevoRodamiento' parameterOrder='nuevoRodamiento'>
+   <input message='tns:RemoteSessionBean_nuevoRodamiento'></input>
+   <output message='tns:RemoteSessionBean_nuevoRodamientoResponse'></output>
+  </operation>
+ </portType>
+ <binding name='RemoteSessionBeanBinding' type='tns:RemoteSessionBean'>
+  <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='cotizarRodamiento'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+  </operation>
+  <operation name='nuevoRodamiento'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+  </operation>
+ </binding>
+ <service name='RemoteSessionBeanService'>
+  <port binding='tns:RemoteSessionBeanBinding' name='RemoteSessionBeanPort'>
+   <soap:address location='http://172.16.176.34:8080/TPOEAR-TPO/RemoteSessionBean'/>
+  </port>
+ </service>
+</definitions>

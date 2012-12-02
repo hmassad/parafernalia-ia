@@ -25,33 +25,15 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _NuevoRodamientoResponse_QNAME = new QName("http://webservice.casacentral.ejb/", "nuevoRodamientoResponse");
-    private final static QName _PruebaMetodo1Response_QNAME = new QName("http://webservice.casacentral.ejb/", "pruebaMetodo1Response");
-    private final static QName _PruebaMetodo1_QNAME = new QName("http://webservice.casacentral.ejb/", "pruebaMetodo1");
+    private final static QName _CotizarRodamiento_QNAME = new QName("http://webservice.casacentral.ejb/", "cotizarRodamiento");
+    private final static QName _CotizarRodamientoResponse_QNAME = new QName("http://webservice.casacentral.ejb/", "cotizarRodamientoResponse");
     private final static QName _NuevoRodamiento_QNAME = new QName("http://webservice.casacentral.ejb/", "nuevoRodamiento");
-    private final static QName _PreciosDeRodamientos_QNAME = new QName("http://webservice.casacentral.ejb/", "preciosDeRodamientos");
-    private final static QName _PreciosDeRodamientosResponse_QNAME = new QName("http://webservice.casacentral.ejb/", "preciosDeRodamientosResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: casaCentral.webservice
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link PruebaMetodo1 }
-     * 
-     */
-    public PruebaMetodo1 createPruebaMetodo1() {
-        return new PruebaMetodo1();
-    }
-
-    /**
-     * Create an instance of {@link PreciosDeRodamientosResponse }
-     * 
-     */
-    public PreciosDeRodamientosResponse createPreciosDeRodamientosResponse() {
-        return new PreciosDeRodamientosResponse();
     }
 
     /**
@@ -63,19 +45,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PruebaMetodo1Response }
+     * Create an instance of {@link CotizarRodamiento }
      * 
      */
-    public PruebaMetodo1Response createPruebaMetodo1Response() {
-        return new PruebaMetodo1Response();
+    public CotizarRodamiento createCotizarRodamiento() {
+        return new CotizarRodamiento();
     }
 
     /**
-     * Create an instance of {@link PreciosDeRodamientos }
+     * Create an instance of {@link CotizarRodamientoResponse }
      * 
      */
-    public PreciosDeRodamientos createPreciosDeRodamientos() {
-        return new PreciosDeRodamientos();
+    public CotizarRodamientoResponse createCotizarRodamientoResponse() {
+        return new CotizarRodamientoResponse();
     }
 
     /**
@@ -96,21 +78,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PruebaMetodo1Response }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link CotizarRodamiento }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://webservice.casacentral.ejb/", name = "pruebaMetodo1Response")
-    public JAXBElement<PruebaMetodo1Response> createPruebaMetodo1Response(PruebaMetodo1Response value) {
-        return new JAXBElement<PruebaMetodo1Response>(_PruebaMetodo1Response_QNAME, PruebaMetodo1Response.class, null, value);
+    @XmlElementDecl(namespace = "http://webservice.casacentral.ejb/", name = "cotizarRodamiento")
+    public JAXBElement<CotizarRodamiento> createCotizarRodamiento(CotizarRodamiento value) {
+        return new JAXBElement<CotizarRodamiento>(_CotizarRodamiento_QNAME, CotizarRodamiento.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PruebaMetodo1 }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link CotizarRodamientoResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://webservice.casacentral.ejb/", name = "pruebaMetodo1")
-    public JAXBElement<PruebaMetodo1> createPruebaMetodo1(PruebaMetodo1 value) {
-        return new JAXBElement<PruebaMetodo1>(_PruebaMetodo1_QNAME, PruebaMetodo1 .class, null, value);
+    @XmlElementDecl(namespace = "http://webservice.casacentral.ejb/", name = "cotizarRodamientoResponse")
+    public JAXBElement<CotizarRodamientoResponse> createCotizarRodamientoResponse(CotizarRodamientoResponse value) {
+        return new JAXBElement<CotizarRodamientoResponse>(_CotizarRodamientoResponse_QNAME, CotizarRodamientoResponse.class, null, value);
     }
 
     /**
@@ -120,24 +102,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservice.casacentral.ejb/", name = "nuevoRodamiento")
     public JAXBElement<NuevoRodamiento> createNuevoRodamiento(NuevoRodamiento value) {
         return new JAXBElement<NuevoRodamiento>(_NuevoRodamiento_QNAME, NuevoRodamiento.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PreciosDeRodamientos }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://webservice.casacentral.ejb/", name = "preciosDeRodamientos")
-    public JAXBElement<PreciosDeRodamientos> createPreciosDeRodamientos(PreciosDeRodamientos value) {
-        return new JAXBElement<PreciosDeRodamientos>(_PreciosDeRodamientos_QNAME, PreciosDeRodamientos.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PreciosDeRodamientosResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://webservice.casacentral.ejb/", name = "preciosDeRodamientosResponse")
-    public JAXBElement<PreciosDeRodamientosResponse> createPreciosDeRodamientosResponse(PreciosDeRodamientosResponse value) {
-        return new JAXBElement<PreciosDeRodamientosResponse>(_PreciosDeRodamientosResponse_QNAME, PreciosDeRodamientosResponse.class, null, value);
     }
 
 }

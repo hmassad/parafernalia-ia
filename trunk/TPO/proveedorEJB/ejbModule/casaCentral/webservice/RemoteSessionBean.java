@@ -27,9 +27,9 @@ public interface RemoteSessionBean {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "nuevoRodamiento", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.NuevoRodamiento")
-    @ResponseWrapper(localName = "nuevoRodamientoResponse", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.NuevoRodamientoResponse")
-    public String nuevoRodamiento(
+    @RequestWrapper(localName = "cotizarRodamiento", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.CotizarRodamiento")
+    @ResponseWrapper(localName = "cotizarRodamientoResponse", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.CotizarRodamientoResponse")
+    public String cotizarRodamiento(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
 
@@ -41,21 +41,10 @@ public interface RemoteSessionBean {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "preciosDeRodamientos", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.PreciosDeRodamientos")
-    @ResponseWrapper(localName = "preciosDeRodamientosResponse", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.PreciosDeRodamientosResponse")
-    public String preciosDeRodamientos(
+    @RequestWrapper(localName = "nuevoRodamiento", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.NuevoRodamiento")
+    @ResponseWrapper(localName = "nuevoRodamientoResponse", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.NuevoRodamientoResponse")
+    public String nuevoRodamiento(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "pruebaMetodo1", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.PruebaMetodo1")
-    @ResponseWrapper(localName = "pruebaMetodo1Response", targetNamespace = "http://webservice.casacentral.ejb/", className = "casaCentral.webservice.PruebaMetodo1Response")
-    public String pruebaMetodo1();
 
 }

@@ -59,7 +59,7 @@ public class ProveedorRoot extends Root {
 		CreateMenuItem(menuBar, "Pedidos de Casa Central", "pedidosCasaCentral");
 		CreateMenuItem(menuBar, "Pedidos de Materia Prima",
 				"pedidosMateriaPrima");
-		CreateMenuItem(menuBar, "Datos Iniciales", "datosIniciales");
+		CreateMenuItem(menuBar, "Debug", "debug");
 
 		final Panel navigatorContainer = new Panel();
 		addComponent(navigatorContainer);
@@ -69,7 +69,7 @@ public class ProveedorRoot extends Root {
 		navigator.addView("materiaPrima", new MateriaPrimaView());
 		navigator.addView("pedidosMateriaPrima", new PedidosMateriaPrimaView());
 		navigator.addView("pedidosCasaCentral", new PedidosCasaCentralView());
-		navigator.addView("datosIniciales", new DatosInicialesView());
+		navigator.addView("debug", new DebugView());
 	}
 
 	private MenuBar.MenuItem CreateMenuItem(MenuBar menuBar, String display,

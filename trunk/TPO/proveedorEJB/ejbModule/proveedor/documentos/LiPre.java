@@ -1,12 +1,14 @@
 package proveedor.documentos;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class LiPre implements Serializable {
@@ -140,9 +142,9 @@ public class LiPre implements Serializable {
 
 	private Proveedor proveedor;
 
-	private Date vigenciaDesde;
+	private String vigenciaDesde;
 
-	private Date vigenciaHasta;
+	private String vigenciaHasta;
 
 	private List<Rodamiento> itemsLP;
 
@@ -152,10 +154,13 @@ public class LiPre implements Serializable {
 
 	public LiPre(int nroLista, Proveedor proveedor, Date vigenciaDesde,
 			Date vigenciaHasta, List<Rodamiento> itemsLP) {
+		DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		this.nroLista = nroLista;
 		this.proveedor = proveedor;
-		this.vigenciaDesde = vigenciaDesde;
-		this.vigenciaHasta = vigenciaHasta;
+		if (vigenciaDesde != null)
+			this.vigenciaDesde = sdf.format(vigenciaDesde);
+		if (vigenciaHasta != null)
+			this.vigenciaHasta = sdf.format(vigenciaHasta);
 		this.itemsLP = itemsLP;
 	}
 
@@ -176,19 +181,39 @@ public class LiPre implements Serializable {
 	}
 
 	public Date getVigenciaDesde() {
-		return vigenciaDesde;
+		try {
+			DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			if (vigenciaDesde != null)
+				return sdf.parse(vigenciaDesde);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
 	}
 
 	public void setVigenciaDesde(Date vigenciaDesde) {
-		this.vigenciaDesde = vigenciaDesde;
+		DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		if (vigenciaDesde != null)
+			this.vigenciaDesde = sdf.format(vigenciaDesde);
 	}
 
 	public Date getVigenciaHasta() {
-		return vigenciaHasta;
+		try {
+			DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			if (vigenciaHasta != null)
+				return sdf.parse(vigenciaHasta);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
 	}
 
 	public void setVigenciaHasta(Date vigenciaHasta) {
-		this.vigenciaHasta = vigenciaHasta;
+		DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		if (vigenciaHasta != null)
+			this.vigenciaHasta = sdf.format(vigenciaHasta);
 	}
 
 	public List<Rodamiento> getItemsLP() {
@@ -201,11 +226,6 @@ public class LiPre implements Serializable {
 
 	public synchronized static LiPre deserialize(String s) {
 		XStream xs = new XStream(new DomDriver());
-		xs.addDefaultImplementation(java.sql.Date.class, java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Timestamp.class,
-				java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Time.class, java.util.Date.class);
-		xs.registerConverter(new DateConverter("yyyyMMdd", new String[12]));
 		xs.alias("ListaDePrecios", LiPre.class);
 		xs.alias("Rodamiento", Rodamiento.class);
 		return (LiPre) xs.fromXML(s);
@@ -213,11 +233,6 @@ public class LiPre implements Serializable {
 
 	public synchronized String serialize() {
 		XStream xs = new XStream(new DomDriver());
-		xs.addDefaultImplementation(java.sql.Date.class, java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Timestamp.class,
-				java.util.Date.class);
-		xs.addDefaultImplementation(java.sql.Time.class, java.util.Date.class);
-		xs.registerConverter(new DateConverter("yyyyMMdd", new String[12]));
 		xs.alias("ListaDePrecios", LiPre.class);
 		xs.alias("Rodamiento", Rodamiento.class);
 		return xs.toXML(this);
