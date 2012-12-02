@@ -1,1 +1,2 @@
-C:\jboss-4.2.2.GA\bin>wsconsume.bat -k -p casaCentral.webservice http://localhost:8080/casaCentralEAR-casaCentralEJB/RemoteSessionBean?wsdl
+C:\jboss-4.2.2.GA\bin>
+wsconsume.bat -k -p casaCentral.webservice http://localhost:8080/casaCentralEAR-casaCentralEJB/RemoteSessionBean?wsdl

@@ -1,6 +1,9 @@
 package proveedor.documentos;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +105,7 @@ public class OrCompCC implements Serializable {
 		}
 	}
 
-	private Date fecha;
+	private String fecha;
 
 	private String nroOrdenCompra;
 
@@ -116,18 +119,27 @@ public class OrCompCC implements Serializable {
 
 	public OrCompCC(Date fecha, String nroOrdenCompra, Cliente cliente,
 			List<Item> itemsOCCC) {
-		this.fecha = fecha;
+		setFecha(fecha);
 		this.nroOrdenCompra = nroOrdenCompra;
 		this.cliente = cliente;
 		this.itemsOCCC = itemsOCCC;
 	}
 
 	public Date getFecha() {
-		return fecha;
+		try {
+			DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			if (fecha != null)
+				return sdf.parse(fecha);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+		DateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		if (fecha != null)
+			this.fecha = sdf.format(fecha);
 	}
 
 	public String getNroOrdenCompra() {

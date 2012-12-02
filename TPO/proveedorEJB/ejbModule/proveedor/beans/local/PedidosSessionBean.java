@@ -1,7 +1,9 @@
 package proveedor.beans.local;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -123,32 +125,33 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 					.getCantidad());
 		}
 
-		// buscar PedidoCasaCentral que se puedan completar y enviar
+		// buscar los PedidoCasaCentral que se puedan completar y enviar
 		for (PedidoCasaCentralVO pedidoCasaCentralVO : pedidoCasaCentralSessionBeanLocal
 				.getPedidosCasaCentralByEntregado(false)) {
 			boolean entregable = true;
 
 			// obtener las cantidades en total de materia prima del pedido de
 			// casa central
-			Hashtable<MateriaPrimaVO, Integer> materiasPrimasPedido = new Hashtable<MateriaPrimaVO, Integer>();
+			Map<String, Integer> materiasPrimasPedido = new HashMap<String, Integer>();
 			for (PedidoCasaCentralItemVO pcciVO : pedidoCasaCentralVO
 					.getItems()) {
 				for (MateriaPrimaProductoVO mppVO : pcciVO.getProducto()
 						.getMateriasPrimasProducto()) {
+					String codigo = mppVO.getMateriaPrima().getCodigo();
 					int cantidad = mppVO.getCantidad() * pcciVO.getCantidad();
 					if (materiasPrimasPedido.containsKey(mppVO
-							.getMateriaPrima())) {
+							.getMateriaPrima().getCodigo())) {
 						cantidad += materiasPrimasPedido.get(mppVO
-								.getMateriaPrima());
+								.getMateriaPrima().getCodigo());
 					}
-					materiasPrimasPedido.put(mppVO.getMateriaPrima(), cantidad);
+					materiasPrimasPedido.put(codigo, cantidad);
 				}
 			}
 
-			for (MateriaPrimaVO mpVO : materiasPrimasPedido.keySet()) {
-				int cantidadPedido = materiasPrimasPedido.get(mpVO);
+			for (String codigoMP : materiasPrimasPedido.keySet()) {
+				int cantidadPedido = materiasPrimasPedido.get(codigoMP);
 				MateriaPrimaVO materiaPrimaVO = materiaPrimaSessionBeanLocal
-						.getMateriaPrima(mpVO.getCodigo());
+						.getMateriaPrima(codigoMP);
 				int cantidadStock = materiaPrimaVO.getStock();
 				if (cantidadStock < cantidadPedido) {
 					entregable = false;
@@ -171,16 +174,16 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 
 		// obtener las cantidades en total de materia prima que se necesitan
 		// para cumplir el pedido de casa central
-		Hashtable<MateriaPrimaVO, Integer> materiasPrimasPedido = new Hashtable<MateriaPrimaVO, Integer>();
+		Map<String, Integer> materiasPrimasPedido = new HashMap<String, Integer>();
 		for (PedidoCasaCentralItemVO pcciVO : pedidoCasaCentralVO.getItems()) {
 			for (MateriaPrimaProductoVO mppVO : pcciVO.getProducto()
 					.getMateriasPrimasProducto()) {
+				String codigoMP = mppVO.getMateriaPrima().getCodigo();
 				int cantidad = mppVO.getCantidad() * pcciVO.getCantidad();
-				if (materiasPrimasPedido.containsKey(mppVO.getMateriaPrima())) {
-					cantidad += materiasPrimasPedido.get(mppVO
-							.getMateriaPrima());
+				if (materiasPrimasPedido.containsKey(codigoMP)) {
+					cantidad += materiasPrimasPedido.get(codigoMP);
 				}
-				materiasPrimasPedido.put(mppVO.getMateriaPrima(), cantidad);
+				materiasPrimasPedido.put(codigoMP, cantidad);
 			}
 		}
 
@@ -189,14 +192,15 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 		pedidoMateriaPrimaVO.setFecha(new Date());
 		pedidoMateriaPrimaVO.setEntregado(false);
 
-		for (MateriaPrimaVO mpVO : materiasPrimasPedido.keySet()) {
+		for (String codigoMP : materiasPrimasPedido.keySet()) {
 			MateriaPrimaVO materiaPrimaVO = materiaPrimaSessionBeanLocal
-					.getMateriaPrima(mpVO.getCodigo());
+					.getMateriaPrima(codigoMP);
 			int cantidadStock = materiaPrimaVO.getStock();
-			int cantidadPedido = materiasPrimasPedido.get(mpVO);
+			int cantidadPedido = materiasPrimasPedido.get(codigoMP);
 			if (cantidadStock < cantidadPedido) {
 				pedidoMateriaPrimaVO.getItems().add(
-						new PedidoMateriaPrimaItemVO(mpVO,
+						new PedidoMateriaPrimaItemVO(new MateriaPrimaVO(
+								codigoMP, null, 0),
 								(cantidadPedido - cantidadStock) * 2));
 			}
 		}
@@ -226,8 +230,7 @@ public class PedidosSessionBean implements PedidosSessionBeanLocal {
 					+ Configuration.CasaCentralHost + ":1099");
 			InitialContext ctx = new InitialContext(props);
 
-			Queue queue = (Queue) ctx
-					.lookup("queue/ordenCompraAcepQueue");
+			Queue queue = (Queue) ctx.lookup("queue/ordenCompraAcepQueue");
 
 			// buscar la Connection Factory en JNDI
 			QueueConnectionFactory qfactory = (QueueConnectionFactory) ctx

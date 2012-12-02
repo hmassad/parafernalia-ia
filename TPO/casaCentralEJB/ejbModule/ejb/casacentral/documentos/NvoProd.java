@@ -83,7 +83,7 @@ public class NvoProd implements Serializable {
 	public void setCod_propietario(String cod_propietario) {
 		this.cod_propietario = cod_propietario;
 	}
-
+	
 	public String toString() {
 		return "NvoProd [codigoRodamiento=" + codigoRodamiento
 				+ ", caracteristica=" + caracteristica + ", marca=" + marca

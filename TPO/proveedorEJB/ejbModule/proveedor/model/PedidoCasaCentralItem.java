@@ -113,7 +113,6 @@ public class PedidoCasaCentralItem implements Serializable {
 	public static PedidoCasaCentralItem toPedidoCasaCentralItem(
 			PedidoCasaCentral pedidoCasaCentral,
 			PedidoCasaCentralItemVO pedidoCasaCentralItemVO) {
-
 		PedidoCasaCentralItem pcci = new PedidoCasaCentralItem();
 		pcci.setPedidoCasaCentral(pedidoCasaCentral);
 		pcci.setProducto(Producto.toProducto(pedidoCasaCentralItemVO
@@ -121,5 +120,4 @@ public class PedidoCasaCentralItem implements Serializable {
 		pcci.setCantidad(pedidoCasaCentralItemVO.getCantidad());
 		return pcci;
 	}
-
 }

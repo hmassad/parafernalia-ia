@@ -114,9 +114,11 @@ public class PedidoMateriaPrimaItem implements Serializable {
 	public static PedidoMateriaPrimaItem toPedidoMateriaPrimaItem(
 			PedidoMateriaPrima pedidoMateriaPrima,
 			PedidoMateriaPrimaItemVO pedidoMateriaPrimaItemVO) {
-		return new PedidoMateriaPrimaItem(pedidoMateriaPrima,
-				MateriaPrima.toMateriaPrima(pedidoMateriaPrimaItemVO
-						.getMateriaPrima()),
-				pedidoMateriaPrimaItemVO.getCantidad());
+		PedidoMateriaPrimaItem pmpi = new PedidoMateriaPrimaItem();
+		pmpi.setPedidoMateriaPrima(pedidoMateriaPrima);
+		pmpi.setMateriaPrima(MateriaPrima
+				.toMateriaPrima(pedidoMateriaPrimaItemVO.getMateriaPrima()));
+		pmpi.setCantidad(pedidoMateriaPrimaItemVO.getCantidad());
+		return pmpi;
 	}
 }
